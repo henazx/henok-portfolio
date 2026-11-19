@@ -1,35 +1,11 @@
-import type { CertificationEntry, EducationEntry } from "@/types";
+import type {
+  CertificationEntry,
+  EducationEntry,
+  SiteContent,
+} from "@/types";
+import content from "./content.json";
 
-export const education: EducationEntry[] = [
-  {
-    qualification: "BSc in Computer Science",
-    institution: "Kotebe University of Education",
-    period: "2020 – 2024",
-    detail:
-      "Foundations in programming, software engineering, databases, computer networks, and information systems.",
-  },
-  {
-    qualification: "High School",
-    institution: "Millennium Academy",
-    period: "2016 – 2020",
-  },
-];
+const data = content as SiteContent;
 
-/**
- * These are professional certificates and courses — not licenses.
- */
-export const certifications: CertificationEntry[] = [
-  {
-    name: "Google UX Design Certificate",
-    issuer: "Google",
-    note: "User research, wireframing, prototyping, and usability testing.",
-  },
-  {
-    name: "Artificial Intelligence Fundamentals",
-    issuer: "Udacity",
-  },
-  {
-    name: "Introduction to Cybersecurity",
-    issuer: "Cisco",
-  },
-];
+export const education: EducationEntry[] = data.education;
+export const certifications: CertificationEntry[] = data.certifications;

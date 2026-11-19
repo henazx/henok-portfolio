@@ -8,6 +8,9 @@ import { Footer } from "@/components/layout/Footer";
 import { Backdrop } from "@/components/layout/Backdrop";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { PointerGlow } from "@/components/interaction/PointerGlow";
+import { ContentProvider } from "@/components/editor/ContentProvider";
+import { EditUnlock } from "@/components/editor/EditUnlock";
+import { SiteEditor } from "@/components/editor/SiteEditor";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
 import { skillCategories } from "@/data/skills";
@@ -128,15 +131,19 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
-        <Backdrop />
-        <ScrollReveal />
-        <PointerGlow />
-        <a className="skip-link" href="#main">
-          Skip to content
-        </a>
-        <Navbar />
-        <main id="main">{children}</main>
-        <Footer />
+        <ContentProvider>
+          <Backdrop />
+          <ScrollReveal />
+          <PointerGlow />
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <Navbar />
+          <main id="main">{children}</main>
+          <Footer />
+          <EditUnlock />
+          <SiteEditor />
+        </ContentProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

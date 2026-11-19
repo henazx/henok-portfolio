@@ -3,13 +3,27 @@
 import { useEffect, useRef, useState } from "react";
 import { Download, Menu, X } from "lucide-react";
 
-import { navigation } from "@/data/site";
-import { profile, socialLinks } from "@/data/profile";
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
+import type { SiteContent, SocialLink } from "@/types";
 import { ThemeToggle } from "./ThemeToggle";
 import styles from "./Navbar.module.css";
 
+function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
+  return [
+    { label: "GitHub", href: profile.github, icon: "github" },
+    ...(profile.linkedin
+      ? [{ label: "LinkedIn", href: profile.linkedin, icon: "linkedin" as const }]
+      : []),
+    { label: "Email", href: `mailto:${profile.email}`, icon: "mail" },
+  ];
+}
+
 export function Navbar() {
+  const { content } = useEditor();
+  const navigation = content.site.navigation;
+  const profile = content.profile;
+  const socialLinks = socialLinksFor(profile);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
@@ -46,7 +60,7 @@ export function Navbar() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     if (!open) return;

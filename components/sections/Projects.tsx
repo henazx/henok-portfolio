@@ -1,8 +1,13 @@
-import { projects } from "@/data/projects";
+"use client";
+
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectGallery } from "./ProjectGallery";
 
 export function Projects() {
+  const { content } = useEditor();
+  const copy = content.sections.projects;
+
   return (
     <section className="section" id="projects" aria-labelledby="projects-title">
       <div className="container">
@@ -10,11 +15,11 @@ export function Projects() {
           index="03"
           eyebrow="Projects"
           titleId="projects-title"
-          title="Selected work, built to be used."
-          description="A mix of product development, internal systems, and design-led academic work — each shown with the stack it actually uses."
+          title={copy.title}
+          description={copy.description}
         />
 
-        <ProjectGallery projects={projects} />
+        <ProjectGallery projects={content.projects} />
       </div>
     </section>
   );

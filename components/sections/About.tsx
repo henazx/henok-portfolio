@@ -1,13 +1,16 @@
-import { profile } from "@/data/profile";
-import { experience } from "@/data/experience";
-import { education } from "@/data/education";
+"use client";
+
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./About.module.css";
 
-const currentRole = experience.find((entry) => entry.current) ?? experience[0];
-const primaryDegree = education[0];
-
 export function About() {
+  const { content } = useEditor();
+  const { profile, education, experience, sections } = content;
+  const currentRole = experience.find((entry) => entry.current) ?? experience[0];
+  const primaryDegree = education[0];
+  const copy = sections.about;
+
   return (
     <section className="section" id="about" aria-labelledby="about-title">
       <div className="container">
@@ -15,8 +18,8 @@ export function About() {
           index="01"
           eyebrow="About"
           titleId="about-title"
-          title="A technical foundation with a designer's eye."
-          description="Support work taught me how systems fail. Development taught me how to build them. Design taught me why the details matter."
+          title={copy.title}
+          description={copy.description}
         />
 
         <div className={styles.grid} data-reveal>
@@ -24,8 +27,8 @@ export function About() {
             <p className={styles.lead}>{profile.about.lead}</p>
 
             <ul className={styles.focus} aria-label="Focus areas">
-              {profile.about.focus.map((item) => (
-                <li key={item}>
+              {profile.about.focus.map((item, index) => (
+                <li key={`${item}-${index}`}>
                   <span className={styles.focusMark} aria-hidden="true" />
                   {item}
                 </li>
@@ -34,8 +37,8 @@ export function About() {
           </div>
 
           <div className={styles.bodyColumn}>
-            {profile.about.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+            {profile.about.paragraphs.map((paragraph, index) => (
+              <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
             ))}
           </div>
         </div>
@@ -53,16 +56,18 @@ export function About() {
           <div className={styles.fact}>
             <dt>Education</dt>
             <dd>
-              {primaryDegree.qualification}
-              <span className={styles.factDetail}>{primaryDegree.institution}</span>
+              {primaryDegree?.qualification}
+              <span className={styles.factDetail}>
+                {primaryDegree?.institution}
+              </span>
             </dd>
           </div>
           <div className={styles.fact}>
             <dt>Current role</dt>
             <dd>
-              {currentRole.role}
+              {currentRole?.role}
               <span className={styles.factDetail}>
-                {currentRole.organization}
+                {currentRole?.organization}
               </span>
             </dd>
           </div>

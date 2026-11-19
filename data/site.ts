@@ -1,6 +1,8 @@
-import type { NavItem } from "@/types";
-
+import type { NavItem, SiteContent } from "@/types";
+import content from "./content.json";
 import { profile } from "./profile";
+
+const data = content as SiteContent;
 
 export const siteConfig = {
   /**
@@ -13,16 +15,7 @@ export const siteConfig = {
   ),
   locale: "en_US",
   titleTemplate: `%s | ${profile.name}`,
-  description:
-    "Portfolio of an Information Technology Specialist and Computer Science graduate working across IT support, software development and UX/UI design.",
+  description: data.site.description,
 } as const;
 
-export const navigation: NavItem[] = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Certifications", href: "#credentials" },
-  { label: "Contact", href: "#contact" },
-];
+export const navigation: NavItem[] = data.site.navigation;

@@ -78,3 +78,50 @@ export interface SkillCategory {
   icon: SkillIcon;
   skills: string[];
 }
+
+export interface SectionCopy {
+  title: string;
+  description: string;
+}
+
+export type SectionKey =
+  | "about"
+  | "experience"
+  | "projects"
+  | "skills"
+  | "credentials"
+  | "contact";
+
+/** The single editable content source used by the site and the visual editor. */
+export interface SiteContent {
+  site: {
+    description: string;
+    navigation: NavItem[];
+  };
+  sections: Record<SectionKey, SectionCopy>;
+  profile: {
+    name: string;
+    monogram: string;
+    role: string;
+    positioning: string[];
+    summary: string;
+    about: {
+      lead: string;
+      paragraphs: string[];
+      focus: string[];
+    };
+    email: string;
+    location: string;
+    availability: string;
+    workPreference: string;
+    github: string;
+    linkedin: string;
+    cv: { path: string; fileName: string };
+    portrait: { src: string; alt: string; isPlaceholder: boolean };
+  };
+  experience: ExperienceEntry[];
+  projects: Project[];
+  skills: SkillCategory[];
+  education: EducationEntry[];
+  certifications: CertificationEntry[];
+}

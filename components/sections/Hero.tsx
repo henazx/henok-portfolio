@@ -1,7 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { ArrowUpRight, Download, MapPin } from "lucide-react";
 
-import { profile, socialLinks } from "@/data/profile";
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import {
   FigmaIcon,
@@ -10,19 +12,34 @@ import {
   TypeScriptIcon,
 } from "@/components/ui/BrandIcons";
 import { Magnetic } from "@/components/interaction/Magnetic";
+import type { SiteContent, SocialLink } from "@/types";
 import styles from "./Hero.module.css";
 
-const statusRows = [
-  { label: "system.status", value: "Available", tone: "live" as const },
-  { label: "role", value: "IT Specialist" },
-  { label: "focus", value: "Software Development" },
-  {
-    label: "location",
-    value: profile.location.split(",")[0],
-  },
-];
+function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
+  return [
+    { label: "GitHub", href: profile.github, icon: "github" },
+    ...(profile.linkedin
+      ? [{ label: "LinkedIn", href: profile.linkedin, icon: "linkedin" as const }]
+      : []),
+    { label: "Email", href: `mailto:${profile.email}`, icon: "mail" },
+  ];
+}
+
+function statusRowsFor(profile: SiteContent["profile"]) {
+  return [
+    { label: "system.status", value: "Available", tone: "live" as const },
+    { label: "role", value: profile.role },
+    { label: "focus", value: profile.positioning[0] ?? "Software Development" },
+    { label: "location", value: profile.location.split(",")[0] },
+  ];
+}
 
 export function Hero() {
+  const { content } = useEditor();
+  const profile = content.profile;
+  const socialLinks = socialLinksFor(profile);
+  const statusRows = statusRowsFor(profile);
+
   return (
     <section id="home" className={styles.hero} aria-labelledby="hero-title">
       <div className={styles.blueprint} aria-hidden="true">

@@ -1,12 +1,28 @@
+"use client";
+
 import { ArrowUpRight, MapPin } from "lucide-react";
 
-import { profile, socialLinks } from "@/data/profile";
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { SiteContent, SocialLink } from "@/types";
 import { ContactForm } from "./ContactForm";
 import styles from "./Contact.module.css";
 
+function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
+  return [
+    { label: "GitHub", href: profile.github, icon: "github" },
+    ...(profile.linkedin
+      ? [{ label: "LinkedIn", href: profile.linkedin, icon: "linkedin" as const }]
+      : []),
+    { label: "Email", href: `mailto:${profile.email}`, icon: "mail" },
+  ];
+}
+
 export function Contact() {
+  const { content } = useEditor();
+  const { profile, sections } = content;
+  const copy = sections.contact;
   const emailConfigured = Boolean(
     process.env.RESEND_API_KEY?.trim() &&
       process.env.CONTACT_TO_EMAIL?.trim() &&
@@ -20,18 +36,15 @@ export function Contact() {
           index="06"
           eyebrow="Contact"
           titleId="contact-title"
-          title="Let's build something useful."
-          description="I'm open to IT, development, and design opportunities. If you have a role, a project, or a problem worth solving, I'd like to hear about it."
+          title={copy.title}
+          description={copy.description}
         />
 
         <div className={styles.grid}>
           <div className={styles.info} data-reveal>
             <div>
               <p className="mono">Email</p>
-              <a
-                className={styles.email}
-                href={`mailto:${profile.email}`}
-              >
+              <a className={styles.email} href={`mailto:${profile.email}`}>
                 {profile.email}
                 <ArrowUpRight aria-hidden="true" />
               </a>
@@ -64,7 +77,10 @@ export function Contact() {
               <p className="mono" style={{ marginBottom: 12 }}>
                 Elsewhere
               </p>
-              <SocialLinks links={socialLinks} className="social-links" />
+              <SocialLinks
+                links={socialLinksFor(profile)}
+                className="social-links"
+              />
             </div>
           </div>
 

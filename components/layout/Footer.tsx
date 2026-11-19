@@ -1,11 +1,24 @@
+"use client";
+
 import { ArrowUp } from "lucide-react";
 
-import { navigation } from "@/data/site";
-import { profile, socialLinks } from "@/data/profile";
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
+import type { SiteContent, SocialLink } from "@/types";
 import styles from "./Footer.module.css";
 
+function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
+  return [
+    { label: "GitHub", href: profile.github, icon: "github" },
+    ...(profile.linkedin
+      ? [{ label: "LinkedIn", href: profile.linkedin, icon: "linkedin" as const }]
+      : []),
+    { label: "Email", href: `mailto:${profile.email}`, icon: "mail" },
+  ];
+}
+
 export function Footer() {
+  const { content } = useEditor();
   const year = new Date().getFullYear();
 
   return (
@@ -16,18 +29,18 @@ export function Footer() {
             <div>
               <a href="#home" className={styles.brand}>
                 <span className={styles.monogram} aria-hidden="true">
-                  {profile.monogram}
+                  {content.profile.monogram}
                 </span>
-                <span>{profile.name}</span>
+                <span>{content.profile.name}</span>
               </a>
               <p className={styles.tagline}>
-                {profile.role} · {profile.location}
+                {content.profile.role} · {content.profile.location}
               </p>
             </div>
 
             <nav className={styles.nav} aria-label="Footer">
               <ul>
-                {navigation.map((item) => (
+                {content.site.navigation.map((item) => (
                   <li key={item.href}>
                     <a href={item.href}>{item.label}</a>
                   </li>
@@ -38,7 +51,7 @@ export function Footer() {
             <div>
               <p className="mono">Elsewhere</p>
               <SocialLinks
-                links={socialLinks}
+                links={socialLinksFor(content.profile)}
                 className={`social-links ${styles.socialLinks}`}
               />
             </div>
@@ -46,11 +59,11 @@ export function Footer() {
 
           <div className={styles.bottom}>
             <p>
-              © {year} {profile.name}. All rights reserved.
+              © {year} {content.profile.name}. All rights reserved.
             </p>
             <p className={styles.status}>
               <span aria-hidden="true" />
-              Open to new opportunities
+              {content.profile.availability}
             </p>
             <a href="#home" className={styles.topLink}>
               Back to top

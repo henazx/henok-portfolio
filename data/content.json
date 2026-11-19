@@ -1,0 +1,233 @@
+{
+  "site": {
+    "description": "Portfolio of an Information Technology Specialist and Computer Science graduate working across IT support, software development and UX/UI design.",
+    "navigation": [
+      { "label": "Home", "href": "#home" },
+      { "label": "About", "href": "#about" },
+      { "label": "Experience", "href": "#experience" },
+      { "label": "Projects", "href": "#projects" },
+      { "label": "Skills", "href": "#skills" },
+      { "label": "Certifications", "href": "#credentials" },
+      { "label": "Contact", "href": "#contact" }
+    ]
+  },
+  "sections": {
+    "about": {
+      "title": "A technical foundation with a designer's eye.",
+      "description": "Support work taught me how systems fail. Development taught me how to build them. Design taught me why the details matter."
+    },
+    "experience": {
+      "title": "Where I've put technology to work.",
+      "description": "Hands-on experience supporting the people and systems that keep an organization running."
+    },
+    "projects": {
+      "title": "Selected work, built to be used.",
+      "description": "A mix of product development, internal systems, and design-led academic work — each shown with the stack it actually uses."
+    },
+    "skills": {
+      "title": "A practical, maintained toolkit.",
+      "description": "The technologies and methods I use day to day — grouped by discipline rather than scored with arbitrary percentages."
+    },
+    "credentials": {
+      "title": "Formal study, continued learning.",
+      "description": "A Computer Science foundation, supported by focused certificates in design, artificial intelligence, and cybersecurity."
+    },
+    "contact": {
+      "title": "Let's build something useful.",
+      "description": "I'm open to IT, development, and design opportunities. If you have a role, a project, or a problem worth solving, I'd like to hear about it."
+    }
+  },
+  "profile": {
+    "name": "Henok Neknikie",
+    "monogram": "HN",
+    "role": "Information Technology Specialist",
+    "positioning": [
+      "Computer Science Graduate",
+      "Software Developer",
+      "UX/UI Designer"
+    ],
+    "summary": "I'm a Computer Science graduate with practical experience in IT support, software development, and user-centered design. I build and maintain reliable systems, and I care about the details that make technology feel simple for the people who use it.",
+    "about": {
+      "lead": "I work at the intersection of technology and people — keeping systems running, building practical software, and designing interfaces that get out of the way.",
+      "paragraphs": [
+        "I am a Computer Science graduate with practical experience in Information Technology support, troubleshooting, hardware and software maintenance, and software development. My day-to-day work involves helping people resolve technical problems and keeping the systems they depend on available and reliable.",
+        "Alongside IT operations, I build web applications using JavaScript, React, Next.js and Node.js. I also have a strong interest in UX/UI design, and I use Figma to turn requirements into clear, usable interfaces — from wireframes through to implementation.",
+        "I enjoy solving technical problems, learning new technologies, and developing practical solutions that improve everyday workflows. I care about maintainability, accessibility, and the small details that make a product feel considered."
+      ],
+      "focus": [
+        "IT support and systems",
+        "Web application development",
+        "UX/UI and product design",
+        "Continuous learning"
+      ]
+    },
+    "email": "henokneknikiezx@gmail.com",
+    "location": "Addis Ababa, Ethiopia",
+    "availability": "Open to full-time & freelance",
+    "workPreference": "Remote · Hybrid · On-site",
+    "github": "https://github.com/henazx",
+    "linkedin": "",
+    "cv": {
+      "path": "/cv/your-name-cv.pdf",
+      "fileName": "Your-Name-CV.pdf"
+    },
+    "portrait": {
+      "src": "/images/portrait-placeholder.svg",
+      "alt": "Portrait of Henok Neknikie",
+      "isPlaceholder": true
+    }
+  },
+  "experience": [
+    {
+      "role": "Information Technology Specialist",
+      "organization": "Addis Mesob",
+      "location": "Addis Ababa, Ethiopia",
+      "period": "Present",
+      "current": true,
+      "summary": "Providing day-to-day technical support and keeping business-critical systems, hardware, and networks dependable.",
+      "highlights": [
+        "Provided technical support and troubleshooting for hardware, software, and network-related issues.",
+        "Installed, configured, and maintained computers, printers, and IT systems.",
+        "Assisted employees with technical problems and daily IT operations.",
+        "Supported software development and technology-related projects."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "slug": "smartcv",
+      "name": "SmartCV",
+      "category": "Development",
+      "description": "A browser-based career toolkit that helps job seekers create professional CVs, evaluate job compatibility, prepare cover letters, and manage their job applications.",
+      "technologies": ["React", "Next.js", "JavaScript", "UX/UI Design"],
+      "image": {
+        "src": "/projects/smartcv.svg",
+        "alt": "Stylised preview of the SmartCV interface showing a CV builder and compatibility score",
+        "width": 1200,
+        "height": 750
+      },
+      "repository": "https://github.com/henazx/smartcv",
+      "demo": "https://smartcv-virid.vercel.app/"
+    },
+    {
+      "slug": "mesob-connect",
+      "name": "Mesob Connect",
+      "category": "IT & Systems",
+      "description": "An internal messaging and document management system designed to improve communication and information sharing within an organization.",
+      "technologies": ["JavaScript", "React", "Node.js", "Express.js", "MySQL"],
+      "image": {
+        "src": "/projects/mesob-connect.svg",
+        "alt": "Stylised preview of the Mesob Connect messaging and document management interface",
+        "width": 1200,
+        "height": 750
+      },
+      "repository": "https://github.com/henazx/internal-messaging-system"
+    },
+    {
+      "slug": "telegram-job-board",
+      "name": "Telegram Job Board",
+      "category": "Development",
+      "description": "A project focused on sharing job opportunities through Telegram, helping users discover relevant employment opportunities in one place.",
+      "technologies": ["JavaScript", "Node.js", "Telegram Bot API"],
+      "image": {
+        "src": "/projects/telegram-job-board.svg",
+        "alt": "Stylised preview of the Telegram Job Board showing a feed of job listings",
+        "width": 1200,
+        "height": 750
+      },
+      "repository": "https://github.com/henazx/telegram-job-board"
+    },
+    {
+      "slug": "high-school-counseling",
+      "name": "High School Counseling Website",
+      "category": "UI/UX Design",
+      "description": "An academic project developed to give high school students access to academic guidance, emotional support resources, and educational information.",
+      "technologies": ["UX/UI Design", "Figma", "Wireframing"],
+      "image": {
+        "src": "/projects/counseling-website.svg",
+        "alt": "Stylised preview of the High School Counseling website with guidance and support resources",
+        "width": 1200,
+        "height": 750
+      },
+      "note": "Academic project"
+    }
+  ],
+  "skills": [
+    {
+      "title": "Frontend Development",
+      "description": "Component-driven interfaces built to stay clear and responsive.",
+      "icon": "frontend",
+      "skills": ["React", "Next.js", "JavaScript", "Responsive layouts"]
+    },
+    {
+      "title": "Backend Development",
+      "description": "Application logic, server routes, and API workflows.",
+      "icon": "backend",
+      "skills": ["Node.js", "Express.js", "JavaScript"]
+    },
+    {
+      "title": "Databases",
+      "description": "Structured storage and dependable data access.",
+      "icon": "database",
+      "skills": ["MySQL", "SQL"]
+    },
+    {
+      "title": "IT Infrastructure & Support",
+      "description": "Keeping hardware, software, and networks dependable.",
+      "icon": "support",
+      "skills": [
+        "IT Support",
+        "Hardware Troubleshooting",
+        "Software Installation & Configuration",
+        "Network Troubleshooting",
+        "System Maintenance"
+      ]
+    },
+    {
+      "title": "UI/UX Design",
+      "description": "Turning requirements into clear, usable interfaces.",
+      "icon": "design",
+      "skills": [
+        "Figma",
+        "Adobe Photoshop",
+        "UX/UI Design",
+        "Wireframing",
+        "User-Centered Design"
+      ]
+    },
+    {
+      "title": "Development Tools",
+      "description": "The everyday environment behind the work.",
+      "icon": "tools",
+      "skills": ["Git & GitHub", "Vercel", "Figma", "Adobe Photoshop"]
+    }
+  ],
+  "education": [
+    {
+      "qualification": "BSc in Computer Science",
+      "institution": "Kotebe University of Education",
+      "period": "2020 – 2024",
+      "detail": "Foundations in programming, software engineering, databases, computer networks, and information systems."
+    },
+    {
+      "qualification": "High School",
+      "institution": "Millennium Academy",
+      "period": "2016 – 2020"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Google UX Design Certificate",
+      "issuer": "Google",
+      "note": "User research, wireframing, prototyping, and usability testing."
+    },
+    {
+      "name": "Artificial Intelligence Fundamentals",
+      "issuer": "Udacity"
+    },
+    {
+      "name": "Introduction to Cybersecurity",
+      "issuer": "Cisco"
+    }
+  ]
+}

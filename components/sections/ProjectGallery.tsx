@@ -5,13 +5,10 @@ import Image from "next/image";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 
 import { GitHubIcon } from "@/components/ui/BrandIcons";
-import { projectCategories } from "@/data/projects";
 import type { Project, ProjectCategory } from "@/types";
 import styles from "./ProjectGallery.module.css";
 
 type Filter = "All" | ProjectCategory;
-
-const filters: Filter[] = ["All", ...projectCategories];
 
 interface ProjectGalleryProps {
   projects: Project[];
@@ -19,6 +16,10 @@ interface ProjectGalleryProps {
 
 export function ProjectGallery({ projects }: ProjectGalleryProps) {
   const [filter, setFilter] = useState<Filter>("All");
+  const filters: Filter[] = [
+    "All",
+    ...Array.from(new Set(projects.map((project) => project.category))),
+  ];
 
   const visibleProjects = useMemo(
     () =>

@@ -1,8 +1,13 @@
-import { experience } from "@/data/experience";
+"use client";
+
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./ExperienceSection.module.css";
 
 export function ExperienceSection() {
+  const { content } = useEditor();
+  const copy = content.sections.experience;
+
   return (
     <section
       className="section"
@@ -14,15 +19,15 @@ export function ExperienceSection() {
           index="02"
           eyebrow="Experience"
           titleId="experience-title"
-          title="Where I've put technology to work."
-          description="Hands-on experience supporting the people and systems that keep an organization running."
+          title={copy.title}
+          description={copy.description}
         />
 
         <ol className={styles.timeline} data-reveal>
-          {experience.map((entry) => (
+          {content.experience.map((entry, index) => (
             <li
               className={styles.item}
-              key={`${entry.role}-${entry.organization}`}
+              key={`${entry.role}-${entry.organization}-${index}`}
             >
               <div className={styles.meta}>
                 <span className={styles.period}>{entry.period}</span>
@@ -46,8 +51,8 @@ export function ExperienceSection() {
                 ) : null}
 
                 <ul className={styles.highlights}>
-                  {entry.highlights.map((highlight) => (
-                    <li key={highlight}>{highlight}</li>
+                  {entry.highlights.map((highlight, itemIndex) => (
+                    <li key={`${itemIndex}-${highlight}`}>{highlight}</li>
                   ))}
                 </ul>
               </div>

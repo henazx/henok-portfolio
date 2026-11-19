@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Boxes,
   Database,
@@ -8,10 +10,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { skillCategories } from "@/data/skills";
-import type { SkillIcon } from "@/types";
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { TechEcosystem } from "@/components/interaction/TechEcosystem";
+import type { SkillIcon } from "@/types";
 import styles from "./Skills.module.css";
 
 const icons: Record<SkillIcon, LucideIcon> = {
@@ -24,6 +26,9 @@ const icons: Record<SkillIcon, LucideIcon> = {
 };
 
 export function Skills() {
+  const { content } = useEditor();
+  const copy = content.sections.skills;
+
   return (
     <section className="section" id="skills" aria-labelledby="skills-title">
       <div className="container">
@@ -31,8 +36,8 @@ export function Skills() {
           index="04"
           eyebrow="Skills"
           titleId="skills-title"
-          title="A practical, maintained toolkit."
-          description="The technologies and methods I use day to day — grouped by discipline rather than scored with arbitrary percentages."
+          title={copy.title}
+          description={copy.description}
         />
 
         <div data-reveal>
@@ -40,13 +45,13 @@ export function Skills() {
         </div>
 
         <div className={styles.grid}>
-          {skillCategories.map((category, index) => {
+          {content.skills.map((category, index) => {
             const Icon = icons[category.icon];
 
             return (
               <article
                 className={styles.card}
-                key={category.title}
+                key={`${category.title}-${index}`}
                 data-glow
                 data-reveal
               >
@@ -64,8 +69,8 @@ export function Skills() {
                 <p className={styles.description}>{category.description}</p>
 
                 <ul className={styles.tags}>
-                  {category.skills.map((skill) => (
-                    <li key={skill}>{skill}</li>
+                  {category.skills.map((skill, skillIndex) => (
+                    <li key={`${skill}-${skillIndex}`}>{skill}</li>
                   ))}
                 </ul>
               </article>

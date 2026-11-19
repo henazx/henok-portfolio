@@ -1,10 +1,15 @@
+"use client";
+
 import { BadgeCheck, GraduationCap } from "lucide-react";
 
-import { certifications, education } from "@/data/education";
+import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./Credentials.module.css";
 
 export function Credentials() {
+  const { content } = useEditor();
+  const copy = content.sections.credentials;
+
   return (
     <section
       className="section"
@@ -16,8 +21,8 @@ export function Credentials() {
           index="05"
           eyebrow="Education & Certifications"
           titleId="credentials-title"
-          title="Formal study, continued learning."
-          description="A Computer Science foundation, supported by focused certificates in design, artificial intelligence, and cybersecurity."
+          title={copy.title}
+          description={copy.description}
         />
 
         <div className={styles.grid}>
@@ -28,8 +33,11 @@ export function Credentials() {
             </h3>
 
             <ol className={styles.educationList}>
-              {education.map((entry) => (
-                <li className={styles.educationItem} key={entry.qualification}>
+              {content.education.map((entry, index) => (
+                <li
+                  className={styles.educationItem}
+                  key={`${entry.qualification}-${index}`}
+                >
                   <span className={styles.period}>{entry.period}</span>
                   <h4 className={styles.qualification}>
                     {entry.qualification}
@@ -50,16 +58,16 @@ export function Credentials() {
             </h3>
 
             <ul className={styles.certList}>
-              {certifications.map((certification) => (
-                <li className={styles.cert} key={certification.name}>
+              {content.certifications.map((entry, index) => (
+                <li className={styles.cert} key={`${entry.name}-${index}`}>
                   <span className={styles.certIcon} aria-hidden="true">
                     <BadgeCheck />
                   </span>
                   <div>
-                    <p className={styles.certName}>{certification.name}</p>
-                    <p className={styles.certIssuer}>{certification.issuer}</p>
-                    {certification.note ? (
-                      <p className={styles.certNote}>{certification.note}</p>
+                    <p className={styles.certName}>{entry.name}</p>
+                    <p className={styles.certIssuer}>{entry.issuer}</p>
+                    {entry.note ? (
+                      <p className={styles.certNote}>{entry.note}</p>
                     ) : null}
                   </div>
                 </li>

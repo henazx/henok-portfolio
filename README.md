@@ -30,18 +30,20 @@ npm run typecheck  # TypeScript, no emit
 
 All personal content is centralised in `data/`. Nothing is hardcoded inside components.
 
+All editable copy now lives in **`data/content.json`**. The TypeScript files in `data/` re-export it, so existing import paths keep working.
+
 | Placeholder | Where to change it |
 | --- | --- |
-| CV file (still a placeholder) | `public/cv/your-name-cv.pdf` and `data/profile.ts` → `cv` |
-| Portrait (still a placeholder) | `public/images/portrait-placeholder.svg` and `data/profile.ts` → `portrait` |
-| LinkedIn (hidden while empty) | `data/profile.ts` → `linkedin` |
+| CV file (still a placeholder) | `public/cv/your-name-cv.pdf` and `data/content.json` → `profile.cv` |
+| Portrait (still a placeholder) | `public/images/portrait-placeholder.svg` and `data/content.json` → `profile.portrait` |
+| LinkedIn (hidden while empty) | `data/content.json` → `profile.linkedin` |
 | `https://your-domain.com` | `NEXT_PUBLIC_SITE_URL` (see below) |
-| Experience, education, certifications | `data/experience.ts`, `data/education.ts` |
-| Project links and screenshots | `data/projects.ts`, `public/projects/` |
-| Skills | `data/skills.ts` |
-| Navigation and SEO description | `data/site.ts` |
+| Experience, education, certifications | `data/content.json` → `experience`, `education`, `certifications` |
+| Project links and screenshots | `data/content.json` → `projects`, `public/projects/` |
+| Skills | `data/content.json` → `skills` |
+| Navigation and SEO description | `data/content.json` → `site` |
 
-Name, monogram, and email are already set to **Henok Neknikie**, **HN**, and **henokneknikiezx@gmail.com**. Everything else reads from the files above, so no component code needs editing.
+Name, monogram, and email are already set to **Henok Neknikie**, **HN**, and **henokneknikiezx@gmail.com**. You can change anything through the visual editor described below, or edit `data/content.json` directly.
 
 The portrait component shows a "Portrait placeholder" label while `portrait.isPlaceholder` is `true`. Set it to `false` after adding a real photograph.
 
@@ -99,6 +101,28 @@ If a project has a `demo` URL, it becomes the full-width featured card when the 
 - **No backdrop blur** — an `@supports` fallback uses solid surfaces so the layout never depends on `backdrop-filter`.
 - **Keyboard support** — skip link, visible focus rings, focus trap and Escape handling in the mobile menu, labelled icon buttons.
 - **Responsive** — verified at 1440, 1280, 1024, 820, 390, and 360 px with no horizontal overflow.
+
+---
+
+## Visual editor
+
+Type **`Henok`** anywhere on the site (outside a form field) to reveal the private editor. It stays unlocked for the current browser session.
+
+- **Edit mode** — a floating toolbar appears with **Open editor**, **Publish**, **Reset changes**, and **Exit**.
+- **What you can change** — every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification, link, and the profile photo.
+- **Draft behaviour** — changes update the page instantly and are saved in your browser. They are private to you until you publish.
+- **Publish** — commits `data/content.json` (and an uploaded profile photo) to GitHub. Vercel then rebuilds and the changes become public.
+- **Reset changes** — discards your private draft and restores the published content.
+
+### Publishing setup
+
+Add these to Vercel (see `.env.example`):
+
+- `GITHUB_TOKEN` — a personal access token with **Contents: read and write** on this repository.
+- `GITHUB_REPO` — `owner/repository-name`.
+- `GITHUB_BRANCH` — the deployed branch, usually `main`.
+
+> The unlock keyword is intentionally simple, as requested. It gates the UI and the publish endpoint, but it is **not strong authentication**. Do not expose a token you are not comfortable with, and set `GITHUB_TOKEN` only as a server-side environment variable.
 
 ---
 
