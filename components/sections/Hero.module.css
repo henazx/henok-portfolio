@@ -18,6 +18,26 @@
   pointer-events: none;
 }
 
+/* A slow light sweep travels across the blueprint, so the technical layer
+   feels alive without competing with the copy above it. */
+.blueprint::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -40%;
+  width: 46%;
+  height: 140%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    color-mix(in srgb, var(--accent-cyan) 9%, transparent) 48%,
+    transparent
+  );
+  filter: blur(30px);
+  transform: rotate(14deg);
+  animation: bpSweep 19s linear infinite;
+}
+
 .dotField {
   position: absolute;
   top: 16%;
@@ -37,6 +57,7 @@
     #000 0%,
     transparent 76%
   );
+  animation: dotDrift 26s ease-in-out infinite alternate;
 }
 
 .schematic {
@@ -54,11 +75,32 @@
   opacity: 0.55;
 }
 
+.traces path[stroke-dasharray] {
+  animation: traceFlow 12s linear infinite;
+}
+
 .nodes circle {
   fill: none;
   stroke: var(--accent-cyan);
   stroke-width: 1.2;
   opacity: 0.55;
+  animation: nodePulse 6s ease-in-out infinite alternate;
+}
+
+.nodes circle:nth-child(2) {
+  animation-delay: -1.4s;
+}
+
+.nodes circle:nth-child(3) {
+  animation-delay: -3.2s;
+}
+
+.nodes circle:nth-child(5) {
+  animation-delay: -2.1s;
+}
+
+.nodes circle:nth-child(6) {
+  animation-delay: -4.6s;
 }
 
 .crosshairs {
@@ -140,14 +182,6 @@
 
 .content > :nth-child(7) {
   animation-delay: 0.26s;
-}
-
-.content > :nth-child(8) {
-  animation-delay: 0.3s;
-}
-
-.content > :nth-child(9) {
-  animation-delay: 0.34s;
 }
 
 .kicker {
@@ -237,13 +271,6 @@
   color: var(--text-muted);
   font-size: 1rem;
   line-height: 1.78;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: clamp(28px, 3.5vw, 36px);
 }
 
 .footerRow {
@@ -603,6 +630,41 @@
   }
 }
 
+@keyframes bpSweep {
+  from {
+    transform: translate3d(0, 0, 0) rotate(14deg);
+  }
+  to {
+    transform: translate3d(360%, 0, 0) rotate(14deg);
+  }
+}
+
+@keyframes dotDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.14;
+  }
+  to {
+    transform: translate3d(18px, -22px, 0);
+    opacity: 0.26;
+  }
+}
+
+@keyframes traceFlow {
+  to {
+    stroke-dashoffset: -90;
+  }
+}
+
+@keyframes nodePulse {
+  from {
+    opacity: 0.22;
+  }
+  to {
+    opacity: 0.95;
+  }
+}
+
 @media (max-width: 1080px) {
   .grid {
     grid-template-columns: minmax(0, 1fr) minmax(330px, 0.9fr);
@@ -738,7 +800,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .floater,
-  .signal {
+  .signal,
+  .blueprint::after,
+  .dotField,
+  .traces path[stroke-dasharray],
+  .nodes circle {
     animation: none;
   }
 }
@@ -748,5 +814,9 @@
     background: var(--surface-solid);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+
+  .blueprint::after {
+    display: none;
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Download, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
@@ -11,7 +11,6 @@ import {
   ReactIcon,
   TypeScriptIcon,
 } from "@/components/ui/BrandIcons";
-import { Magnetic } from "@/components/interaction/Magnetic";
 import type { SiteContent, SocialLink } from "@/types";
 import styles from "./Hero.module.css";
 
@@ -116,25 +115,6 @@ export function Hero() {
           </ul>
 
           <p className={styles.summary}>{profile.summary}</p>
-
-          <div className={styles.actions}>
-            <Magnetic>
-              <a className="btn btn-primary" href="#projects">
-                View my projects
-                <ArrowUpRight aria-hidden="true" />
-              </a>
-            </Magnetic>
-            <Magnetic strength={0.12}>
-              <a
-                className="btn btn-secondary"
-                href={profile.cv.path}
-                download={profile.cv.fileName}
-              >
-                <Download aria-hidden="true" />
-                Download CV
-              </a>
-            </Magnetic>
-          </div>
 
           <div className={styles.footerRow}>
             <SocialLinks links={socialLinks} className="social-links" />

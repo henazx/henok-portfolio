@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Download, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
@@ -155,14 +155,6 @@ export function Navbar() {
 
           <div className={styles.actions}>
             <ThemeToggle />
-            <a
-              href={profile.cv.path}
-              download={profile.cv.fileName}
-              className={`btn btn-secondary ${styles.cvButton}`}
-            >
-              <Download aria-hidden="true" />
-              <span className={styles.cvLabel}>Download CV</span>
-            </a>
             <button
               ref={toggleRef}
               type="button"
@@ -211,15 +203,6 @@ export function Navbar() {
           </nav>
 
           <div className={styles.mobileFooter}>
-            <a
-              href={profile.cv.path}
-              download={profile.cv.fileName}
-              className="btn btn-primary"
-              onClick={closeMenu}
-            >
-              <Download aria-hidden="true" />
-              Download CV
-            </a>
             <div>
               <p className="mono" style={{ marginBottom: 12 }}>
                 Elsewhere

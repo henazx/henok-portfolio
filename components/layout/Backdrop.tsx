@@ -10,6 +10,10 @@ export function Backdrop() {
       <span className={`${styles.orb} ${styles.orbA}`} />
       <span className={`${styles.orb} ${styles.orbB}`} />
       <span className={`${styles.orb} ${styles.orbC}`} />
+      <span className={styles.beam} />
+      <span className={styles.sweep} />
+      <span className={`${styles.motes} ${styles.motesA}`} />
+      <span className={`${styles.motes} ${styles.motesB}`} />
       <span className={styles.grid} />
       <span className={styles.noise} />
     </div>

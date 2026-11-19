@@ -47,6 +47,70 @@
   animation: driftC 44s ease-in-out infinite alternate;
 }
 
+/* Slow vertical light column behind the content. */
+.beam {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  width: min(62vw, 820px);
+  height: 140%;
+  background: radial-gradient(
+    ellipse 50% 58% at 50% 32%,
+    color-mix(in srgb, var(--accent-violet) 13%, transparent),
+    transparent 72%
+  );
+  animation: beamBreathe 16s ease-in-out infinite alternate;
+}
+
+/* A wide aurora band sweeps across the viewport on a long loop. */
+.sweep {
+  position: absolute;
+  top: -30%;
+  left: -55%;
+  width: 55%;
+  height: 160%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 8%, transparent) 44%,
+    color-mix(in srgb, var(--accent-cyan) 11%, transparent) 52%,
+    transparent
+  );
+  filter: blur(42px);
+  animation: auroraSweep 28s linear infinite;
+}
+
+/* Two out-of-phase dot fields drift vertically like suspended particles. */
+.motes {
+  position: absolute;
+  inset: -12%;
+  background-repeat: repeat;
+  will-change: transform;
+}
+
+.motesA {
+  background-image: radial-gradient(
+    circle,
+    var(--accent-cyan) 1px,
+    transparent 1.6px
+  );
+  background-size: 170px 210px;
+  opacity: 0.22;
+  animation: moteRiseUp 27s linear infinite;
+}
+
+.motesB {
+  background-image: radial-gradient(
+    circle,
+    var(--accent) 1.2px,
+    transparent 1.9px
+  );
+  background-size: 250px 190px;
+  background-position: 80px 40px;
+  opacity: 0.15;
+  animation: moteRiseDown 39s linear infinite;
+}
+
 .grid {
   position: absolute;
   inset: 0;
@@ -64,6 +128,7 @@
     #000 0%,
     transparent 76%
   );
+  animation: gridDrift 46s linear infinite;
 }
 
 .noise {
@@ -87,6 +152,19 @@
 :global(html[data-theme="light"]) .noise {
   opacity: 0.028;
   mix-blend-mode: multiply;
+}
+
+:global(html[data-theme="light"]) .beam,
+:global(html[data-theme="light"]) .sweep {
+  opacity: 0.45;
+}
+
+:global(html[data-theme="light"]) .motesA {
+  opacity: 0.12;
+}
+
+:global(html[data-theme="light"]) .motesB {
+  opacity: 0.08;
 }
 
 @keyframes driftA {
@@ -113,5 +191,70 @@
   }
   to {
     transform: translate3d(4%, -6%, 0) scale(1.06);
+  }
+}
+
+@keyframes beamBreathe {
+  from {
+    opacity: 0.3;
+    transform: translateX(-50%) scaleX(0.78);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateX(-50%) scaleX(1.18);
+  }
+}
+
+@keyframes auroraSweep {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(290%, 0, 0);
+  }
+}
+
+@keyframes moteRiseUp {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -210px, 0);
+  }
+}
+
+@keyframes moteRiseDown {
+  from {
+    transform: translate3d(0, -190px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes gridDrift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 72px 72px, 72px 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .beam,
+  .sweep,
+  .motes,
+  .grid {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .beam,
+  .sweep,
+  .motes {
+    display: none;
   }
 }

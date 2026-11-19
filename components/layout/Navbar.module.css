@@ -131,18 +131,6 @@
   gap: 8px;
 }
 
-.cvButton {
-  min-height: 38px;
-  padding: 0 14px;
-  font-size: 0.82rem;
-  gap: 7px;
-}
-
-.cvButton svg {
-  width: 15px;
-  height: 15px;
-}
-
 .menuButton {
   display: none;
   place-items: center;
@@ -270,12 +258,6 @@
 
   .menuButton {
     display: grid;
-  }
-}
-
-@media (max-width: 600px) {
-  .cvButton {
-    display: none;
   }
 }
 

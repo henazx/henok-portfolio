@@ -211,8 +211,6 @@ function ProfileTab() {
       <Field label="Work preference" path="profile.workPreference" />
       <Field label="GitHub URL" path="profile.github" />
       <Field label="LinkedIn URL" path="profile.linkedin" />
-      <Field label="CV file path" path="profile.cv.path" />
-      <Field label="CV download name" path="profile.cv.fileName" />
       <PortraitField />
     </>
   );
