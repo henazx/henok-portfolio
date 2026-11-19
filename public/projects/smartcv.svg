@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Preview of the SmartCV interface">
+  <rect width="1200" height="750" fill="#0b0b0e" />
+  <rect x="40" y="36" width="1120" height="678" rx="16" fill="#111114" stroke="#27272a" />
+  <path d="M40 84h1120" stroke="#27272a" />
+  <circle cx="68" cy="60" r="5" fill="#3f3f46" />
+  <circle cx="86" cy="60" r="5" fill="#3f3f46" />
+  <circle cx="104" cy="60" r="5" fill="#3f3f46" />
+  <rect x="330" y="46" width="540" height="28" rx="14" fill="#0b0b0e" stroke="#27272a" />
+  <circle cx="352" cy="60" r="4" fill="#3b82f6" />
+  <text x="366" y="64" font-family="ui-monospace, Consolas, monospace" font-size="11" fill="#71717a">smartcv-virid.vercel.app</text>
+
+  <rect x="40" y="84" width="78" height="630" fill="#0d0d10" />
+  <path d="M118 84v630" stroke="#27272a" />
+  <rect x="62" y="106" width="34" height="34" rx="9" fill="#3b82f6" />
+  <text x="79" y="129" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#ffffff">S</text>
+  <rect x="66" y="170" width="26" height="26" rx="7" fill="#1c1c21" stroke="#3b82f6" />
+  <rect x="73" y="178" width="12" height="2" rx="1" fill="#3b82f6" />
+  <rect x="73" y="184" width="8" height="2" rx="1" fill="#3b82f6" />
+  <rect x="66" y="214" width="26" height="26" rx="7" fill="#151518" />
+  <circle cx="79" cy="226" r="4" fill="#52525b" />
+  <rect x="66" y="258" width="26" height="26" rx="7" fill="#151518" />
+  <path d="M72 271h14M72 266h9" stroke="#52525b" stroke-width="1.5" stroke-linecap="round" />
+  <rect x="66" y="302" width="26" height="26" rx="7" fill="#151518" />
+  <rect x="72" y="309" width="14" height="11" rx="2" stroke="#52525b" fill="none" />
+
+  <text x="152" y="140" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#fafafa">CV Builder</text>
+  <text x="152" y="166" font-family="Inter, sans-serif" font-size="12" fill="#a1a1aa">Create a professional CV, then tailor it to the role.</text>
+  <rect x="1006" y="120" width="116" height="30" rx="7" fill="#3b82f6" />
+  <text x="1064" y="139" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">Export PDF</text>
+
+  <rect x="152" y="200" width="416" height="474" rx="12" fill="#17171b" stroke="#27272a" />
+  <text x="174" y="232" font-family="Inter, sans-serif" font-size="10" font-weight="600" letter-spacing="1" fill="#71717a">FULL NAME</text>
+  <rect x="174" y="242" width="372" height="38" rx="8" fill="#0e0e11" stroke="#2e2e34" />
+  <text x="188" y="266" font-family="Inter, sans-serif" font-size="12" fill="#d4d4d8">Your Name</text>
+  <text x="174" y="302" font-family="Inter, sans-serif" font-size="10" font-weight="600" letter-spacing="1" fill="#71717a">PROFESSIONAL TITLE</text>
+  <rect x="174" y="312" width="372" height="38" rx="8" fill="#0e0e11" stroke="#2e2e34" />
+  <text x="188" y="336" font-family="Inter, sans-serif" font-size="12" fill="#d4d4d8">Information Technology Specialist</text>
+  <text x="174" y="372" font-family="Inter, sans-serif" font-size="10" font-weight="600" letter-spacing="1" fill="#71717a">TARGET ROLE</text>
+  <rect x="174" y="382" width="372" height="38" rx="8" fill="#0e0e11" stroke="#3b82f6" />
+  <text x="188" y="406" font-family="Inter, sans-serif" font-size="12" fill="#e4e4e7">IT Support Specialist</text>
+  <text x="174" y="442" font-family="Inter, sans-serif" font-size="10" font-weight="600" letter-spacing="1" fill="#71717a">EXPERIENCE</text>
+  <rect x="174" y="452" width="372" height="70" rx="8" fill="#0e0e11" stroke="#2e2e34" />
+  <rect x="188" y="466" width="160" height="7" rx="3.5" fill="#3f3f46" />
+  <rect x="188" y="482" width="300" height="5" rx="2.5" fill="#27272a" />
+  <rect x="188" y="494" width="260" height="5" rx="2.5" fill="#27272a" />
+  <rect x="174" y="538" width="182" height="36" rx="8" fill="#15151a" stroke="#2e2e34" />
+  <text x="265" y="560" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#a1a1aa">Add another entry</text>
+  <rect x="368" y="538" width="178" height="36" rx="8" fill="#3b82f6" />
+  <text x="457" y="560" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">Preview CV</text>
+
+  <rect x="596" y="200" width="440" height="474" rx="10" fill="#f4f4f5" />
+  <rect x="624" y="228" width="120" height="6" rx="3" fill="#3b82f6" />
+  <text x="624" y="264" font-family="Inter, sans-serif" font-size="22" font-weight="700" fill="#18181b">Your Name</text>
+  <text x="624" y="284" font-family="Inter, sans-serif" font-size="10" fill="#52525b">Information Technology Specialist · Addis Ababa, Ethiopia</text>
+  <path d="M624 300h384" stroke="#d4d4d8" />
+  <text x="624" y="326" font-family="Inter, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#2563eb">PROFILE</text>
+  <rect x="624" y="336" width="384" height="5" rx="2.5" fill="#d4d4d8" />
+  <rect x="624" y="348" width="356" height="5" rx="2.5" fill="#d4d4d8" />
+  <rect x="624" y="360" width="300" height="5" rx="2.5" fill="#e4e4e7" />
+  <text x="624" y="394" font-family="Inter, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#2563eb">EXPERIENCE</text>
+  <rect x="624" y="404" width="180" height="6" rx="3" fill="#3f3f46" />
+  <rect x="624" y="418" width="384" height="4" rx="2" fill="#d4d4d8" />
+  <rect x="624" y="428" width="352" height="4" rx="2" fill="#d4d4d8" />
+  <rect x="624" y="438" width="384" height="4" rx="2" fill="#e4e4e7" />
+  <rect x="624" y="460" width="160" height="6" rx="3" fill="#3f3f46" />
+  <rect x="624" y="474" width="384" height="4" rx="2" fill="#d4d4d8" />
+  <rect x="624" y="484" width="320" height="4" rx="2" fill="#d4d4d8" />
+  <text x="624" y="520" font-family="Inter, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#2563eb">SKILLS</text>
+  <rect x="624" y="530" width="64" height="18" rx="4" fill="#e4e4e7" />
+  <rect x="696" y="530" width="58" height="18" rx="4" fill="#e4e4e7" />
+  <rect x="762" y="530" width="72" height="18" rx="4" fill="#e4e4e7" />
+  <rect x="842" y="530" width="52" height="18" rx="4" fill="#e4e4e7" />
+
+  <rect x="950" y="560" width="186" height="114" rx="12" fill="#17171b" stroke="#3b82f6" stroke-opacity="0.55" />
+  <text x="972" y="588" font-family="ui-monospace, monospace" font-size="9" letter-spacing="1.2" fill="#71717a">JOB MATCH</text>
+  <text x="972" y="622" font-family="Inter, sans-serif" font-size="28" font-weight="700" fill="#60a5fa">86%</text>
+  <rect x="972" y="638" width="142" height="5" rx="2.5" fill="#27272a" />
+  <rect x="972" y="638" width="122" height="5" rx="2.5" fill="#3b82f6" />
+  <text x="972" y="662" font-family="Inter, sans-serif" font-size="9" fill="#a1a1aa">Strong match for this role</text>
+</svg>

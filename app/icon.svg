@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Portfolio monogram">
+  <rect width="32" height="32" rx="8" fill="#060910" />
+  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="none" stroke="#1e293b" />
+  <path d="M9 9.5l7 7.5v5.5M23 9.5l-7 7.5" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="23" cy="22" r="1.6" fill="#22d3ee" />
+</svg>

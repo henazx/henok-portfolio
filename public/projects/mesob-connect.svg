@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Preview of the Mesob Connect internal messaging system">
+  <rect width="1200" height="750" fill="#0b0b0e" />
+  <rect x="40" y="36" width="1120" height="678" rx="16" fill="#111114" stroke="#27272a" />
+  <path d="M40 84h1120" stroke="#27272a" />
+  <circle cx="68" cy="60" r="5" fill="#3f3f46" />
+  <circle cx="86" cy="60" r="5" fill="#3f3f46" />
+  <circle cx="104" cy="60" r="5" fill="#3f3f46" />
+  <rect x="330" y="46" width="540" height="28" rx="14" fill="#0b0b0e" stroke="#27272a" />
+  <circle cx="352" cy="60" r="4" fill="#3b82f6" />
+  <text x="366" y="64" font-family="ui-monospace, Consolas, monospace" font-size="11" fill="#71717a">mesob-connect / workspace</text>
+
+  <rect x="40" y="84" width="66" height="630" fill="#0d0d10" />
+  <path d="M106 84v630" stroke="#27272a" />
+  <rect x="56" y="104" width="34" height="34" rx="9" fill="#3b82f6" />
+  <text x="73" y="127" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#ffffff">M</text>
+  <rect x="58" y="170" width="30" height="30" rx="8" fill="#1c1c21" stroke="#3b82f6" />
+  <path d="M66 185h14M66 179h14" stroke="#3b82f6" stroke-width="1.6" stroke-linecap="round" />
+  <rect x="58" y="212" width="30" height="30" rx="8" fill="#151518" />
+  <path d="M66 221h14v13H66z" stroke="#52525b" fill="none" />
+  <rect x="58" y="254" width="30" height="30" rx="8" fill="#151518" />
+  <circle cx="73" cy="269" r="5" stroke="#52525b" fill="none" />
+  <rect x="58" y="296" width="30" height="30" rx="8" fill="#151518" />
+  <path d="M66 311l4 4 8-9" stroke="#52525b" stroke-width="1.6" fill="none" stroke-linecap="round" />
+
+  <rect x="106" y="84" width="238" height="630" fill="#0f0f12" />
+  <path d="M344 84v630" stroke="#27272a" />
+  <text x="128" y="124" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#fafafa">Messages</text>
+  <rect x="128" y="142" width="194" height="32" rx="7" fill="#17171b" stroke="#27272a" />
+  <text x="142" y="162" font-family="Inter, sans-serif" font-size="10" fill="#71717a">Search conversations</text>
+  <text x="128" y="204" font-family="ui-monospace, monospace" font-size="8" letter-spacing="1.1" fill="#52525b">CHANNELS</text>
+  <rect x="120" y="216" width="210" height="36" rx="7" fill="#1c1c21" />
+  <path d="M134 228h7v7h-7zM134 228l7 7" stroke="#3b82f6" stroke-width="1.4" fill="none" />
+  <text x="152" y="238" font-family="Inter, sans-serif" font-size="11" fill="#e4e4e7"># general</text>
+  <text x="134" y="272" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># it-support</text>
+  <text x="134" y="302" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># operations</text>
+  <text x="134" y="332" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># announcements</text>
+  <text x="128" y="376" font-family="ui-monospace, monospace" font-size="8" letter-spacing="1.1" fill="#52525b">DIRECT MESSAGES</text>
+  <circle cx="138" cy="398" r="9" fill="#27272a" />
+  <text x="156" y="402" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Sarah T.</text>
+  <circle cx="138" cy="430" r="9" fill="#27272a" />
+  <text x="156" y="434" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Daniel M.</text>
+  <circle cx="138" cy="462" r="9" fill="#27272a" />
+  <text x="156" y="466" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Hana G.</text>
+
+  <text x="376" y="122" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#fafafa"># general</text>
+  <text x="376" y="140" font-family="Inter, sans-serif" font-size="10" fill="#71717a">Company-wide updates and day-to-day coordination</text>
+  <path d="M344 160h618" stroke="#27272a" />
+
+  <circle cx="392" cy="194" r="14" fill="#1c1c21" />
+  <text x="392" y="198" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#a1a1aa">ST</text>
+  <text x="416" y="190" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#e4e4e7">Sarah T.</text>
+  <text x="474" y="190" font-family="ui-monospace, monospace" font-size="8" fill="#52525b">09:24</text>
+  <text x="416" y="208" font-family="Inter, sans-serif" font-size="11" fill="#a1a1aa">The new printer is configured and ready in room 204.</text>
+  <rect x="416" y="222" width="118" height="24" rx="6" fill="#17171b" stroke="#27272a" />
+  <text x="428" y="238" font-family="Inter, sans-serif" font-size="9" fill="#60a5fa">View setup notes</text>
+
+  <circle cx="392" cy="278" r="14" fill="#1c1c21" />
+  <text x="392" y="282" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#a1a1aa">DM</text>
+  <text x="416" y="274" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#e4e4e7">Daniel M.</text>
+  <text x="486" y="274" font-family="ui-monospace, monospace" font-size="8" fill="#52525b">09:31</text>
+  <text x="416" y="292" font-family="Inter, sans-serif" font-size="11" fill="#a1a1aa">Uploaded the updated onboarding handbook for review.</text>
+
+  <rect x="376" y="324" width="330" height="66" rx="10" fill="#17171b" stroke="#27272a" />
+  <rect x="390" y="338" width="28" height="34" rx="5" fill="#0e0e11" stroke="#2e2e34" />
+  <path d="M397 348h14M397 355h14M397 362h8" stroke="#52525b" stroke-width="1.4" stroke-linecap="round" />
+  <text x="430" y="350" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#e4e4e7">Staff-Handbook-2025.pdf</text>
+  <text x="430" y="365" font-family="ui-monospace, monospace" font-size="8" fill="#52525b">PDF · 2.4 MB</text>
+  <rect x="430" y="372" width="66" height="10" rx="5" fill="#27272a" />
+  <rect x="430" y="372" width="44" height="10" rx="5" fill="#3b82f6" />
+
+  <rect x="376" y="410" width="420" height="56" rx="10" fill="#0e0e11" stroke="#2e2e34" />
+  <text x="392" y="434" font-family="Inter, sans-serif" font-size="11" fill="#71717a">Write a message…</text>
+  <rect x="726" y="426" width="54" height="26" rx="6" fill="#3b82f6" />
+  <text x="753" y="443" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#ffffff">Send</text>
+
+  <rect x="962" y="84" width="198" height="630" fill="#0f0f12" />
+  <path d="M962 84v630" stroke="#27272a" />
+  <text x="984" y="124" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#fafafa">Documents</text>
+  <text x="984" y="142" font-family="ui-monospace, monospace" font-size="8" letter-spacing="1" fill="#52525b">SHARED IN # GENERAL</text>
+  <rect x="984" y="164" width="154" height="72" rx="8" fill="#17171b" stroke="#27272a" />
+  <rect x="998" y="178" width="22" height="26" rx="4" fill="#0e0e11" stroke="#2e2e34" />
+  <rect x="1030" y="182" width="86" height="5" rx="2.5" fill="#3f3f46" />
+  <rect x="1030" y="194" width="60" height="4" rx="2" fill="#27272a" />
+  <text x="998" y="222" font-family="ui-monospace, monospace" font-size="8" fill="#52525b">Handbook · PDF</text>
+  <rect x="984" y="248" width="154" height="72" rx="8" fill="#17171b" stroke="#27272a" />
+  <rect x="998" y="262" width="22" height="26" rx="4" fill="#0e0e11" stroke="#2e2e34" />
+  <rect x="1030" y="266" width="94" height="5" rx="2.5" fill="#3f3f46" />
+  <rect x="1030" y="278" width="52" height="4" rx="2" fill="#27272a" />
+  <text x="998" y="306" font-family="ui-monospace, monospace" font-size="8" fill="#52525b">IT-Policy · DOCX</text>
+  <rect x="984" y="332" width="154" height="72" rx="8" fill="#17171b" stroke="#27272a" />
+  <rect x="998" y="346" width="22" height="26" rx="4" fill="#0e0e11" stroke="#2e2e34" />
+  <rect x="1030" y="350" width="76" height="5" rx="2.5" fill="#3f3f46" />
+  <rect x="1030" y="362" width="64" height="4" rx="2" fill="#27272a" />
+  <text x="998" y="390" font-family="ui-monospace, monospace" font-size="8" fill="#52525b">Onboarding · PDF</text>
+  <rect x="984" y="640" width="154" height="42" rx="8" fill="#1c1c21" stroke="#27272a" />
+  <text x="1061" y="666" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Upload document</text>
+</svg>

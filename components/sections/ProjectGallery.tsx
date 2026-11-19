@@ -1,0 +1,214 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Image from "next/image";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
+
+import { GitHubIcon } from "@/components/ui/BrandIcons";
+import { projectCategories } from "@/data/projects";
+import type { Project, ProjectCategory } from "@/types";
+import styles from "./ProjectGallery.module.css";
+
+type Filter = "All" | ProjectCategory;
+
+const filters: Filter[] = ["All", ...projectCategories];
+
+interface ProjectGalleryProps {
+  projects: Project[];
+}
+
+export function ProjectGallery({ projects }: ProjectGalleryProps) {
+  const [filter, setFilter] = useState<Filter>("All");
+
+  const visibleProjects = useMemo(
+    () =>
+      filter === "All"
+        ? projects
+        : projects.filter((project) => project.category === filter),
+    [filter, projects],
+  );
+
+  return (
+    <div>
+      <div className={styles.toolbar}>
+        <div
+          className={styles.filters}
+          role="group"
+          aria-label="Filter projects by category"
+        >
+          {filters.map((option) => {
+            const count =
+              option === "All"
+                ? projects.length
+                : projects.filter((project) => project.category === option)
+                    .length;
+
+            return (
+              <button
+                key={option}
+                type="button"
+                className={`${styles.filter} ${
+                  filter === option ? styles.filterActive : ""
+                }`}
+                aria-pressed={filter === option}
+                onClick={() => setFilter(option)}
+              >
+                {option}
+                <span className={styles.count}>{count}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <p className={styles.resultCount} aria-live="polite">
+          {visibleProjects.length}{" "}
+          {visibleProjects.length === 1 ? "project" : "projects"}
+        </p>
+      </div>
+
+      <div className={styles.grid} key={filter}>
+        {visibleProjects.map((project, index) => {
+          const featured = filter === "All" && Boolean(project.demo);
+          const featuredCount =
+            filter === "All"
+              ? visibleProjects.filter((item) => item.demo).length
+              : 0;
+          const remaining = visibleProjects.length - featuredCount;
+          const wide =
+            !featured &&
+            (visibleProjects.length === 1 ||
+              (filter === "All" &&
+                index === visibleProjects.length - 1 &&
+                remaining % 2 === 1));
+
+          return (
+            <ProjectCard
+              key={project.slug}
+              project={project}
+              index={index}
+              featured={featured}
+              wide={wide}
+            />
+          );
+        })}
+      </div>
+
+      {visibleProjects.length === 0 ? (
+        <p className={styles.empty}>
+          No projects in this category yet. Check back soon.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function ProjectCard({
+  project,
+  index,
+  featured,
+  wide,
+}: {
+  project: Project;
+  index: number;
+  featured: boolean;
+  wide: boolean;
+}) {
+  const hasLinks = Boolean(project.repository || project.demo);
+
+  return (
+    <article
+      className={`${styles.card} ${featured ? styles.featured : ""} ${
+        wide ? styles.wide : ""
+      }`}
+    >
+      <div className={styles.media}>
+        <Image
+          src={project.image.src}
+          alt={project.image.alt}
+          fill
+          unoptimized
+          sizes={
+            featured
+              ? "(max-width: 900px) 100vw, 58vw"
+              : "(max-width: 780px) 100vw, 50vw"
+          }
+          className={styles.image}
+        />
+        <span className={styles.badge}>{project.category}</span>
+        {project.demo ? (
+          <span className={styles.live}>
+            <span aria-hidden="true" />
+            Live
+          </span>
+        ) : null}
+        {project.note ? (
+          <span className={styles.note}>{project.note}</span>
+        ) : null}
+
+        <span className={styles.hoverCue} aria-hidden="true">
+          {project.demo ? "Live deployment" : "View repository"}
+          <ArrowUpRight />
+        </span>
+      </div>
+
+      <div className={styles.body}>
+        <div className={styles.titleRow}>
+          <div className={styles.titleGroup}>
+            <span className={styles.projectIndex} aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 className={styles.title}>{project.name}</h3>
+          </div>
+          {project.demo ? (
+            <a
+              href={project.demo}
+              className={styles.quickLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open the ${project.name} live site (opens in a new tab)`}
+            >
+              <ExternalLink aria-hidden="true" />
+            </a>
+          ) : null}
+        </div>
+
+        <p className={styles.description}>{project.description}</p>
+
+        <ul className={styles.tech} aria-label="Technologies used">
+          {project.technologies.map((technology) => (
+            <li key={technology}>{technology}</li>
+          ))}
+        </ul>
+
+        {hasLinks ? (
+          <div className={styles.links}>
+            {project.repository ? (
+              <a
+                href={project.repository}
+                className={`btn btn-secondary ${styles.linkButton}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GitHubIcon />
+                Source code
+                <span className="sr-only"> for {project.name}</span>
+              </a>
+            ) : null}
+            {project.demo ? (
+              <a
+                href={project.demo}
+                className={`btn btn-primary ${styles.linkButton}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalLink aria-hidden="true" />
+                Live demo
+                <span className="sr-only"> for {project.name}</span>
+              </a>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+    </article>
+  );
+}

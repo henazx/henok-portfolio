@@ -1,0 +1,81 @@
+import { profile } from "@/data/profile";
+import { experience } from "@/data/experience";
+import { education } from "@/data/education";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import styles from "./About.module.css";
+
+const currentRole = experience.find((entry) => entry.current) ?? experience[0];
+const primaryDegree = education[0];
+
+export function About() {
+  return (
+    <section className="section" id="about" aria-labelledby="about-title">
+      <div className="container">
+        <SectionHeading
+          index="01"
+          eyebrow="About"
+          titleId="about-title"
+          title="A technical foundation with a designer's eye."
+          description="Support work taught me how systems fail. Development taught me how to build them. Design taught me why the details matter."
+        />
+
+        <div className={styles.grid} data-reveal>
+          <div className={styles.leadColumn}>
+            <p className={styles.lead}>{profile.about.lead}</p>
+
+            <ul className={styles.focus} aria-label="Focus areas">
+              {profile.about.focus.map((item) => (
+                <li key={item}>
+                  <span className={styles.focusMark} aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className={styles.bodyColumn}>
+            {profile.about.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+
+        <dl
+          className={styles.facts}
+          data-reveal
+          style={{ transitionDelay: "80ms" }}
+        >
+          <div className={styles.fact}>
+            <dt>Based in</dt>
+            <dd>{profile.location}</dd>
+          </div>
+          <div className={styles.fact}>
+            <dt>Education</dt>
+            <dd>
+              {primaryDegree.qualification}
+              <span className={styles.factDetail}>{primaryDegree.institution}</span>
+            </dd>
+          </div>
+          <div className={styles.fact}>
+            <dt>Current role</dt>
+            <dd>
+              {currentRole.role}
+              <span className={styles.factDetail}>
+                {currentRole.organization}
+              </span>
+            </dd>
+          </div>
+          <div className={styles.fact}>
+            <dt>Focus</dt>
+            <dd>
+              IT support &amp; systems
+              <span className={styles.factDetail}>
+                Software development · UX/UI design
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+  );
+}

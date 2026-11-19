@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Preview of the Telegram Job Board feed">
+  <rect width="1200" height="750" fill="#0b0b0e" />
+  <rect x="40" y="36" width="1120" height="678" rx="16" fill="#111114" stroke="#27272a" />
+  <path d="M40 84h1120" stroke="#27272a" />
+  <circle cx="68" cy="60" r="5" fill="#3f3f46" />
+  <circle cx="86" cy="60" r="5" fill="#3f3f46" />
+  <circle cx="104" cy="60" r="5" fill="#3f3f46" />
+  <rect x="330" y="46" width="540" height="28" rx="14" fill="#0b0b0e" stroke="#27272a" />
+  <circle cx="352" cy="60" r="4" fill="#3b82f6" />
+  <text x="366" y="64" font-family="ui-monospace, Consolas, monospace" font-size="11" fill="#71717a">t.me / job-board</text>
+
+  <rect x="40" y="84" width="262" height="630" fill="#0f0f12" />
+  <path d="M302 84v630" stroke="#27272a" />
+  <rect x="64" y="104" width="30" height="30" rx="9" fill="#3b82f6" />
+  <text x="79" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">J</text>
+  <text x="106" y="124" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#fafafa">Job Board</text>
+  <text x="64" y="166" font-family="ui-monospace, monospace" font-size="8" letter-spacing="1.1" fill="#52525b">CHANNELS</text>
+  <rect x="56" y="178" width="230" height="40" rx="8" fill="#1c1c21" />
+  <text x="72" y="202" font-family="Inter, sans-serif" font-size="11" fill="#e4e4e7"># all-opportunities</text>
+  <text x="276" y="202" text-anchor="end" font-family="ui-monospace, monospace" font-size="9" fill="#3b82f6">24</text>
+  <text x="72" y="244" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># remote</text>
+  <text x="72" y="280" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># internships</text>
+  <text x="72" y="316" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># entry-level</text>
+  <text x="72" y="352" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># design</text>
+  <text x="72" y="388" font-family="Inter, sans-serif" font-size="11" fill="#71717a"># development</text>
+  <path d="M56 424h230" stroke="#27272a" />
+  <text x="64" y="458" font-family="ui-monospace, monospace" font-size="8" letter-spacing="1.1" fill="#52525b">SAVED SEARCHES</text>
+  <rect x="56" y="472" width="230" height="34" rx="7" fill="#151518" />
+  <text x="72" y="494" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">IT support · Addis Ababa</text>
+  <rect x="56" y="514" width="230" height="34" rx="7" fill="#151518" />
+  <text x="72" y="536" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Frontend · Remote</text>
+
+  <text x="332" y="124" font-family="Inter, sans-serif" font-size="17" font-weight="600" fill="#fafafa"># all-opportunities</text>
+  <text x="332" y="144" font-family="Inter, sans-serif" font-size="10" fill="#71717a">Curated job opportunities, shared as they arrive</text>
+  <rect x="966" y="104" width="162" height="30" rx="7" fill="#17171b" stroke="#27272a" />
+  <text x="1047" y="123" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Search roles</text>
+  <path d="M302 164h858" stroke="#27272a" />
+
+  <rect x="332" y="184" width="796" height="140" rx="12" fill="#17171b" stroke="#27272a" />
+  <rect x="352" y="204" width="34" height="34" rx="8" fill="#1c1c21" stroke="#2e2e34" />
+  <text x="369" y="226" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#60a5fa">IT</text>
+  <text x="400" y="218" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#fafafa">IT Support Specialist</text>
+  <text x="400" y="237" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Ethio Telecom · Addis Ababa, Ethiopia</text>
+  <rect x="400" y="250" width="58" height="20" rx="4" fill="#1c1c21" />
+  <text x="429" y="264" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">FULL-TIME</text>
+  <rect x="466" y="250" width="70" height="20" rx="4" fill="#1c1c21" />
+  <text x="501" y="264" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">ON-SITE</text>
+  <rect x="352" y="284" width="440" height="5" rx="2.5" fill="#27272a" />
+  <rect x="352" y="296" width="380" height="5" rx="2.5" fill="#27272a" />
+  <rect x="1016" y="266" width="92" height="32" rx="7" fill="#3b82f6" />
+  <text x="1062" y="286" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#ffffff">Apply now</text>
+
+  <rect x="332" y="340" width="796" height="140" rx="12" fill="#17171b" stroke="#27272a" />
+  <rect x="352" y="360" width="34" height="34" rx="8" fill="#1c1c21" stroke="#2e2e34" />
+  <text x="369" y="382" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#60a5fa">FE</text>
+  <text x="400" y="374" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#fafafa">Frontend Developer</text>
+  <text x="400" y="393" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Remote · JavaScript, React</text>
+  <rect x="400" y="406" width="52" height="20" rx="4" fill="#1c1c21" />
+  <text x="426" y="420" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">REMOTE</text>
+  <rect x="460" y="406" width="58" height="20" rx="4" fill="#1c1c21" />
+  <text x="489" y="420" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">MID-LEVEL</text>
+  <rect x="352" y="440" width="410" height="5" rx="2.5" fill="#27272a" />
+  <rect x="352" y="452" width="330" height="5" rx="2.5" fill="#27272a" />
+  <rect x="1016" y="422" width="92" height="32" rx="7" fill="#3b82f6" />
+  <text x="1062" y="442" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#ffffff">Apply now</text>
+
+  <rect x="332" y="496" width="796" height="140" rx="12" fill="#17171b" stroke="#27272a" />
+  <rect x="352" y="516" width="34" height="34" rx="8" fill="#1c1c21" stroke="#2e2e34" />
+  <text x="369" y="538" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#60a5fa">UX</text>
+  <text x="400" y="530" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#fafafa">Junior UX/UI Designer</text>
+  <text x="400" y="549" font-family="Inter, sans-serif" font-size="10" fill="#a1a1aa">Hybrid · Figma, user research</text>
+  <rect x="400" y="562" width="60" height="20" rx="4" fill="#1c1c21" />
+  <text x="430" y="576" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">HYBRID</text>
+  <rect x="468" y="562" width="64" height="20" rx="4" fill="#1c1c21" />
+  <text x="500" y="576" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">ENTRY</text>
+  <rect x="352" y="596" width="460" height="5" rx="2.5" fill="#27272a" />
+  <rect x="352" y="608" width="360" height="5" rx="2.5" fill="#27272a" />
+  <rect x="1016" y="578" width="92" height="32" rx="7" fill="#3b82f6" />
+  <text x="1062" y="598" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#ffffff">Apply now</text>
+
+  <rect x="332" y="656" width="796" height="34" rx="8" fill="#0e0e11" stroke="#2e2e34" />
+  <text x="352" y="678" font-family="Inter, sans-serif" font-size="10" fill="#52525b">New opportunities are posted automatically through the Telegram channel.</text>
+</svg>

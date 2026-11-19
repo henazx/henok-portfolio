@@ -1,0 +1,128 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(32px, 5vw, 60px);
+  align-items: start;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3.5vw, 32px);
+  padding-top: 4px;
+}
+
+.email {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border-strong);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  word-break: break-word;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.email svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--text-subtle);
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.email:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+}
+
+.email:hover svg {
+  color: var(--accent-hover);
+  transform: translate(1px, -1px);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 4px 0;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow:
+    var(--glass-shadow),
+    var(--glass-inner);
+  -webkit-backdrop-filter: blur(18px) saturate(155%);
+  backdrop-filter: blur(18px) saturate(155%);
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  padding: 16px 18px;
+}
+
+.detail + .detail {
+  border-top: 1px solid var(--border);
+}
+
+.detail dt {
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.detail dd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.inlineIcon {
+  display: inline-flex;
+  color: var(--text-subtle);
+}
+
+.inlineIcon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 16%, transparent);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 14px 16px;
+  }
+}
