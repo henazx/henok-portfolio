@@ -20,7 +20,7 @@ export function About() {
         />
 
         <div className={styles.grid} data-reveal>
-          <div className={styles.leadColumn}>
+          <div className={styles.leadColumn} data-glow>
             <p className={styles.lead}>{profile.about.lead}</p>
 
             <ul className={styles.focus} aria-label="Focus areas">
@@ -42,6 +42,7 @@ export function About() {
 
         <dl
           className={styles.facts}
+          data-glow
           data-reveal
           style={{ transitionDelay: "80ms" }}
         >

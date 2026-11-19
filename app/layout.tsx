@@ -1,19 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Backdrop } from "@/components/layout/Backdrop";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
+import { PointerGlow } from "@/components/interaction/PointerGlow";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
 import { skillCategories } from "@/data/skills";
 
-const inter = Inter({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-geist",
   display: "swap",
 });
 
@@ -120,7 +121,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistMono.variable}`}
+      className={`${geist.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <body>
@@ -129,6 +130,7 @@ export default function RootLayout({
         </Script>
         <Backdrop />
         <ScrollReveal />
+        <PointerGlow />
         <a className="skip-link" href="#main">
           Skip to content
         </a>

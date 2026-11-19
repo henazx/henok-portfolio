@@ -1,9 +1,9 @@
 import {
   Boxes,
-  Code2,
   Database,
   LayoutTemplate,
   PenTool,
+  Server,
   Wrench,
   type LucideIcon,
 } from "lucide-react";
@@ -11,12 +11,13 @@ import {
 import { skillCategories } from "@/data/skills";
 import type { SkillIcon } from "@/types";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { TechEcosystem } from "@/components/interaction/TechEcosystem";
 import styles from "./Skills.module.css";
 
 const icons: Record<SkillIcon, LucideIcon> = {
-  code: Code2,
   frontend: LayoutTemplate,
-  backend: Database,
+  backend: Server,
+  database: Database,
   support: Wrench,
   design: PenTool,
   tools: Boxes,
@@ -34,6 +35,10 @@ export function Skills() {
           description="The technologies and methods I use day to day — grouped by discipline rather than scored with arbitrary percentages."
         />
 
+        <div data-reveal>
+          <TechEcosystem />
+        </div>
+
         <div className={styles.grid}>
           {skillCategories.map((category, index) => {
             const Icon = icons[category.icon];
@@ -42,6 +47,7 @@ export function Skills() {
               <article
                 className={styles.card}
                 key={category.title}
+                data-glow
                 data-reveal
               >
                 <div className={styles.cardTop}>

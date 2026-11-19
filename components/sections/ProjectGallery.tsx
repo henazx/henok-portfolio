@@ -120,6 +120,7 @@ function ProjectCard({
       className={`${styles.card} ${featured ? styles.featured : ""} ${
         wide ? styles.wide : ""
       }`}
+      data-glow
     >
       <div className={styles.media}>
         <Image
@@ -152,6 +153,12 @@ function ProjectCard({
       </div>
 
       <div className={styles.body}>
+        {featured ? (
+          <p className={styles.featuredLabel}>
+            <span aria-hidden="true">◆</span> Featured project
+          </p>
+        ) : null}
+
         <div className={styles.titleRow}>
           <div className={styles.titleGroup}>
             <span className={styles.projectIndex} aria-hidden="true">

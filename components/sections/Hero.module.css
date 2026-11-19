@@ -327,6 +327,71 @@
   border-color: color-mix(in srgb, var(--accent-cyan) 30%, transparent);
 }
 
+/* Floating technology marks give the console real depth. They are decorative
+   and intentionally kept off the text column. */
+.floaters {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.floater {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--glass-border);
+  border-radius: 13px;
+  background: var(--glass-2-bg);
+  box-shadow:
+    var(--glass-inner),
+    0 16px 34px -22px rgba(0, 0, 0, 0.9);
+  color: var(--accent-hover);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  animation: bob 6s ease-in-out infinite alternate;
+}
+
+.floater svg {
+  width: 19px;
+  height: 19px;
+}
+
+.floaterReact {
+  top: -20px;
+  left: -26px;
+  animation-delay: -1.2s;
+}
+
+.floaterNext {
+  top: 28%;
+  right: -28px;
+  animation-delay: -3.4s;
+}
+
+.floaterType {
+  bottom: 20%;
+  left: -30px;
+  animation-delay: -0.6s;
+}
+
+.floaterFigma {
+  right: -18px;
+  bottom: -18px;
+  animation-delay: -2.4s;
+}
+
+@keyframes bob {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
 .console {
   overflow: hidden;
   border-radius: 24px;
@@ -579,6 +644,17 @@
   .signal {
     display: none;
   }
+
+  .floater {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .floater svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -643,5 +719,34 @@
 
   .statusRow dd {
     font-size: 0.72rem;
+  }
+
+  .floaterReact,
+  .floaterNext {
+    display: none;
+  }
+
+  .floaterType {
+    left: -12px;
+  }
+
+  .floaterFigma {
+    right: -12px;
+    bottom: -12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floater,
+  .signal {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .floater {
+    background: var(--surface-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }

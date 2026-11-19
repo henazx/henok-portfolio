@@ -92,10 +92,10 @@
   --radius-xl: 28px;
 
   --container: 1140px;
-  --nav-height: 88px;
+  --nav-height: 90px;
 
   --font-sans:
-    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     sans-serif;
   --font-mono:
     var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo,
@@ -114,7 +114,7 @@
 
   --text: #0a101c;
   --text-muted: #47536a;
-  --text-subtle: #64748b;
+  --text-subtle: #53637a;
 
   --border: rgba(15, 23, 42, 0.11);
   --border-strong: rgba(15, 23, 42, 0.24);
@@ -284,6 +284,105 @@ button {
 
 .section[id] {
   scroll-margin-top: calc(var(--nav-height) + 10px);
+}
+
+/* Section-specific ambient lighting gives the page a deliberate progression
+   from cool blue to cyan to violet as the story unfolds. */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.17;
+  background: radial-gradient(
+    ellipse 58% 62% at 10% 12%,
+    var(--aurora-1),
+    transparent 72%
+  );
+}
+
+#experience::before {
+  background: radial-gradient(
+    ellipse 50% 58% at 88% 42%,
+    var(--aurora-2),
+    transparent 74%
+  );
+}
+
+#projects::before {
+  background: radial-gradient(
+    ellipse 66% 60% at 14% 82%,
+    var(--aurora-3),
+    transparent 74%
+  );
+}
+
+#skills::before {
+  background: radial-gradient(
+    ellipse 56% 64% at 86% 14%,
+    var(--aurora-1),
+    transparent 72%
+  );
+}
+
+#credentials::before {
+  background: radial-gradient(
+    ellipse 52% 56% at 8% 56%,
+    var(--aurora-3),
+    transparent 74%
+  );
+}
+
+#contact::before {
+  background: radial-gradient(
+    ellipse 62% 66% at 82% 82%,
+    var(--aurora-2),
+    transparent 74%
+  );
+}
+
+/* Cursor-responsive specular light. One pointer listener updates only the
+   element under the cursor; see components/interaction/PointerGlow.tsx. */
+[data-glow] {
+  --glow-x: 50%;
+  --glow-y: 0%;
+}
+
+[data-glow]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--glow-x) var(--glow-y),
+    rgba(255, 255, 255, 0.085),
+    transparent 62%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+[data-glow]:hover::after,
+[data-glow]:focus-within::after {
+  opacity: 1;
+}
+
+html[data-theme="light"] [data-glow]::after {
+  background: radial-gradient(
+    380px circle at var(--glow-x) var(--glow-y),
+    rgba(37, 99, 235, 0.075),
+    transparent 62%
+  );
+}
+
+.magnetic {
+  display: inline-flex;
+  transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .sr-only {
@@ -586,6 +685,14 @@ html.reveal-ready [data-reveal].is-revealed {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
+
+  [data-glow]::after {
+    display: none;
+  }
+
+  .section::before {
+    opacity: 0.08;
+  }
 }
 
 @media (max-width: 720px) {
@@ -616,5 +723,9 @@ html.reveal-ready [data-reveal].is-revealed {
   html.reveal-ready [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+
+  .magnetic {
+    transform: none !important;
   }
 }

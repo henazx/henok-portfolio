@@ -24,7 +24,7 @@
     background 0.25s ease;
 }
 
-.card::after {
+.card::before {
   content: "";
   position: absolute;
   top: -1px;

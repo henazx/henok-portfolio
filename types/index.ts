@@ -65,9 +65,9 @@ export interface Project {
 }
 
 export type SkillIcon =
-  | "code"
   | "frontend"
   | "backend"
+  | "database"
   | "support"
   | "design"
   | "tools";

@@ -3,30 +3,29 @@ import type { SkillCategory } from "@/types";
 /**
  * Six disciplines, no percentage bars. Add or remove skills freely — each item
  * is rendered as a compact tag. A technology can appear in more than one group
- * (for example React in Frontend and Git in Tools) because the groups describe
- * how the skill is used, not a ranking.
+ * because these categories describe how a skill is used, not a ranking.
  */
 export const skillCategories: SkillCategory[] = [
   {
-    title: "Programming & Development",
-    description: "Writing and maintaining application logic.",
-    icon: "code",
-    skills: ["JavaScript", "Node.js", "Express.js", "Git & GitHub"],
-  },
-  {
-    title: "Frontend Technologies",
-    description: "Building responsive, component-driven interfaces.",
+    title: "Frontend Development",
+    description: "Component-driven interfaces built to stay clear and responsive.",
     icon: "frontend",
     skills: ["React", "Next.js", "JavaScript", "Responsive layouts"],
   },
   {
-    title: "Backend & Databases",
-    description: "APIs, server logic, and structured data.",
+    title: "Backend Development",
+    description: "Application logic, server routes, and API workflows.",
     icon: "backend",
-    skills: ["Node.js", "Express.js", "MySQL"],
+    skills: ["Node.js", "Express.js", "JavaScript"],
   },
   {
-    title: "IT & Technical Support",
+    title: "Databases",
+    description: "Structured storage and dependable data access.",
+    icon: "database",
+    skills: ["MySQL", "SQL"],
+  },
+  {
+    title: "IT Infrastructure & Support",
     description: "Keeping hardware, software, and networks dependable.",
     icon: "support",
     skills: [
@@ -38,7 +37,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    title: "UI/UX & Design",
+    title: "UI/UX Design",
     description: "Turning requirements into clear, usable interfaces.",
     icon: "design",
     skills: [
@@ -50,9 +49,9 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    title: "Tools & Platforms",
+    title: "Development Tools",
     description: "The everyday environment behind the work.",
     icon: "tools",
-    skills: ["Git & GitHub", "Figma", "Adobe Photoshop", "Vercel"],
+    skills: ["Git & GitHub", "Vercel", "Figma", "Adobe Photoshop"],
   },
 ];

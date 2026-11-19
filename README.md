@@ -88,10 +88,14 @@ If a project has a `demo` URL, it becomes the full-width featured card when the 
 
 - **Dark first** — new visitors get the dark theme; the choice persists in `localStorage` and is applied before paint to avoid flashing.
 - **Glass levels** — three reusable surface levels (`--glass-1-bg` … `--glass-3-bg`) plus specular edge highlights. Legacy aliases (`--glass-bg`, `--glass-bg-strong`) are preserved.
+- **Typography** — Geist for interface copy and Geist Mono for technical metadata, with fluid editorial section headings.
 - **Technical layer** — the hero copy sits over a faint schematic overlay of circuit traces, nodes, crosshair markers, dot matrix, and coordinate annotations. It is decorative, `aria-hidden`, and adapts to both themes.
+- **Signature interaction** — `TechEcosystem` is a pointer-responsive constellation of React, Next.js, TypeScript, Node.js, MySQL, GitHub, and Figma above the skill cards. It is decorative; the accessible skill list lives in the cards below.
+- **Cursor lighting** — one shared `PointerGlow` listener updates only the hovered glass surface; `Magnetic` adds a restrained pull to hero actions. Both are disabled on touch and reduced-motion devices.
+- **Ambient lighting** — fixed aurora orbs, grid, and noise plus section-specific radial lighting give the page a deliberate cool-to-violet progression.
 - **Motion** — scroll reveal is progressive enhancement through one `IntersectionObserver`. Content is visible without JavaScript.
-- **Reduced motion** — `prefers-reduced-motion: reduce` disables transitions, reveals, and decorative animation.
-- **Reduced transparency** — `prefers-reduced-transparency: reduce` swaps glass for opaque surfaces.
+- **Reduced motion** — `prefers-reduced-motion: reduce` disables transitions, reveals, magnetic movement, and decorative animation.
+- **Reduced transparency** — `prefers-reduced-transparency: reduce` swaps glass for opaque surfaces and removes cursor lighting.
 - **No backdrop blur** — an `@supports` fallback uses solid surfaces so the layout never depends on `backdrop-filter`.
 - **Keyboard support** — skip link, visible focus rings, focus trap and Escape handling in the mobile menu, labelled icon buttons.
 - **Responsive** — verified at 1440, 1280, 1024, 820, 390, and 360 px with no horizontal overflow.

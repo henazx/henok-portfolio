@@ -3,6 +3,13 @@ import { ArrowUpRight, Download, MapPin } from "lucide-react";
 
 import { profile, socialLinks } from "@/data/profile";
 import { SocialLinks } from "@/components/ui/SocialLinks";
+import {
+  FigmaIcon,
+  NextIcon,
+  ReactIcon,
+  TypeScriptIcon,
+} from "@/components/ui/BrandIcons";
+import { Magnetic } from "@/components/interaction/Magnetic";
 import styles from "./Hero.module.css";
 
 const statusRows = [
@@ -94,18 +101,22 @@ export function Hero() {
           <p className={styles.summary}>{profile.summary}</p>
 
           <div className={styles.actions}>
-            <a className="btn btn-primary" href="#projects">
-              View my projects
-              <ArrowUpRight aria-hidden="true" />
-            </a>
-            <a
-              className="btn btn-secondary"
-              href={profile.cv.path}
-              download={profile.cv.fileName}
-            >
-              <Download aria-hidden="true" />
-              Download CV
-            </a>
+            <Magnetic>
+              <a className="btn btn-primary" href="#projects">
+                View my projects
+                <ArrowUpRight aria-hidden="true" />
+              </a>
+            </Magnetic>
+            <Magnetic strength={0.12}>
+              <a
+                className="btn btn-secondary"
+                href={profile.cv.path}
+                download={profile.cv.fileName}
+              >
+                <Download aria-hidden="true" />
+                Download CV
+              </a>
+            </Magnetic>
           </div>
 
           <div className={styles.footerRow}>
@@ -124,7 +135,22 @@ export function Hero() {
             <span />
           </div>
 
-          <div className={`glass-1 ${styles.console}`}>
+          <div className={styles.floaters} aria-hidden="true">
+            <span className={`${styles.floater} ${styles.floaterReact}`}>
+              <ReactIcon />
+            </span>
+            <span className={`${styles.floater} ${styles.floaterNext}`}>
+              <NextIcon />
+            </span>
+            <span className={`${styles.floater} ${styles.floaterType}`}>
+              <TypeScriptIcon />
+            </span>
+            <span className={`${styles.floater} ${styles.floaterFigma}`}>
+              <FigmaIcon />
+            </span>
+          </div>
+
+          <div className={`glass-1 ${styles.console}`} data-glow>
             <div className={styles.consoleBar}>
               <span className={styles.dots} aria-hidden="true">
                 <i />

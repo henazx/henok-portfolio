@@ -107,7 +107,7 @@ export function Navbar() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <div className="container">
-        <div className={styles.inner}>
+        <div className={styles.inner} data-glow>
           <a
             href="#home"
             className={styles.brand}

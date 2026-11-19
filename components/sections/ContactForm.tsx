@@ -137,6 +137,7 @@ export function ContactForm({ configured, email }: ContactFormProps) {
   return (
     <form
       className={styles.form}
+      data-glow
       onSubmit={handleSubmit}
       noValidate
       aria-busy={status === "submitting"}
