@@ -5,6 +5,102 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* -------------------------------------------------------------------------
+   Technical blueprint layer — decorative, sits behind the hero copy.
+   ------------------------------------------------------------------------- */
+
+.blueprint {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  color: var(--text-subtle);
+  pointer-events: none;
+}
+
+.dotField {
+  position: absolute;
+  top: 16%;
+  left: 0;
+  width: min(54%, 740px);
+  height: 62%;
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 15px 15px;
+  opacity: 0.2;
+  -webkit-mask-image: radial-gradient(
+    ellipse 72% 64% at 34% 46%,
+    #000 0%,
+    transparent 76%
+  );
+  mask-image: radial-gradient(
+    ellipse 72% 64% at 34% 46%,
+    #000 0%,
+    transparent 76%
+  );
+}
+
+.schematic {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.62;
+}
+
+.traces path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.nodes circle {
+  fill: none;
+  stroke: var(--accent-cyan);
+  stroke-width: 1.2;
+  opacity: 0.55;
+}
+
+.crosshairs {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.annotations text {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  opacity: 0.55;
+}
+
+.bpLeft,
+.bpBottom {
+  position: absolute;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.bpLeft {
+  top: 40%;
+  left: clamp(18px, 4.4vw, 68px);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.bpBottom {
+  bottom: 26px;
+  left: clamp(18px, 4.4vw, 68px);
+  letter-spacing: 0.16em;
+}
+
 .grid {
   position: relative;
   z-index: 1;
@@ -494,6 +590,33 @@
     aspect-ratio: 5 / 4.3;
     min-height: 0;
     height: auto;
+  }
+}
+
+:global(html[data-theme="light"]) .dotField {
+  opacity: 0.14;
+}
+
+:global(html[data-theme="light"]) .schematic {
+  opacity: 0.55;
+}
+
+@media (max-width: 1180px) {
+  .bpLeft,
+  .bpBottom {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .dotField {
+    width: 100%;
+    height: 54%;
+    opacity: 0.16;
+  }
+
+  .schematic {
+    opacity: 0.5;
   }
 }
 

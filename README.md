@@ -88,6 +88,7 @@ If a project has a `demo` URL, it becomes the full-width featured card when the 
 
 - **Dark first** — new visitors get the dark theme; the choice persists in `localStorage` and is applied before paint to avoid flashing.
 - **Glass levels** — three reusable surface levels (`--glass-1-bg` … `--glass-3-bg`) plus specular edge highlights. Legacy aliases (`--glass-bg`, `--glass-bg-strong`) are preserved.
+- **Technical layer** — the hero copy sits over a faint schematic overlay of circuit traces, nodes, crosshair markers, dot matrix, and coordinate annotations. It is decorative, `aria-hidden`, and adapts to both themes.
 - **Motion** — scroll reveal is progressive enhancement through one `IntersectionObserver`. Content is visible without JavaScript.
 - **Reduced motion** — `prefers-reduced-motion: reduce` disables transitions, reveals, and decorative animation.
 - **Reduced transparency** — `prefers-reduced-transparency: reduce` swaps glass for opaque surfaces.
