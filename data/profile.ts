@@ -5,13 +5,12 @@ import type { SocialLink } from "@/types";
  * EDIT THIS FILE FIRST
  * ---------------------------------------------------------------------------
  * Every piece of personal information on the site is read from here.
- * Replace the placeholder values (marked PLACEHOLDER) before deploying.
+ * The remaining placeholders are marked EDIT ME below and in README.md.
  */
 export const profile = {
-  // PLACEHOLDER — replace with your name.
-  name: "Your Name",
-  // PLACEHOLDER — monogram shown in the logo and footer.
-  monogram: "YN",
+  name: "Henok Neknikie",
+  // Initials shown in the navigation logo and footer badge.
+  monogram: "HN",
   role: "Information Technology Specialist",
   positioning: [
     "Computer Science Graduate",
@@ -39,8 +38,7 @@ export const profile = {
     ],
   },
 
-  // PLACEHOLDER — replace with an email address you actually monitor.
-  email: "your.email@example.com",
+  email: "henokneknikiezx@gmail.com",
   location: "Addis Ababa, Ethiopia",
   availability: "Open to full-time & freelance",
   workPreference: "Remote · Hybrid · On-site",
@@ -50,15 +48,17 @@ export const profile = {
   linkedin: "",
 
   cv: {
-    // Replace the file in public/cv/ and update this path if you rename it.
+    // EDIT ME — replace public/cv/your-name-cv.pdf with your real CV, then
+    // update both values below to match the new file name.
     path: "/cv/your-name-cv.pdf",
     fileName: "Your-Name-CV.pdf",
   },
 
   portrait: {
-    // Drop your photograph in public/images/ and point this at it.
+    // EDIT ME — add your photograph to public/images/ and point src at it.
+    // Set isPlaceholder to false once a real photo is in place.
     src: "/images/portrait-placeholder.svg",
-    alt: "Portrait of Your Name",
+    alt: "Portrait of Henok Neknikie",
     isPlaceholder: true,
   },
 } as const;

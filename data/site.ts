@@ -1,5 +1,7 @@
 import type { NavItem } from "@/types";
 
+import { profile } from "./profile";
+
 export const siteConfig = {
   /**
    * Set NEXT_PUBLIC_SITE_URL in Vercel (and in .env.local for local builds).
@@ -10,7 +12,7 @@ export const siteConfig = {
     "",
   ),
   locale: "en_US",
-  titleTemplate: "%s | Your Name",
+  titleTemplate: `%s | ${profile.name}`,
   description:
     "Portfolio of an Information Technology Specialist and Computer Science graduate working across IT support, software development and UX/UI design.",
 } as const;

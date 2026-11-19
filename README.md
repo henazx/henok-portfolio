@@ -32,16 +32,16 @@ All personal content is centralised in `data/`. Nothing is hardcoded inside comp
 
 | Placeholder | Where to change it |
 | --- | --- |
-| `Your Name`, monogram `YN` | `data/profile.ts` → `name`, `monogram` |
-| `your.email@example.com` | `data/profile.ts` → `email` |
+| CV file (still a placeholder) | `public/cv/your-name-cv.pdf` and `data/profile.ts` → `cv` |
+| Portrait (still a placeholder) | `public/images/portrait-placeholder.svg` and `data/profile.ts` → `portrait` |
 | LinkedIn (hidden while empty) | `data/profile.ts` → `linkedin` |
-| CV file | `public/cv/your-name-cv.pdf` and `data/profile.ts` → `cv` |
-| Portrait | `public/images/portrait-placeholder.svg` and `data/profile.ts` → `portrait` |
 | `https://your-domain.com` | `NEXT_PUBLIC_SITE_URL` (see below) |
 | Experience, education, certifications | `data/experience.ts`, `data/education.ts` |
 | Project links and screenshots | `data/projects.ts`, `public/projects/` |
 | Skills | `data/skills.ts` |
 | Navigation and SEO description | `data/site.ts` |
+
+Name, monogram, and email are already set to **Henok Neknikie**, **HN**, and **henokneknikiezx@gmail.com**. Everything else reads from the files above, so no component code needs editing.
 
 The portrait component shows a "Portrait placeholder" label while `portrait.isPlaceholder` is `true`. Set it to `false` after adding a real photograph.
 
