@@ -17,6 +17,7 @@ import {
   UNLOCK_EVENT,
   UNLOCK_KEY,
   deepMerge,
+  getByPath,
   setByPath,
 } from "@/lib/editor";
 import type { SiteContent } from "@/types";
@@ -99,27 +100,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback(
     (path: string, template: unknown) => {
       setContent((current) => {
-        const list = Array.isArray(
-          path
-            .split(".")
-            .reduce<unknown>(
-              (value, key) =>
-                value && typeof value === "object"
-                  ? (value as Record<string, unknown>)[key]
-                  : undefined,
-              current,
-            ),
-        )
-          ? (path
-              .split(".")
-              .reduce<unknown>(
-                (value, key) =>
-                  value && typeof value === "object"
-                    ? (value as Record<string, unknown>)[key]
-                    : undefined,
-                current,
-              ) as unknown[])
-          : [];
+        const existing = getByPath(current, path);
+        const list = Array.isArray(existing) ? existing : [];
         const next = setByPath(current, path, [...list, template]);
         saveDraft(next);
         return next;
@@ -133,18 +115,9 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const removeItem = useCallback(
     (path: string, index: number) => {
       setContent((current) => {
-        const list = path
-          .split(".")
-          .reduce<unknown>(
-            (value, key) =>
-              value && typeof value === "object"
-                ? (value as Record<string, unknown>)[key]
-                : undefined,
-            current,
-          );
-        const nextList = Array.isArray(list)
-          ? list.filter((_, position) => position !== index)
-          : [];
+        const existing = getByPath(current, path);
+        const list = Array.isArray(existing) ? existing : [];
+        const nextList = list.filter((_, position) => position !== index);
         const next = setByPath(current, path, nextList);
         saveDraft(next);
         return next;

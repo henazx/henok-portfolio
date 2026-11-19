@@ -27,7 +27,10 @@ export function setByPath<T>(source: T, path: string, value: unknown): T {
       return;
     }
     const existing = cursor[key];
-    if (!existing || typeof existing !== "object" || Array.isArray(existing)) {
+    // Preserve existing arrays and objects. Only create a container when the
+    // path genuinely does not exist yet — recreating an array here would wipe
+    // every other item in that list.
+    if (!existing || typeof existing !== "object") {
       cursor[key] = /^\d+$/.test(keys[index + 1]) ? [] : {};
     }
     cursor = cursor[key] as Record<string, unknown>;
