@@ -30,12 +30,12 @@
   background: linear-gradient(
     100deg,
     transparent,
-    color-mix(in srgb, var(--accent-cyan) 9%, transparent) 48%,
+    color-mix(in srgb, var(--accent-cyan) 17%, transparent) 48%,
     transparent
   );
-  filter: blur(30px);
+  filter: blur(22px);
   transform: rotate(14deg);
-  animation: bpSweep 19s linear infinite;
+  animation: bpSweep 14s linear infinite;
 }
 
 .dotField {
@@ -76,7 +76,7 @@
 }
 
 .traces path[stroke-dasharray] {
-  animation: traceFlow 12s linear infinite;
+  animation: traceFlow 8s linear infinite;
 }
 
 .nodes circle {
