@@ -760,7 +760,7 @@ function CredentialsTab() {
           <Field label="Name" path={`certifications.${index}.name`} />
           <Field label="Issuer" path={`certifications.${index}.issuer`} />
           <Field
-            label="Verification link (https://)"
+            label="Certificate link (https:// or /certificates/file.pdf)"
             path={`certifications.${index}.link`}
           />
           <Field label="Note" path={`certifications.${index}.note`} multiline />

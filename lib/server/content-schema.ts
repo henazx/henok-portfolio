@@ -211,6 +211,33 @@ function urlField(
   }
 }
 
+function certificateLinkField(
+  validator: Validator,
+  value: unknown,
+  path: string,
+): void {
+  const text = validator.string(value, path, {
+    optional: true,
+    allowEmpty: true,
+    max: 300,
+  });
+  if (!text) return;
+
+  if (isHttpsUrl(text)) return;
+
+  if (
+    isSafeAssetPath(text) &&
+    /^\/certificates\/[A-Za-z0-9._-]+\.(pdf|png|jpe?g|webp)$/i.test(text)
+  ) {
+    return;
+  }
+
+  validator.fail(
+    path,
+    "Must be a full https:// link or a /certificates/ file path.",
+  );
+}
+
 function emailField(validator: Validator, value: unknown, path: string): void {
   const text = validator.string(value, path, {
     min: 3,
@@ -553,7 +580,8 @@ export function validateContent(value: unknown): ValidationResult {
             v.string(entry, entryPath, { min: 1, max: 160 }),
           note: (entry, entryPath) =>
             v.string(entry, entryPath, { optional: true, allowEmpty: true, max: 800 }),
-          link: (entry, entryPath) => urlField(v, entry, entryPath, true),
+          link: (entry, entryPath) =>
+            certificateLinkField(v, entry, entryPath),
         }),
       ),
   });

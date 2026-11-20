@@ -71,7 +71,7 @@ export function Credentials() {
                           href={entry.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`Open verification for ${entry.name} (opens in a new tab)`}
+                          aria-label={`Open certificate for ${entry.name} (opens in a new tab)`}
                         >
                           {entry.name}
                           <ExternalLink aria-hidden="true" />
