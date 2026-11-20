@@ -120,7 +120,7 @@ Raw GitHub errors are not returned to the client; failures are reported as sanit
 
 ## Deployment
 
-1. Push the repository to GitHub. No remote is configured in this workspace yet, so this step remains manual.
+1. The repository is hosted at `https://github.com/henazx/henok-portfolio`. Push changes to `main` before deploying; Vercel builds from that branch.
 2. Import it into Vercel with the default Next.js preset.
 3. Add the environment variables described above. At minimum, set `SITE_URL` (or rely on `VERCEL_URL`) and every variable needed for the features you want enabled.
 4. Set your custom domain in Vercel and make `SITE_URL` match it exactly.
