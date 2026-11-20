@@ -72,7 +72,7 @@
   text-decoration: underline;
   text-decoration-color: var(--border-strong);
   text-underline-offset: 3px;
-  transition: text-decoration-color 0.2s ease;
+  transition: text-decoration-color 0.2s var(--ease-smooth);
 }
 
 .noticeLink:hover {
@@ -122,9 +122,9 @@
   font-size: 0.9rem;
   line-height: 1.5;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    border-color 0.2s var(--ease-smooth),
+    box-shadow 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth);
 }
 
 .input {

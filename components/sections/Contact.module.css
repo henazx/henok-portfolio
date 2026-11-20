@@ -26,8 +26,8 @@
   line-height: 1.4;
   word-break: break-word;
   transition:
-    color 0.2s ease,
-    border-color 0.2s ease;
+    color 0.2s var(--ease-smooth),
+    border-color 0.2s var(--ease-smooth);
 }
 
 .email svg {
@@ -36,8 +36,8 @@
   height: 18px;
   color: var(--text-subtle);
   transition:
-    color 0.2s ease,
-    transform 0.2s ease;
+    color 0.2s var(--ease-smooth),
+    transform 0.2s var(--ease-smooth);
 }
 
 .email:hover {

@@ -94,6 +94,9 @@
   --container: 1140px;
   --nav-height: 90px;
 
+  /* Shared easing keeps every interaction and entrance visually consistent. */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
   --font-sans:
     var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     sans-serif;
@@ -177,6 +180,8 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  animation-timing-function: var(--ease-smooth);
+  transition-timing-function: var(--ease-smooth);
 }
 
 * {
@@ -200,8 +205,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   transition:
-    color 0.25s ease,
-    background-color 0.25s ease;
+    color 0.25s var(--ease-smooth),
+    background-color 0.25s var(--ease-smooth);
 }
 
 main {
@@ -362,7 +367,7 @@ button {
   );
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s var(--ease-smooth);
 }
 
 [data-glow]:hover::after,
@@ -408,7 +413,7 @@ html[data-theme="light"] [data-glow]::after {
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
   font-weight: 500;
-  transition: top 0.2s ease;
+  transition: top 0.2s var(--ease-smooth);
 }
 
 .skip-link:focus {
@@ -526,11 +531,11 @@ html[data-theme="light"] [data-glow]::after {
   line-height: 1;
   white-space: nowrap;
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    background-color 0.2s var(--ease-smooth),
+    border-color 0.2s var(--ease-smooth),
+    color 0.2s var(--ease-smooth),
+    transform 0.2s var(--ease-smooth),
+    box-shadow 0.2s var(--ease-smooth);
 }
 
 .btn svg {
@@ -622,10 +627,10 @@ html[data-theme="light"] [data-glow]::after {
   border-radius: 10px;
   color: var(--text-muted);
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+    color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth),
+    border-color 0.2s var(--ease-smooth),
+    transform 0.2s var(--ease-smooth);
 }
 
 .social-links a:hover {

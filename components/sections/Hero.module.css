@@ -238,6 +238,21 @@
   letter-spacing: -0.05em;
 }
 
+.typedName {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.typedChar {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.28em) scale(0.98);
+  filter: blur(6px);
+  animation: typeCharIn 0.62s var(--ease-smooth) both;
+  animation-delay: var(--char-delay);
+  will-change: opacity, transform, filter;
+}
+
 .caret {
   display: inline-block;
   width: 0.055em;
@@ -245,11 +260,30 @@
   margin-left: 0.06em;
   vertical-align: -0.06em;
   background: var(--accent);
-  animation: caretBlink 1s steps(1, end) infinite;
+  opacity: 0;
+  animation:
+    caretShow 0s linear var(--caret-delay) forwards,
+    caretBlink 1s steps(1, end) calc(var(--caret-delay) + 0.2s) infinite;
 }
 
-.caret[hidden] {
-  display: none;
+@keyframes typeCharIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.28em) scale(0.98);
+    filter: blur(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes caretShow {
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes caretBlink {
@@ -837,13 +871,24 @@
 
 @media (prefers-reduced-motion: reduce) {
   .floater,
-  .caret,
   .signal,
   .blueprint::after,
   .dotField,
   .traces path[stroke-dasharray],
   .nodes circle {
     animation: none;
+  }
+
+  .typedChar {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .caret {
+    animation: none;
+    opacity: 0;
   }
 }
 

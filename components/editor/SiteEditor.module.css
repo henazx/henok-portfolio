@@ -41,9 +41,9 @@
   font-size: 0.75rem;
   padding: 6px 11px;
   transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease;
+    border-color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth),
+    color 0.2s var(--ease-smooth);
 }
 
 .launcher button:hover:not(:disabled),
@@ -121,8 +121,8 @@
   cursor: pointer;
   font-size: 0.78rem;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
+    color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth);
 }
 
 .tabs button:hover {
@@ -173,8 +173,8 @@
   font-size: 0.85rem;
   line-height: 1.5;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color 0.2s var(--ease-smooth),
+    box-shadow 0.2s var(--ease-smooth);
 }
 
 .field textarea {
@@ -226,8 +226,8 @@
   font-size: 1.1rem;
   line-height: 1;
   transition:
-    border-color 0.2s ease,
-    color 0.2s ease;
+    border-color 0.2s var(--ease-smooth),
+    color 0.2s var(--ease-smooth);
 }
 
 .iconButton:hover {

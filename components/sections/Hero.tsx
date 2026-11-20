@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { ArrowRight, Download, MapPin } from "lucide-react";
 
@@ -35,45 +35,30 @@ function statusRowsFor(profile: SiteContent["profile"]) {
 }
 
 function TypedName({ name }: { name: string }) {
-  // The server renders the full name so it is visible without JavaScript.
-  // On the client, start typing before the first paint to avoid a flash.
-  const textRef = useRef<HTMLSpanElement>(null);
-  const caretRef = useRef<HTMLSpanElement>(null);
-
-  useLayoutEffect(() => {
-    const text = textRef.current;
-    const caret = caretRef.current;
-    if (!text || !caret) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      text.textContent = name;
-      caret.hidden = true;
-      return;
-    }
-
-    let index = 0;
-    text.textContent = "";
-    caret.hidden = false;
-
-    const timer = window.setInterval(() => {
-      index += 1;
-      text.textContent = name.slice(0, index);
-
-      if (index >= name.length) {
-        window.clearInterval(timer);
-        caret.hidden = true;
-      }
-    }, 130);
-
-    return () => window.clearInterval(timer);
-  }, [name]);
+  // Each character fades in on a staggered delay. The full name is present in
+  // the HTML, so it remains readable without JavaScript and for assistive tech.
+  const characters = Array.from(name);
+  const stepMs = 120;
 
   return (
     <h1 id="hero-title" className={styles.name} aria-label={name}>
-      <span ref={textRef} aria-hidden="true">
-        {name}
+      <span className={styles.typedName} aria-hidden="true">
+        {characters.map((character, index) => (
+          <span
+            key={`${character}-${index}`}
+            className={styles.typedChar}
+            style={{ "--char-delay": `${index * stepMs}ms` } as CSSProperties}
+          >
+            {character === " " ? "\u00A0" : character}
+          </span>
+        ))}
+        <span
+          className={styles.caret}
+          style={
+            { "--caret-delay": `${characters.length * stepMs}ms` } as CSSProperties
+          }
+        />
       </span>
-      <span ref={caretRef} className={styles.caret} aria-hidden="true" hidden />
     </h1>
   );
 }

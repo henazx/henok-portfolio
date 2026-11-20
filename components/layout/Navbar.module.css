@@ -21,11 +21,11 @@
   -webkit-backdrop-filter: blur(18px) saturate(165%);
   backdrop-filter: blur(18px) saturate(165%);
   transition:
-    background 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease,
-    -webkit-backdrop-filter 0.35s ease,
-    backdrop-filter 0.35s ease;
+    background 0.35s var(--ease-smooth),
+    border-color 0.35s var(--ease-smooth),
+    box-shadow 0.35s var(--ease-smooth),
+    -webkit-backdrop-filter 0.35s var(--ease-smooth),
+    backdrop-filter 0.35s var(--ease-smooth);
 }
 
 .scrolled .inner {
@@ -95,9 +95,9 @@
   font-size: 0.8rem;
   letter-spacing: -0.008em;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
+    color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth),
+    box-shadow 0.2s var(--ease-smooth);
 }
 
 .desktopNav a:hover {
@@ -142,9 +142,9 @@
   background: var(--surface);
   color: var(--text-muted);
   transition:
-    color 0.2s ease,
-    border-color 0.2s ease,
-    background-color 0.2s ease;
+    color 0.2s var(--ease-smooth),
+    border-color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth);
 }
 
 .menuButton:hover {
@@ -206,7 +206,7 @@
   font-size: clamp(1.25rem, 5vw, 1.5rem);
   font-weight: 500;
   letter-spacing: -0.025em;
-  transition: color 0.2s ease;
+  transition: color 0.2s var(--ease-smooth);
 }
 
 .mobileNav a:hover,
