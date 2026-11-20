@@ -63,7 +63,7 @@ function TypedName({ name }: { name: string }) {
         window.clearInterval(timer);
         caret.hidden = true;
       }
-    }, 75);
+    }, 130);
 
     return () => window.clearInterval(timer);
   }, [name]);
