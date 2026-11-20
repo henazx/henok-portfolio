@@ -98,8 +98,16 @@
       "slug": "smartcv",
       "name": "SmartCV",
       "category": "Development",
-      "description": "A browser-based career toolkit that helps job seekers create professional CVs, evaluate job compatibility, prepare cover letters, and manage their job applications.",
-      "technologies": ["React", "Next.js", "JavaScript", "UX/UI Design"],
+      "description": "A free, browser-based career toolkit for Ethiopian job seekers to improve CVs, evaluate job compatibility, generate tailored cover letters, track applications, and prepare for interviews.",
+      "technologies": [
+        "Next.js 14",
+        "TypeScript",
+        "React",
+        "Zustand",
+        "Tailwind CSS",
+        "@react-pdf",
+        "UX/UI Design"
+      ],
       "image": {
         "src": "/projects/smartcv.svg",
         "alt": "Stylised preview of the SmartCV interface showing a CV builder and compatibility score",
@@ -107,6 +115,22 @@
         "height": 750
       },
       "images": [],
+      "caseStudy": {
+        "role": "Developer",
+        "problem": "Many Ethiopian job seekers face difficulties creating professional CVs, identifying suitable job opportunities, and preparing for recruitment processes. Existing career tools can be expensive, require account registration, or are not tailored to local job seekers.",
+        "approach": "Designed and developed SmartCV, a free, browser-based career toolkit that helps Ethiopian job seekers improve their CVs, evaluate job compatibility, generate tailored cover letters, track applications, and prepare for interviews. Focused on creating an accessible, straightforward experience without requiring user registration.",
+        "decisions": [
+          "Next.js 14 with App Router and TypeScript.",
+          "React for building reusable UI components.",
+          "Zustand for client-side state management.",
+          "Tailwind CSS for responsive styling.",
+          "@react-pdf for PDF document rendering.",
+          "Browser-based functionality to minimize infrastructure requirements and avoid mandatory user accounts.",
+          "Deployed using Vercel."
+        ],
+        "outcome": "Successfully developed and deployed a functional career toolkit at https://smartcv-virid.vercel.app/. The platform brings multiple job-search and career preparation tools together in one accessible application, including CV tools, Job Match scoring, Career Twin, Cover Letter generation, application tracking, interview preparation, and Readiness Cards.",
+        "learnings": "Building and deploying a complete web application using Next.js and TypeScript; designing practical user experiences around real-world problems; managing client-side application state with Zustand; implementing PDF-related functionality; structuring reusable components and responsive interfaces; balancing functionality, usability, and infrastructure costs; turning a real-world problem into a working software product."
+      },
       "repository": "https://github.com/henazx/smartcv",
       "demo": "https://smartcv-virid.vercel.app/"
     },
