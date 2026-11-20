@@ -64,6 +64,27 @@ function validateContent(value: unknown): value is SiteContent {
   );
 }
 
+const dataImagePattern =
+  /^data:image\/(png|jpeg|jpg|webp|gif);base64,([A-Za-z0-9+/=]+)$/;
+
+function decodeDataImage(src: string) {
+  const match = src.match(dataImagePattern);
+  if (!match) return null;
+  return {
+    extension: match[1] === "jpeg" ? "jpg" : match[1],
+    base64: match[2],
+  };
+}
+
+function safeFileSlug(value: string, fallback: string) {
+  const slug = value
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+  return slug || fallback;
+}
+
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
     password?: string;
@@ -100,22 +121,32 @@ export async function POST(request: Request) {
 
   const content: SiteContent = JSON.parse(JSON.stringify(body.content));
   const timestamp = new Date().toISOString();
-  const portrait = content.profile.portrait.src;
-  const imageMatch = portrait.match(
-    /^data:image\/(png|jpeg|jpg|webp|gif);base64,([A-Za-z0-9+/=]+)$/,
-  );
 
   try {
-    if (imageMatch) {
-      const extension = imageMatch[1] === "jpeg" ? "jpg" : imageMatch[1];
-      const path = `public/images/profile.${extension}`;
+    const portraitImage = decodeDataImage(content.profile.portrait.src);
+    if (portraitImage) {
+      const path = `public/images/profile.${portraitImage.extension}`;
       await putFile(
         path,
-        imageMatch[2],
+        portraitImage.base64,
         `Update profile photo — ${timestamp}`,
       );
-      content.profile.portrait.src = `/images/profile.${extension}`;
+      content.profile.portrait.src = `/images/profile.${portraitImage.extension}`;
       content.profile.portrait.isPlaceholder = false;
+    }
+
+    for (const [index, project] of content.projects.entries()) {
+      const projectImage = decodeDataImage(project.image.src);
+      if (!projectImage) continue;
+
+      const slug = safeFileSlug(project.slug, `project-${index + 1}`);
+      const path = `public/projects/${slug}.${projectImage.extension}`;
+      await putFile(
+        path,
+        projectImage.base64,
+        `Update ${project.name} preview — ${timestamp}`,
+      );
+      project.image.src = `/projects/${slug}.${projectImage.extension}`;
     }
 
     await putFile(

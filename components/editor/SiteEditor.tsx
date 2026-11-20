@@ -190,6 +190,50 @@ function PortraitField() {
   );
 }
 
+function ProjectImageField({ index }: { index: number }) {
+  const { content, setField } = useEditor();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const project = content.projects[index];
+
+  const onFile = (file: File | undefined) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result);
+      setField(`projects.${index}.image.src`, result);
+      if (!project.image.alt || project.image.alt === "Project preview") {
+        setField(`projects.${index}.image.alt`, `Preview of ${project.name}`);
+      }
+    };
+    reader.readAsDataURL(file);
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  return (
+    <fieldset className={styles.list}>
+      <legend>Project preview image</legend>
+      <div className={styles.projectImageRow}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={project.image.src} alt="Current project preview" />
+        <div>
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            onChange={(event) => onFile(event.target.files?.[0])}
+            aria-label={`Upload a preview image for ${project.name}`}
+          />
+          <p>
+            Uploaded images are stored in the repository when you publish.
+          </p>
+        </div>
+      </div>
+      <Field label="Preview alt text" path={`projects.${index}.image.alt`} />
+    </fieldset>
+  );
+}
+
 function ProfileTab() {
   return (
     <>
@@ -356,7 +400,7 @@ function ProjectsTab() {
           <Field label="Repository URL" path={`projects.${index}.repository`} />
           <Field label="Live demo URL" path={`projects.${index}.demo`} />
           <Field label="Note" path={`projects.${index}.note`} />
-          <Field label="Preview alt text" path={`projects.${index}.image.alt`} />
+          <ProjectImageField index={index} />
         </ItemCard>
       ))}
       <button

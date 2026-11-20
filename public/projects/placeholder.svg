@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Project preview placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1220"/>
+      <stop offset="55%" stop-color="#111c30"/>
+      <stop offset="100%" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#bg)"/>
+  <rect width="1200" height="750" fill="url(#grid)"/>
+  <ellipse cx="600" cy="315" rx="520" ry="330" fill="url(#glow)"/>
+
+  <g transform="translate(600 330)" fill="none" stroke="#60a5fa" stroke-opacity="0.75" stroke-width="4">
+    <rect x="-78" y="-62" width="156" height="124" rx="16"/>
+    <circle cx="-34" cy="-22" r="12"/>
+    <path d="M-70 48 L-16 -6 L18 26 L44 6 L72 40" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <text x="600" y="500" text-anchor="middle" fill="#94a3b8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22" letter-spacing="6">PROJECT PREVIEW</text>
+  <text x="600" y="540" text-anchor="middle" fill="#64748b" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" letter-spacing="3">UPLOAD AN IMAGE IN THE EDITOR</text>
+</svg>

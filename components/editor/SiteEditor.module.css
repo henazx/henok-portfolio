@@ -329,6 +329,37 @@
   line-height: 1.5;
 }
 
+.projectImageRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.projectImageRow img {
+  width: 150px;
+  height: 92px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.projectImageRow > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.projectImageRow input[type="file"] {
+  font-size: 0.75rem;
+}
+
+.projectImageRow p {
+  color: var(--text-subtle);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
 .panelFooter {
   display: flex;
   align-items: center;
