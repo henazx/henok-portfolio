@@ -3,6 +3,7 @@
 import { ArrowUp } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { BrandMark } from "@/components/ui/BrandMark";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import type { SiteContent, SocialLink } from "@/types";
 import styles from "./Footer.module.css";
@@ -28,8 +29,8 @@ export function Footer() {
           <div className={styles.top}>
             <div>
               <a href="#home" className={styles.brand}>
-                <span className={styles.monogram} aria-hidden="true">
-                  {content.profile.monogram}
+                <span className={styles.mark} aria-hidden="true">
+                  <BrandMark />
                 </span>
                 <span>{content.profile.name}</span>
               </a>

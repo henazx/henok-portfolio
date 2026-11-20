@@ -262,7 +262,6 @@ function ProfileTab() {
   return (
     <>
       <Field label="Full name" path="profile.name" />
-      <Field label="Monogram" path="profile.monogram" />
       <Field label="Main role" path="profile.role" />
       <Field label="Hero introduction" path="profile.summary" multiline />
       <StringList label="Positioning tags" path="profile.positioning" />

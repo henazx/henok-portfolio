@@ -33,7 +33,7 @@
   letter-spacing: -0.02em;
 }
 
-.monogram {
+.mark {
   display: grid;
   place-items: center;
   width: 32px;
@@ -42,10 +42,12 @@
   border-radius: 9px;
   background: var(--accent-soft);
   color: var(--accent-hover);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 600;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.mark svg {
+  width: 21px;
+  height: 21px;
 }
 
 .tagline {

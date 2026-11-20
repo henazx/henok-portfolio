@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 
+import { BrandMark } from "@/components/ui/BrandMark";
 import { profile } from "@/data/profile";
 
 export const alt = `${profile.name} — ${profile.role}`;
@@ -53,11 +54,9 @@ export default function OpenGraphImage() {
                 border: "1px solid rgba(96,165,250,0.45)",
                 backgroundColor: "rgba(59,130,246,0.18)",
                 color: "#93c5fd",
-                fontSize: 21,
-                fontWeight: 700,
               }}
             >
-              {profile.monogram}
+              <BrandMark />
             </div>
             <span style={{ color: "#94a3b8" }}>Portfolio</span>
           </div>
