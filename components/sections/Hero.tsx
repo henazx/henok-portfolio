@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { ArrowRight, Download, MapPin } from "lucide-react";
 
@@ -31,6 +32,50 @@ function statusRowsFor(profile: SiteContent["profile"]) {
     { label: "focus", value: profile.positioning[0] ?? "Software Development" },
     { label: "location", value: profile.location.split(",")[0] },
   ];
+}
+
+function TypedName({ name }: { name: string }) {
+  // The server renders the full name so it is visible without JavaScript.
+  // On the client, start typing before the first paint to avoid a flash.
+  const textRef = useRef<HTMLSpanElement>(null);
+  const caretRef = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const text = textRef.current;
+    const caret = caretRef.current;
+    if (!text || !caret) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      text.textContent = name;
+      caret.hidden = true;
+      return;
+    }
+
+    let index = 0;
+    text.textContent = "";
+    caret.hidden = false;
+
+    const timer = window.setInterval(() => {
+      index += 1;
+      text.textContent = name.slice(0, index);
+
+      if (index >= name.length) {
+        window.clearInterval(timer);
+        caret.hidden = true;
+      }
+    }, 75);
+
+    return () => window.clearInterval(timer);
+  }, [name]);
+
+  return (
+    <h1 id="hero-title" className={styles.name} aria-label={name}>
+      <span ref={textRef} aria-hidden="true">
+        {name}
+      </span>
+      <span ref={caretRef} className={styles.caret} aria-hidden="true" hidden />
+    </h1>
+  );
 }
 
 export function Hero() {
@@ -102,9 +147,7 @@ export function Hero() {
             {profile.availability}
           </p>
 
-          <h1 id="hero-title" className={styles.name}>
-            {profile.name}
-          </h1>
+          <TypedName name={profile.name} />
 
           <p className={styles.role}>{profile.role}</p>
 
