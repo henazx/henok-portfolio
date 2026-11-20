@@ -117,7 +117,6 @@ export function Hero() {
           </g>
         </svg>
         <span className={styles.bpLeft}>REF // HN·01 — Portfolio system</span>
-        <span className={styles.bpBottom}>9.0192° N / 38.7525° E</span>
       </div>
 
       <div className={`container ${styles.grid}`}>
