@@ -1,170 +1,144 @@
-import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-import { EDIT_KEYWORD } from "@/lib/editor";
-import type { SiteContent } from "@/types";
+import {
+  isAuthenticated,
+  isPublishingConfigured,
+  verifyCsrf,
+} from "@/lib/server/auth";
+import {
+  MAX_CONTENT_BYTES,
+  MAX_INLINE_IMAGE_BYTES,
+  extractInlineImages,
+  safeImageSlug,
+  validateContent,
+} from "@/lib/server/content-schema";
+import {
+  GithubError,
+  commitContent,
+  getGithubConfig,
+  type PublishImage,
+} from "@/lib/server/github";
+import {
+  errorResponse,
+  getClientIp,
+  isRecord,
+  isSameOrigin,
+  jsonResponse,
+  readJsonBody,
+} from "@/lib/server/http";
+import { rateLimit } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const token = process.env.GITHUB_TOKEN?.trim();
-const repository = process.env.GITHUB_REPO?.trim();
-const branch = process.env.GITHUB_BRANCH?.trim() || "main";
-const contentPath =
-  process.env.GITHUB_CONTENT_PATH?.trim() || "data/content.json";
+// Room for content.json plus several inline images (base64 adds ~33%).
+const MAX_BODY_BYTES = MAX_CONTENT_BYTES + 6 * Math.ceil((MAX_INLINE_IMAGE_BYTES * 4) / 3);
+const LIMIT = 10;
+const WINDOW_MS = 10 * 60 * 1000;
 
-const githubHeaders = {
-  Authorization: `Bearer ${token ?? ""}`,
-  Accept: "application/vnd.github+json",
-  "X-GitHub-Api-Version": "2022-11-28",
-};
+export async function POST(request: NextRequest) {
+  // --- gates that need no body parsing --------------------------------------
+  if (!isSameOrigin(request)) {
+    return errorResponse(403, "Invalid request origin.");
+  }
+  if (!isPublishingConfigured()) {
+    return errorResponse(
+      503,
+      "Publishing is not configured. Set PUBLISH_PASSWORD on the server.",
+    );
+  }
+  if (!isAuthenticated(request)) {
+    return errorResponse(401, "Your editing session has expired. Unlock again.");
+  }
+  if (!verifyCsrf(request)) {
+    return errorResponse(403, "Invalid CSRF token.");
+  }
 
-function apiUrl(path: string) {
-  return `https://api.github.com/repos/${repository}/contents/${path}`;
-}
+  const github = getGithubConfig();
+  if (!github) {
+    return errorResponse(
+      503,
+      "Publishing is not configured. Add GITHUB_TOKEN and GITHUB_REPO (owner/repo) to the project environment.",
+    );
+  }
 
-async function getSha(path: string): Promise<string | undefined> {
-  const response = await fetch(`${apiUrl(path)}?ref=${branch}`, {
-    headers: githubHeaders,
-    cache: "no-store",
+  const limit = await rateLimit("publish", getClientIp(request), {
+    limit: LIMIT,
+    windowMs: WINDOW_MS,
   });
-  if (response.status === 404) return undefined;
-  if (!response.ok) {
-    throw new Error(`Could not read ${path} from GitHub (${response.status}).`);
-  }
-  const data = (await response.json()) as { sha?: string };
-  return data.sha;
-}
-
-async function putFile(path: string, base64: string, message: string) {
-  const sha = await getSha(path);
-  const response = await fetch(apiUrl(path), {
-    method: "PUT",
-    headers: { ...githubHeaders, "Content-Type": "application/json" },
-    body: JSON.stringify({ message, content: base64, sha, branch }),
-  });
-
-  if (!response.ok) {
-    const detail = (await response.json().catch(() => null)) as {
-      message?: string;
-    };
-    throw new Error(detail?.message ?? `Could not update ${path}.`);
-  }
-}
-
-function validateContent(value: unknown): value is SiteContent {
-  if (!value || typeof value !== "object") return false;
-  const candidate = value as Partial<SiteContent>;
-  return Boolean(
-    candidate.profile?.name &&
-      candidate.profile?.email &&
-      Array.isArray(candidate.projects) &&
-      Array.isArray(candidate.skills) &&
-      Array.isArray(candidate.experience) &&
-      candidate.sections &&
-      candidate.site?.description,
-  );
-}
-
-const dataImagePattern =
-  /^data:image\/(png|jpeg|jpg|webp|gif);base64,([A-Za-z0-9+/=]+)$/;
-
-function decodeDataImage(src: string) {
-  const match = src.match(dataImagePattern);
-  if (!match) return null;
-  return {
-    extension: match[1] === "jpeg" ? "jpg" : match[1],
-    base64: match[2],
-  };
-}
-
-function safeFileSlug(value: string, fallback: string) {
-  const slug = value
-    .toLowerCase()
-    .replace(/[^a-z0-9-_]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60);
-  return slug || fallback;
-}
-
-export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as {
-    password?: string;
-    content?: unknown;
-  } | null;
-
-  if (!body || body.password !== EDIT_KEYWORD) {
-    return NextResponse.json({ message: "Incorrect keyword." }, { status: 401 });
-  }
-
-  if (!token || !repository || !repository.includes("/")) {
-    return NextResponse.json(
-      {
-        message:
-          "Publishing is not configured. Add GITHUB_TOKEN and GITHUB_REPO (owner/repo) to the project environment.",
-      },
-      { status: 503 },
+  if (!limit.allowed) {
+    return errorResponse(
+      429,
+      "Too many publishing attempts. Please try again later.",
+      "rate_limited",
+      { "Retry-After": String(limit.retryAfterSeconds) },
     );
   }
 
-  if (!validateContent(body.content)) {
-    return NextResponse.json(
-      { message: "The edited content is missing required fields." },
-      { status: 400 },
-    );
+  // --- request body ----------------------------------------------------------
+  const body = await readJsonBody(request, MAX_BODY_BYTES);
+  if (!body.ok) return errorResponse(body.status, body.message);
+  if (!isRecord(body.value) || Object.keys(body.value).some((key) => key !== "content")) {
+    return errorResponse(400, "Unexpected properties were submitted.");
   }
 
-  if (JSON.stringify(body).length > 12 * 1024 * 1024) {
-    return NextResponse.json(
-      { message: "Uploaded files must be smaller than 12 MB." },
-      { status: 413 },
-    );
+  const validity = validateContent(body.value.content);
+  if (!validity.ok) {
+    const detail = validity.issues
+      .slice(0, 3)
+      .map((issue) => `${issue.path}: ${issue.message}`)
+      .join(" ");
+    return errorResponse(400, `Invalid content. ${detail}`);
   }
 
-  const content: SiteContent = JSON.parse(JSON.stringify(body.content));
-  const timestamp = new Date().toISOString();
+  const content = validity.content;
+  const extracted = extractInlineImages(content);
+  if (extracted.issues.length > 0) {
+    const detail = extracted.issues
+      .slice(0, 3)
+      .map((issue) => `${issue.path}: ${issue.message}`)
+      .join(" ");
+    return errorResponse(400, `Invalid image. ${detail}`);
+  }
 
+  // --- rewrite inline image references and stage the uploads -----------------
+  const images: PublishImage[] = [];
+  const portrait = extracted.images.find((image) => image.kind === "portrait");
+  if (portrait) {
+    const publicSrc = `/images/profile.${portrait.extension}`;
+    content.profile.portrait.src = publicSrc;
+    content.profile.portrait.isPlaceholder = false;
+    images.push({
+      path: `public${publicSrc}`,
+      base64: portrait.buffer.toString("base64"),
+    });
+  }
+
+  for (const image of extracted.images) {
+    if (image.kind !== "project") continue;
+    const project = content.projects[image.index];
+    if (!project) continue;
+    const fileName = `${safeImageSlug(project.slug, `project-${image.index + 1}`)}.${image.extension}`;
+    const publicSrc = `/projects/${fileName}`;
+    project.image.src = publicSrc;
+    images.push({
+      path: `public${publicSrc}`,
+      base64: image.buffer.toString("base64"),
+    });
+  }
+
+  const contentJson = `${JSON.stringify(content, null, 2)}\n`;
+
+  // --- publish ---------------------------------------------------------------
   try {
-    const portraitImage = decodeDataImage(content.profile.portrait.src);
-    if (portraitImage) {
-      const path = `public/images/profile.${portraitImage.extension}`;
-      await putFile(
-        path,
-        portraitImage.base64,
-        `Update profile photo — ${timestamp}`,
-      );
-      content.profile.portrait.src = `/images/profile.${portraitImage.extension}`;
-      content.profile.portrait.isPlaceholder = false;
-    }
-
-    for (const [index, project] of content.projects.entries()) {
-      const projectImage = decodeDataImage(project.image.src);
-      if (!projectImage) continue;
-
-      const slug = safeFileSlug(project.slug, `project-${index + 1}`);
-      const path = `public/projects/${slug}.${projectImage.extension}`;
-      await putFile(
-        path,
-        projectImage.base64,
-        `Update ${project.name} preview — ${timestamp}`,
-      );
-      project.image.src = `/projects/${slug}.${projectImage.extension}`;
-    }
-
-    await putFile(
-      contentPath,
-      Buffer.from(`${JSON.stringify(content, null, 2)}\n`, "utf8").toString(
-        "base64",
-      ),
-      `Update site content — ${timestamp}`,
-    );
-
-    return NextResponse.json({ ok: true, content });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        message:
-          error instanceof Error ? error.message : "Publishing failed.",
-      },
-      { status: 502 },
+    const result = await commitContent(github, contentJson, images);
+    return jsonResponse({ ok: true, content, changed: result.changed });
+  } catch (publishError) {
+    return errorResponse(
+      502,
+      publishError instanceof GithubError
+        ? publishError.message
+        : "Publishing failed. Please try again.",
     );
   }
 }

@@ -447,3 +447,30 @@
     opacity: 0.5;
   }
 }
+
+/* Stop compositor work when the tab is not visible. */
+:global(html[data-document-hidden="true"]) .backdrop,
+:global(html[data-document-hidden="true"]) .backdrop * {
+  animation-play-state: paused !important;
+}
+
+/* Smaller blur radii keep the same motion legible without the mobile GPU cost. */
+@media (max-width: 640px) {
+  .ribbon {
+    filter: blur(32px);
+  }
+
+  .halo {
+    filter: blur(44px);
+  }
+
+  .sweep {
+    filter: blur(14px);
+  }
+
+  .orb,
+  .ribbon,
+  .motes {
+    will-change: auto;
+  }
+}

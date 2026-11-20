@@ -8,6 +8,26 @@ import { useEffect } from "react";
  * visitor prefers reduced motion, so this is a purely progressive enhancement.
  */
 export function ScrollReveal() {
+  // Decorative CSS animations keep running in background tabs in some
+  // browsers. Pause the whole backdrop while the document is hidden.
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncVisibility = () => {
+      if (document.hidden) {
+        root.setAttribute("data-document-hidden", "true");
+      } else {
+        root.removeAttribute("data-document-hidden");
+      }
+    };
+
+    document.addEventListener("visibilitychange", syncVisibility);
+    syncVisibility();
+    return () => {
+      document.removeEventListener("visibilitychange", syncVisibility);
+      root.removeAttribute("data-document-hidden");
+    };
+  }, []);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;

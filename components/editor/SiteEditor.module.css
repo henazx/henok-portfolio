@@ -362,6 +362,7 @@
 
 .panelFooter {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -392,6 +393,13 @@
 .publishButton:disabled {
   cursor: not-allowed;
   opacity: 0.45;
+}
+
+.uploadError {
+  margin: 8px 0 0;
+  color: var(--danger);
+  font-size: 0.82rem;
+  line-height: 1.45;
 }
 
 @keyframes launcherIn {

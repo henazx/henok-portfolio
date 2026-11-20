@@ -125,7 +125,7 @@ export function Navbar() {
           <a
             href="#home"
             className={styles.brand}
-            aria-label={`${profile.name} — back to top`}
+            aria-label={`${profile.monogram} ${profile.name} — back to top`}
             onClick={closeMenu}
           >
             <span className={styles.monogram} aria-hidden="true">

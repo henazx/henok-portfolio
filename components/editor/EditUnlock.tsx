@@ -2,13 +2,12 @@
 
 import { useEffect } from "react";
 
-import {
-  EDIT_KEYWORD,
-  UNLOCK_EVENT,
-  UNLOCK_KEY,
-} from "@/lib/editor";
+import { EDIT_KEYWORD, UNLOCK_EVENT } from "@/lib/editor";
 
-/** Type the keyword anywhere outside a form field to reveal the editor. */
+/**
+ * Typing the keyword outside a form field opens the password gate. The keyword
+ * itself grants no access — only the server-issued session does.
+ */
 export function EditUnlock() {
   useEffect(() => {
     let buffer = "";
@@ -29,7 +28,6 @@ export function EditUnlock() {
       if (buffer !== EDIT_KEYWORD) return;
 
       buffer = "";
-      window.sessionStorage.setItem(UNLOCK_KEY, "1");
       window.dispatchEvent(new Event(UNLOCK_EVENT));
     };
 

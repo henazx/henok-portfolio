@@ -13,13 +13,17 @@ import {
 import initialContent from "@/data/content.json";
 import {
   DRAFT_KEY,
-  EDIT_KEYWORD,
   UNLOCK_EVENT,
-  UNLOCK_KEY,
   deepMerge,
   getByPath,
   setByPath,
 } from "@/lib/editor";
+import {
+  getPublishSession,
+  loginToPublish,
+  logoutPublish,
+  publishSite,
+} from "@/lib/publish-client";
 import type { SiteContent } from "@/types";
 
 interface EditorContextValue {
@@ -29,9 +33,14 @@ interface EditorContextValue {
   dirty: boolean;
   publishing: boolean;
   status: string | null;
+  authPromptOpen: boolean;
+  authenticating: boolean;
+  authError: string | null;
   openEditor: () => void;
   closeEditor: () => void;
   exitEditor: () => void;
+  authenticate: (password: string) => Promise<boolean>;
+  cancelAuth: () => void;
   setField: (path: string, value: unknown) => void;
   addItem: (path: string, template: unknown) => void;
   removeItem: (path: string, index: number) => void;
@@ -50,10 +59,13 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const [dirty, setDirty] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  const [authPromptOpen, setAuthPromptOpen] = useState(false);
+  const [authenticating, setAuthenticating] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Restoring a private draft must happen after hydration so the server and
-    // client render identical HTML first.
+    // Restore a private draft after hydration so server and client render the
+    // same HTML first. Drafts are content, never credentials.
     try {
       const draft = window.localStorage.getItem(DRAFT_KEY);
       if (draft) {
@@ -65,16 +77,27 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       // A malformed draft should never break the site.
     }
 
-    const wasUnlocked = window.sessionStorage.getItem(UNLOCK_KEY) === "1";
-    if (wasUnlocked) setUnlocked(true);
+    // Restore access only from the HttpOnly session cookie, verified by the
+    // server. There is deliberately no sessionStorage unlock flag anymore.
+    void (async () => {
+      if (await getPublishSession()) {
+        setUnlocked(true);
+      }
+    })();
+  }, []);
 
+  useEffect(() => {
     const onUnlock = () => {
-      setUnlocked(true);
-      setEditorOpen(true);
+      if (unlocked) {
+        setEditorOpen(true);
+      } else {
+        setAuthError(null);
+        setAuthPromptOpen(true);
+      }
     };
     window.addEventListener(UNLOCK_EVENT, onUnlock);
     return () => window.removeEventListener(UNLOCK_EVENT, onUnlock);
-  }, []);
+  }, [unlocked]);
 
   const saveDraft = useCallback((next: SiteContent) => {
     try {
@@ -135,40 +158,66 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setStatus("Changes discarded. Showing the published content.");
   }, []);
 
+  const authenticate = useCallback(async (password: string) => {
+    setAuthenticating(true);
+    setAuthError(null);
+    const result = await loginToPublish(password);
+    if (!result.ok) {
+      setAuthError(result.message ?? "Could not unlock the editor.");
+      setAuthenticating(false);
+      return false;
+    }
+    setUnlocked(true);
+    setAuthPromptOpen(false);
+    setEditorOpen(true);
+    setStatus(null);
+    setAuthenticating(false);
+    return true;
+  }, []);
+
+  const cancelAuth = useCallback(() => {
+    setAuthPromptOpen(false);
+    setAuthError(null);
+  }, []);
+
   const exitEditor = useCallback(() => {
+    void logoutPublish();
     setUnlocked(false);
     setEditorOpen(false);
-    window.sessionStorage.removeItem(UNLOCK_KEY);
+    setAuthPromptOpen(false);
+    setAuthError(null);
     setStatus(null);
   }, []);
 
   const publish = useCallback(async () => {
     setPublishing(true);
     setStatus(null);
-    try {
-      const response = await fetch("/api/publish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: EDIT_KEYWORD, content }),
-      });
-      const result = (await response.json()) as {
-        content?: SiteContent;
-        message?: string;
-      };
-      if (!response.ok) {
-        throw new Error(result.message ?? "Publishing failed.");
-      }
-      if (result.content) setContent(result.content);
-      window.localStorage.removeItem(DRAFT_KEY);
-      setDirty(false);
-      setStatus("Published. Vercel will rebuild with your changes shortly.");
-    } catch (error) {
-      setStatus(
-        error instanceof Error ? error.message : "Publishing failed.",
-      );
-    } finally {
+    const result = await publishSite(content);
+
+    if (result.status === 401) {
+      setUnlocked(false);
+      setEditorOpen(false);
+      setAuthPromptOpen(true);
+      setAuthError("Your session expired. Enter the password again.");
+      setStatus("Session expired — publishing was not attempted.");
       setPublishing(false);
+      return;
     }
+    if (!result.ok) {
+      setStatus(result.message ?? "Publishing failed.");
+      setPublishing(false);
+      return;
+    }
+
+    if (result.content) setContent(result.content);
+    window.localStorage.removeItem(DRAFT_KEY);
+    setDirty(false);
+    setStatus(
+      result.changed === false
+        ? "Everything is already up to date. No new commit was needed."
+        : "Published. Vercel will rebuild with your changes shortly.",
+    );
+    setPublishing(false);
   }, [content]);
 
   const value = useMemo<EditorContextValue>(
@@ -179,9 +228,14 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       dirty,
       publishing,
       status,
+      authPromptOpen,
+      authenticating,
+      authError,
       openEditor: () => setEditorOpen(true),
       closeEditor: () => setEditorOpen(false),
       exitEditor,
+      authenticate,
+      cancelAuth,
       setField,
       addItem,
       removeItem,
@@ -195,7 +249,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       dirty,
       publishing,
       status,
+      authPromptOpen,
+      authenticating,
+      authError,
       exitEditor,
+      authenticate,
+      cancelAuth,
       setField,
       addItem,
       removeItem,

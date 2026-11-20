@@ -2,7 +2,11 @@
 
 import { useRef, useState, type ReactNode } from "react";
 
-import { getByPath } from "@/lib/editor";
+import {
+  ACCEPTED_IMAGE_ACCEPT,
+  getByPath,
+  readImageFile,
+} from "@/lib/editor";
 import type {
   ExperienceEntry,
   Project,
@@ -11,6 +15,7 @@ import type {
   SkillCategory,
   SkillIcon,
 } from "@/types";
+import { AuthGate } from "./AuthGate";
 import { useEditor } from "./ContentProvider";
 import styles from "./SiteEditor.module.css";
 
@@ -149,20 +154,24 @@ function ItemCard({
 function PortraitField() {
   const { content, setField } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
   const portrait = content.profile.portrait;
 
-  const onFile = (file: File | undefined) => {
+  const onFile = async (file: File | undefined) => {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result);
-      setField("profile.portrait.src", result);
-      setField("profile.portrait.alt", `Portrait of ${content.profile.name}`);
-      setField("profile.portrait.isPlaceholder", false);
-    };
-    reader.readAsDataURL(file);
+    setError(null);
+
+    const result = await readImageFile(file);
     if (inputRef.current) inputRef.current.value = "";
+
+    if (!result.ok) {
+      setError(result.message);
+      return;
+    }
+
+    setField("profile.portrait.src", result.dataUrl);
+    setField("profile.portrait.alt", `Portrait of ${content.profile.name}`);
+    setField("profile.portrait.isPlaceholder", false);
   };
 
   return (
@@ -175,14 +184,19 @@ function PortraitField() {
           <input
             ref={inputRef}
             type="file"
-            accept="image/png,image/jpeg,image/webp,image/gif"
-            onChange={(event) => onFile(event.target.files?.[0])}
+            accept={ACCEPTED_IMAGE_ACCEPT}
+            onChange={(event) => void onFile(event.target.files?.[0])}
             aria-label="Upload a profile photo"
           />
           <p>
-            Uploads with this editor are stored in the repository when you
-            publish.
+            PNG, JPEG, WebP, GIF, or AVIF, up to 2 MB. Uploads are stored in the
+            repository when you publish.
           </p>
+          {error ? (
+            <p className={styles.uploadError} role="alert">
+              {error}
+            </p>
+          ) : null}
         </div>
       </div>
       <Field label="Photo alt text" path="profile.portrait.alt" />
@@ -193,21 +207,25 @@ function PortraitField() {
 function ProjectImageField({ index }: { index: number }) {
   const { content, setField } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
   const project = content.projects[index];
 
-  const onFile = (file: File | undefined) => {
+  const onFile = async (file: File | undefined) => {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result);
-      setField(`projects.${index}.image.src`, result);
-      if (!project.image.alt || project.image.alt === "Project preview") {
-        setField(`projects.${index}.image.alt`, `Preview of ${project.name}`);
-      }
-    };
-    reader.readAsDataURL(file);
+    setError(null);
+
+    const result = await readImageFile(file);
     if (inputRef.current) inputRef.current.value = "";
+
+    if (!result.ok) {
+      setError(result.message);
+      return;
+    }
+
+    setField(`projects.${index}.image.src`, result.dataUrl);
+    if (!project.image.alt || project.image.alt === "Project preview") {
+      setField(`projects.${index}.image.alt`, `Preview of ${project.name}`);
+    }
   };
 
   return (
@@ -220,13 +238,19 @@ function ProjectImageField({ index }: { index: number }) {
           <input
             ref={inputRef}
             type="file"
-            accept="image/png,image/jpeg,image/webp,image/gif"
-            onChange={(event) => onFile(event.target.files?.[0])}
+            accept={ACCEPTED_IMAGE_ACCEPT}
+            onChange={(event) => void onFile(event.target.files?.[0])}
             aria-label={`Upload a preview image for ${project.name}`}
           />
           <p>
-            Uploaded images are stored in the repository when you publish.
+            PNG, JPEG, WebP, GIF, or AVIF, up to 2 MB. Uploaded images are stored
+            in the repository when you publish.
           </p>
+          {error ? (
+            <p className={styles.uploadError} role="alert">
+              {error}
+            </p>
+          ) : null}
         </div>
       </div>
       <Field label="Preview alt text" path={`projects.${index}.image.alt`} />
@@ -514,6 +538,10 @@ function CredentialsTab() {
         >
           <Field label="Name" path={`certifications.${index}.name`} />
           <Field label="Issuer" path={`certifications.${index}.issuer`} />
+          <Field
+            label="Verification link (https://)"
+            path={`certifications.${index}.link`}
+          />
           <Field label="Note" path={`certifications.${index}.note`} multiline />
         </ItemCard>
       ))}
@@ -524,6 +552,7 @@ function CredentialsTab() {
           addItem("certifications", {
             name: "New certificate",
             issuer: "Issuer",
+            link: "",
             note: "",
           })
         }
@@ -536,6 +565,7 @@ function CredentialsTab() {
 
 export function SiteEditor() {
   const {
+    content,
     unlocked,
     editorOpen,
     dirty,
@@ -549,11 +579,24 @@ export function SiteEditor() {
   } = useEditor();
   const [tab, setTab] = useState<Tab>("Profile");
 
-  if (!unlocked) return null;
+  const downloadContent = () => {
+    const blob = new Blob([JSON.stringify(content, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "content.json";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <>
-      {!editorOpen ? (
+      <AuthGate />
+      {unlocked && !editorOpen ? (
         <div className={styles.launcher} role="status">
           <span className={styles.launcherDot} aria-hidden="true" />
           <span>Edit mode</span>
@@ -573,7 +616,7 @@ export function SiteEditor() {
         </div>
       ) : null}
 
-      {editorOpen ? (
+      {unlocked && editorOpen ? (
         <aside
           className={styles.panel}
           role="dialog"
@@ -626,6 +669,13 @@ export function SiteEditor() {
                   : "Everything shown is published.")}
             </p>
             <div className={styles.footerActions}>
+              <button
+                type="button"
+                className={styles.resetButton}
+                onClick={downloadContent}
+              >
+                Download JSON
+              </button>
               <button
                 type="button"
                 className={styles.resetButton}

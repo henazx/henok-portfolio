@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, GraduationCap } from "lucide-react";
+import { BadgeCheck, ExternalLink, GraduationCap } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -64,7 +64,22 @@ export function Credentials() {
                     <BadgeCheck />
                   </span>
                   <div>
-                    <p className={styles.certName}>{entry.name}</p>
+                    <p className={styles.certName}>
+                      {entry.link ? (
+                        <a
+                          className={styles.certLink}
+                          href={entry.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open verification for ${entry.name} (opens in a new tab)`}
+                        >
+                          {entry.name}
+                          <ExternalLink aria-hidden="true" />
+                        </a>
+                      ) : (
+                        entry.name
+                      )}
+                    </p>
                     <p className={styles.certIssuer}>{entry.issuer}</p>
                     {entry.note ? (
                       <p className={styles.certNote}>{entry.note}</p>

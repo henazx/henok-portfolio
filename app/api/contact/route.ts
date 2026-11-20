@@ -1,55 +1,27 @@
-import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { validateContact } from "@/lib/contact";
+import {
+  errorResponse,
+  getClientIp,
+  isSameOrigin,
+  jsonResponse,
+  readJsonBody,
+} from "@/lib/server/http";
+import { rateLimit } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
+const MAX_BODY_BYTES = 16 * 1024;
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 
-type RateLimitStore = Map<string, number[]>;
-
-const globalForRateLimit = globalThis as typeof globalThis & {
-  __contactRateLimit?: RateLimitStore;
-};
-
-const rateLimitStore: RateLimitStore =
-  globalForRateLimit.__contactRateLimit ?? new Map();
-
-globalForRateLimit.__contactRateLimit = rateLimitStore;
-
-function getClientIp(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    return forwarded.split(",")[0]?.trim() || "unknown";
-  }
-  return request.headers.get("x-real-ip") ?? "unknown";
-}
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const timestamps = (rateLimitStore.get(ip) ?? []).filter(
-    (time) => now - time < RATE_LIMIT_WINDOW_MS,
-  );
-
-  if (timestamps.length >= RATE_LIMIT_MAX) {
-    rateLimitStore.set(ip, timestamps);
-    return true;
-  }
-
-  timestamps.push(now);
-  rateLimitStore.set(ip, timestamps);
-
-  // Keep the map from growing without bound on long-lived instances.
-  if (rateLimitStore.size > 500) {
-    for (const [key, values] of rateLimitStore) {
-      if (values.every((time) => now - time >= RATE_LIMIT_WINDOW_MS)) {
-        rateLimitStore.delete(key);
-      }
-    }
-  }
-
-  return false;
+function safeAddress(value: string | undefined): string | null {
+  const trimmed = value?.trim();
+  if (!trimmed || trimmed.length > 320) return null;
+  if (/[\r\n]/.test(trimmed)) return null;
+  return trimmed;
 }
 
 function escapeHtml(value: string): string {
@@ -61,72 +33,65 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#039;");
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  if (!isSameOrigin(request)) {
+    return errorResponse(403, "Invalid request origin.", "invalid_origin");
+  }
+
   const apiKey = process.env.RESEND_API_KEY?.trim();
-  const to = process.env.CONTACT_TO_EMAIL?.trim();
-  const from = process.env.CONTACT_FROM_EMAIL?.trim();
+  const to = safeAddress(process.env.CONTACT_TO_EMAIL);
+  const from = safeAddress(process.env.CONTACT_FROM_EMAIL);
 
   if (!apiKey || !to || !from) {
-    return NextResponse.json(
-      {
-        ok: false,
-        code: "not_configured",
-        message:
-          "Email delivery is not configured on this deployment. Please use the direct email link instead.",
-      },
-      { status: 503 },
+    return errorResponse(
+      503,
+      "Email delivery is not configured on this deployment. Please use the direct email link instead.",
+      "not_configured",
     );
   }
 
-  if (!request.headers.get("content-type")?.includes("application/json")) {
-    return NextResponse.json(
-      { ok: false, code: "unsupported_media_type", message: "Invalid request." },
-      { status: 415 },
+  const limit = await rateLimit("contact", getClientIp(request), {
+    limit: RATE_LIMIT_MAX,
+    windowMs: RATE_LIMIT_WINDOW_MS,
+  });
+
+  if (!limit.allowed) {
+    return errorResponse(
+      429,
+      "Too many messages have been sent from this connection. Please try again later.",
+      "rate_limited",
+      { "Retry-After": String(limit.retryAfterSeconds) },
     );
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, code: "invalid_json", message: "Invalid request body." },
-      { status: 400 },
-    );
+  const body = await readJsonBody(request, MAX_BODY_BYTES);
+  if (!body.ok) {
+    return errorResponse(body.status, body.message);
   }
 
-  const { data, errors } = validateContact(body);
+  const { data, errors } = validateContact(body.value);
 
   if (Object.keys(errors).length > 0) {
-    return NextResponse.json(
+    return jsonResponse(
       {
         ok: false,
         code: "validation_error",
         message: "Please check the highlighted fields.",
         errors,
       },
-      { status: 422 },
+      422,
     );
   }
 
   // Honeypot: real users never fill this hidden field.
   if (data.company) {
-    return NextResponse.json({ ok: true });
+    return jsonResponse({ ok: true });
   }
 
-  if (isRateLimited(getClientIp(request))) {
-    return NextResponse.json(
-      {
-        ok: false,
-        code: "rate_limited",
-        message:
-          "Too many messages have been sent from this connection. Please try again later.",
-      },
-      { status: 429, headers: { "Retry-After": "600" } },
-    );
-  }
-
-  const subject = `Portfolio enquiry from ${data.name}`.replace(/[\r\n]+/g, " ");
+  const subject = `Portfolio enquiry from ${data.name}`.replace(
+    /[\r\n]+/g,
+    " ",
+  );
   const text = `New message from your portfolio contact form.\n\nName: ${data.name}\nEmail: ${data.email}\n\n${data.message}`;
   const html = `
     <div style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #18181b;">
@@ -153,32 +118,33 @@ export async function POST(request: Request) {
         text,
         html,
       }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(15_000),
     });
 
     if (!response.ok) {
-      console.error("Resend rejected the contact email", await response.text());
-      return NextResponse.json(
-        {
-          ok: false,
-          code: "delivery_failed",
-          message:
-            "The message could not be delivered right now. Please email me directly instead.",
-        },
-        { status: 502 },
+      const detail = await response.text().catch(() => "");
+      console.error(
+        "Resend rejected the contact email",
+        detail.slice(0, 500),
+      );
+      return errorResponse(
+        502,
+        "The message could not be delivered right now. Please email me directly instead.",
+        "delivery_failed",
       );
     }
   } catch (error) {
-    console.error("Contact email request failed", error);
-    return NextResponse.json(
-      {
-        ok: false,
-        code: "delivery_failed",
-        message:
-          "The message could not be delivered right now. Please email me directly instead.",
-      },
-      { status: 502 },
+    console.error(
+      "Contact email request failed",
+      error instanceof Error ? error.message : "unknown error",
+    );
+    return errorResponse(
+      502,
+      "The message could not be delivered right now. Please email me directly instead.",
+      "delivery_failed",
     );
   }
 
-  return NextResponse.json({ ok: true });
+  return jsonResponse({ ok: true });
 }

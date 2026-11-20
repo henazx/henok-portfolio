@@ -19,15 +19,10 @@ function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
   ];
 }
 
-export function Contact() {
+export function Contact({ configured }: { configured: boolean }) {
   const { content } = useEditor();
   const { profile, sections } = content;
   const copy = sections.contact;
-  const emailConfigured = Boolean(
-    process.env.RESEND_API_KEY?.trim() &&
-      process.env.CONTACT_TO_EMAIL?.trim() &&
-      process.env.CONTACT_FROM_EMAIL?.trim(),
-  );
 
   return (
     <section className="section" id="contact" aria-labelledby="contact-title">
@@ -85,7 +80,7 @@ export function Contact() {
           </div>
 
           <div data-reveal style={{ transitionDelay: "80ms" }}>
-            <ContactForm configured={emailConfigured} email={profile.email} />
+            <ContactForm configured={configured} email={profile.email} />
           </div>
         </div>
       </div>

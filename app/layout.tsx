@@ -11,6 +11,7 @@ import { PointerGlow } from "@/components/interaction/PointerGlow";
 import { ContentProvider } from "@/components/editor/ContentProvider";
 import { EditUnlock } from "@/components/editor/EditUnlock";
 import { SiteEditor } from "@/components/editor/SiteEditor";
+import { education } from "@/data/education";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
 import { skillCategories } from "@/data/skills";
@@ -95,6 +96,12 @@ export const viewport: Viewport = {
  */
 const themeScript = `(function(){try{var stored=localStorage.getItem("theme");var theme=stored==="light"||stored==="dark"?stored:"dark";document.documentElement.setAttribute("data-theme",theme);}catch(e){}})();`;
 
+// Derived from the same editable content source as the visible page, rather
+// than duplicating personal details in the layout.
+const [addressLocality, addressCountry] = profile.location
+  .split(",")
+  .map((part) => part.trim());
+
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -105,16 +112,24 @@ const personJsonLd = {
   url: siteConfig.url,
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Addis Ababa",
-    addressCountry: "ET",
+    ...(addressLocality ? { addressLocality } : {}),
+    ...(addressCountry ? { addressCountry } : {}),
   },
-  alumniOf: {
-    "@type": "CollegeOrUniversity",
-    name: "Kotebe University of Education",
-  },
+  ...(education[0]
+    ? {
+        alumniOf: {
+          "@type": "CollegeOrUniversity",
+          name: education[0].institution,
+        },
+      }
+    : {}),
   sameAs: [profile.github, profile.linkedin].filter(Boolean),
   knowsAbout: skillCategories.flatMap((category) => category.skills),
 };
+
+// JSON-LD is embedded in a <script> element; escape `<` so editable copy can
+// never terminate the tag early.
+const jsonLd = JSON.stringify(personJsonLd).replace(/</g, "\\u003c");
 
 export default function RootLayout({
   children,
@@ -127,7 +142,8 @@ export default function RootLayout({
       className={`${geist.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
-      <body>
+      {/* Browser extensions can add attributes to body before hydration. */}
+      <body suppressHydrationWarning>
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
@@ -146,7 +162,7 @@ export default function RootLayout({
         </ContentProvider>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
         />
       </body>
     </html>

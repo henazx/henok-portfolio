@@ -41,6 +41,7 @@ export interface CertificationEntry {
   name: string;
   issuer: string;
   note?: string;
+  link?: string;
 }
 
 export type ProjectCategory = "Development" | "IT & Systems" | "UI/UX Design";
