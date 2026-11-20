@@ -20,6 +20,11 @@ export interface SocialLink {
   icon: SocialIcon;
 }
 
+export interface OrganizationLogo {
+  src: string;
+  alt: string;
+}
+
 export interface ExperienceEntry {
   role: string;
   organization: string;
@@ -28,6 +33,7 @@ export interface ExperienceEntry {
   summary?: string;
   highlights: string[];
   current?: boolean;
+  logo?: OrganizationLogo;
 }
 
 export interface EducationEntry {

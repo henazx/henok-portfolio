@@ -8,6 +8,7 @@ import {
 import {
   MAX_CONTENT_BYTES,
   MAX_INLINE_IMAGE_BYTES,
+  MAX_INLINE_IMAGES,
   extractInlineImages,
   safeImageSlug,
   validateContent,
@@ -32,7 +33,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Room for content.json plus several inline images (base64 adds ~33%).
-const MAX_BODY_BYTES = MAX_CONTENT_BYTES + 6 * Math.ceil((MAX_INLINE_IMAGE_BYTES * 4) / 3);
+const MAX_BODY_BYTES =
+  MAX_CONTENT_BYTES +
+  MAX_INLINE_IMAGES * Math.ceil((MAX_INLINE_IMAGE_BYTES * 4) / 3);
 const LIMIT = 10;
 const WINDOW_MS = 10 * 60 * 1000;
 
@@ -115,6 +118,20 @@ export async function POST(request: NextRequest) {
   }
 
   for (const image of extracted.images) {
+    if (image.kind === "experience") {
+      const entry = content.experience[image.index];
+      if (!entry?.logo) continue;
+
+      const fileName = `${safeImageSlug(entry.organization, `organization-${image.index + 1}`)}.${image.extension}`;
+      const publicSrc = `/experience/${fileName}`;
+      entry.logo.src = publicSrc;
+      images.push({
+        path: `public${publicSrc}`,
+        base64: image.buffer.toString("base64"),
+      });
+      continue;
+    }
+
     if (image.kind !== "project") continue;
     const project = content.projects[image.index];
     if (!project) continue;

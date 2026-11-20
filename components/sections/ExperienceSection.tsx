@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./ExperienceSection.module.css";
@@ -37,14 +39,30 @@ export function ExperienceSection() {
               </div>
 
               <div className={styles.content}>
-                <h3 className={styles.role}>{entry.role}</h3>
-                <p className={styles.organization}>
-                  {entry.organization}
-                  <span className={styles.separator} aria-hidden="true">
-                    ·
-                  </span>
-                  {entry.location}
-                </p>
+                <div className={styles.headline}>
+                  {entry.logo ? (
+                    <span className={styles.logoFrame}>
+                      <Image
+                        src={entry.logo.src}
+                        alt={entry.logo.alt}
+                        width={56}
+                        height={56}
+                        unoptimized
+                        className={styles.logo}
+                      />
+                    </span>
+                  ) : null}
+                  <div className={styles.headingText}>
+                    <h3 className={styles.role}>{entry.role}</h3>
+                    <p className={styles.organization}>
+                      {entry.organization}
+                      <span className={styles.separator} aria-hidden="true">
+                        ·
+                      </span>
+                      {entry.location}
+                    </p>
+                  </div>
+                </div>
 
                 {entry.summary ? (
                   <p className={styles.summary}>{entry.summary}</p>

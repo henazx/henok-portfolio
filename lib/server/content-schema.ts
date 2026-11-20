@@ -48,7 +48,7 @@ const DATA_IMAGE_PATTERN =
 export const MAX_CONTENT_BYTES = 512 * 1024;
 export const MAX_INLINE_IMAGE_BYTES = 2 * 1024 * 1024;
 // Keeps a single request within the endpoint's body limit (content + images).
-export const MAX_INLINE_IMAGES = 6;
+export const MAX_INLINE_IMAGES = 12;
 // Primary preview plus up to three additional screenshots per project.
 export const MAX_PROJECT_GALLERY_IMAGES = 3;
 
@@ -261,6 +261,20 @@ function projectImageField(
   });
 }
 
+function organizationLogoField(
+  validator: Validator,
+  value: unknown,
+  path: string,
+): void {
+  if (value === undefined || value === null) return;
+
+  validator.object(value, path, {
+    src: (entry, entryPath) =>
+      assetField(validator, entry, entryPath, { allowDataImage: true }),
+    alt: (entry, entryPath) => validator.string(entry, entryPath, { max: 300 }),
+  });
+}
+
 export function validateContent(value: unknown): ValidationResult {
   const v = new Validator();
 
@@ -389,6 +403,8 @@ export function validateContent(value: unknown): ValidationResult {
           current: (entry, entryPath) => {
             if (entry !== undefined) v.boolean(entry, entryPath);
           },
+          logo: (entry, entryPath) =>
+            organizationLogoField(v, entry, entryPath),
         }),
       ),
 
@@ -501,7 +517,7 @@ export function validateContent(value: unknown): ValidationResult {
 }
 
 export interface InlineImage {
-  kind: "portrait" | "project";
+  kind: "portrait" | "project" | "experience";
   index: number;
   imageIndex: number;
   extension: string;
@@ -627,6 +643,17 @@ export function extractInlineImages(content: SiteContent): {
     0,
     "profile.portrait.src",
   );
+
+  content.experience.forEach((entry, index) => {
+    if (!entry.logo) return;
+    collect(
+      entry.logo.src,
+      "experience",
+      index,
+      0,
+      `experience[${index}].logo.src`,
+    );
+  });
 
   content.projects.forEach((project, index) => {
     collect(

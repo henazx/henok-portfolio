@@ -30,6 +30,7 @@
 
 .launcher button,
 .addButton,
+.removeButton,
 .resetButton,
 .publishButton {
   border: 1px solid var(--glass-border);
@@ -52,6 +53,12 @@
   border-color: color-mix(in srgb, var(--accent) 50%, transparent);
   background: var(--accent-soft);
   color: var(--text);
+}
+
+.removeButton:hover {
+  border-color: color-mix(in srgb, var(--danger) 50%, transparent);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
 }
 
 .launcher button:disabled,
@@ -358,6 +365,28 @@
   color: var(--text-subtle);
   font-size: 0.7rem;
   line-height: 1.5;
+}
+
+.logoUploadRow img,
+.uploadPlaceholder {
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-solid);
+}
+
+.logoUploadRow img {
+  padding: 8px;
+  object-fit: contain;
+}
+
+.uploadPlaceholder {
+  display: grid;
+  place-items: center;
+  color: var(--text-subtle);
+  font-size: 1.5rem;
 }
 
 .fieldHint {

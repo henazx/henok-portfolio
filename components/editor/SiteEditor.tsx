@@ -205,14 +205,16 @@ function PortraitField() {
   );
 }
 
-function ProjectImageUpload({
+function ImageUpload({
   src,
   label,
   onUploaded,
+  variant = "wide",
 }: {
-  src: string;
+  src?: string;
   label: string;
   onUploaded: (dataUrl: string) => void;
+  variant?: "wide" | "logo";
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -233,9 +235,19 @@ function ProjectImageUpload({
   };
 
   return (
-    <div className={styles.projectImageRow}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt="" />
+    <div
+      className={`${styles.projectImageRow} ${
+        variant === "logo" ? styles.logoUploadRow : ""
+      }`}
+    >
+      {src ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={src} alt="" />
+      ) : (
+        <span className={styles.uploadPlaceholder} aria-hidden="true">
+          +
+        </span>
+      )}
       <div>
         <input
           ref={inputRef}
@@ -265,7 +277,7 @@ function ProjectImageField({ index }: { index: number }) {
   return (
     <fieldset className={styles.list}>
       <legend>Project preview image</legend>
-      <ProjectImageUpload
+      <ImageUpload
         src={project.image.src}
         label={`Upload a preview image for ${project.name}`}
         onUploaded={(dataUrl) => {
@@ -313,7 +325,7 @@ function ProjectGalleryField({
               ×
             </button>
           </div>
-          <ProjectImageUpload
+          <ImageUpload
             src={image.src}
             label={`Upload image ${imageIndex + 2} for ${project.name}`}
             onUploaded={(dataUrl) => {
@@ -412,6 +424,53 @@ const emptyExperience: ExperienceEntry = {
   highlights: ["Key responsibility"],
 };
 
+function ExperienceLogoField({
+  index,
+  entry,
+}: {
+  index: number;
+  entry: ExperienceEntry;
+}) {
+  const { setField } = useEditor();
+
+  return (
+    <fieldset className={styles.list}>
+      <legend>Organization logo</legend>
+      <ImageUpload
+        src={entry.logo?.src}
+        variant="logo"
+        label={`Upload a logo for ${entry.organization || "this organization"}`}
+        onUploaded={(dataUrl) => {
+          if (entry.logo) {
+            setField(`experience.${index}.logo.src`, dataUrl);
+            return;
+          }
+
+          setField(`experience.${index}.logo`, {
+            src: dataUrl,
+            alt: `${entry.organization || "Organization"} logo`,
+          });
+        }}
+      />
+      {entry.logo ? (
+        <>
+          <Field
+            label="Logo alt text"
+            path={`experience.${index}.logo.alt`}
+          />
+          <button
+            type="button"
+            className={styles.removeButton}
+            onClick={() => setField(`experience.${index}.logo`, undefined)}
+          >
+            Remove logo
+          </button>
+        </>
+      ) : null}
+    </fieldset>
+  );
+}
+
 function ExperienceTab() {
   const { content, addItem, removeItem, setField } = useEditor();
   return (
@@ -426,6 +485,7 @@ function ExperienceTab() {
           <Field label="Organization" path={`experience.${index}.organization`} />
           <Field label="Location" path={`experience.${index}.location`} />
           <Field label="Period" path={`experience.${index}.period`} />
+          <ExperienceLogoField index={index} entry={entry} />
           <label className={styles.checkbox}>
             <input
               type="checkbox"
