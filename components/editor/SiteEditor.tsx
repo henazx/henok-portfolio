@@ -11,6 +11,7 @@ import type {
   ExperienceEntry,
   Project,
   ProjectCategory,
+  ProjectImage,
   SectionKey,
   SkillCategory,
   SkillIcon,
@@ -204,11 +205,17 @@ function PortraitField() {
   );
 }
 
-function ProjectImageField({ index }: { index: number }) {
-  const { content, setField } = useEditor();
+function ProjectImageUpload({
+  src,
+  label,
+  onUploaded,
+}: {
+  src: string;
+  label: string;
+  onUploaded: (dataUrl: string) => void;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
-  const project = content.projects[index];
 
   const onFile = async (file: File | undefined) => {
     if (!file) return;
@@ -222,38 +229,124 @@ function ProjectImageField({ index }: { index: number }) {
       return;
     }
 
-    setField(`projects.${index}.image.src`, result.dataUrl);
-    if (!project.image.alt || project.image.alt === "Project preview") {
-      setField(`projects.${index}.image.alt`, `Preview of ${project.name}`);
-    }
+    onUploaded(result.dataUrl);
   };
+
+  return (
+    <div className={styles.projectImageRow}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" />
+      <div>
+        <input
+          ref={inputRef}
+          type="file"
+          accept={ACCEPTED_IMAGE_ACCEPT}
+          onChange={(event) => void onFile(event.target.files?.[0])}
+          aria-label={label}
+        />
+        <p>
+          PNG, JPEG, WebP, GIF, or AVIF, up to 2 MB. Uploaded images are stored
+          in the repository when you publish.
+        </p>
+        {error ? (
+          <p className={styles.uploadError} role="alert">
+            {error}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function ProjectImageField({ index }: { index: number }) {
+  const { content, setField } = useEditor();
+  const project = content.projects[index];
 
   return (
     <fieldset className={styles.list}>
       <legend>Project preview image</legend>
-      <div className={styles.projectImageRow}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={project.image.src} alt="Current project preview" />
-        <div>
-          <input
-            ref={inputRef}
-            type="file"
-            accept={ACCEPTED_IMAGE_ACCEPT}
-            onChange={(event) => void onFile(event.target.files?.[0])}
-            aria-label={`Upload a preview image for ${project.name}`}
-          />
-          <p>
-            PNG, JPEG, WebP, GIF, or AVIF, up to 2 MB. Uploaded images are stored
-            in the repository when you publish.
-          </p>
-          {error ? (
-            <p className={styles.uploadError} role="alert">
-              {error}
-            </p>
-          ) : null}
-        </div>
-      </div>
+      <ProjectImageUpload
+        src={project.image.src}
+        label={`Upload a preview image for ${project.name}`}
+        onUploaded={(dataUrl) => {
+          setField(`projects.${index}.image.src`, dataUrl);
+          if (!project.image.alt || project.image.alt === "Project preview") {
+            setField(`projects.${index}.image.alt`, `Preview of ${project.name}`);
+          }
+        }}
+      />
       <Field label="Preview alt text" path={`projects.${index}.image.alt`} />
+    </fieldset>
+  );
+}
+
+function ProjectGalleryField({
+  index,
+  project,
+}: {
+  index: number;
+  project: Project;
+}) {
+  const { addItem, removeItem, setField } = useEditor();
+  const images = project.images ?? [];
+
+  return (
+    <fieldset className={styles.list}>
+      <legend>Additional images</legend>
+      <p className={styles.fieldHint}>
+        Add up to {MAX_PROJECT_GALLERY_IMAGES} extra screenshots. They appear as
+        a gallery on the project card.
+      </p>
+
+      {images.map((image, imageIndex) => (
+        <div className={styles.itemCard} key={`gallery-${imageIndex}`}>
+          <div className={styles.itemHeader}>
+            <strong>Image {imageIndex + 2}</strong>
+            <button
+              type="button"
+              className={styles.iconButton}
+              onClick={() =>
+                removeItem(`projects.${index}.images`, imageIndex)
+              }
+              aria-label={`Remove image ${imageIndex + 2} from ${project.name}`}
+            >
+              ×
+            </button>
+          </div>
+          <ProjectImageUpload
+            src={image.src}
+            label={`Upload image ${imageIndex + 2} for ${project.name}`}
+            onUploaded={(dataUrl) => {
+              setField(
+                `projects.${index}.images.${imageIndex}.src`,
+                dataUrl,
+              );
+              if (!image.alt || image.alt === "Project preview") {
+                setField(
+                  `projects.${index}.images.${imageIndex}.alt`,
+                  `${project.name} screenshot ${imageIndex + 2}`,
+                );
+              }
+            }}
+          />
+          <Field
+            label="Alt text"
+            path={`projects.${index}.images.${imageIndex}.alt`}
+          />
+        </div>
+      ))}
+
+      {images.length < MAX_PROJECT_GALLERY_IMAGES ? (
+        <button
+          type="button"
+          className={styles.addButton}
+          onClick={() =>
+            addItem(`projects.${index}.images`, emptyProjectImage())
+          }
+        >
+          + Add image
+        </button>
+      ) : null}
     </fieldset>
   );
 }
@@ -366,6 +459,17 @@ function ExperienceTab() {
   );
 }
 
+const MAX_PROJECT_GALLERY_IMAGES = 3;
+
+function emptyProjectImage(): ProjectImage {
+  return {
+    src: "/projects/placeholder.svg",
+    alt: "Project preview",
+    width: 1200,
+    height: 750,
+  };
+}
+
 const emptyProject: Project = {
   slug: `project-${Date.now()}`,
   name: "New project",
@@ -378,6 +482,7 @@ const emptyProject: Project = {
     width: 1200,
     height: 750,
   },
+  images: [],
 };
 
 function ProjectsTab() {
@@ -424,6 +529,7 @@ function ProjectsTab() {
           <Field label="Live demo URL" path={`projects.${index}.demo`} />
           <Field label="Note" path={`projects.${index}.note`} />
           <ProjectImageField index={index} />
+          <ProjectGalleryField index={index} project={project} />
         </ItemCard>
       ))}
       <button

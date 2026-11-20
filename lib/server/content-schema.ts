@@ -49,6 +49,8 @@ export const MAX_CONTENT_BYTES = 512 * 1024;
 export const MAX_INLINE_IMAGE_BYTES = 2 * 1024 * 1024;
 // Keeps a single request within the endpoint's body limit (content + images).
 export const MAX_INLINE_IMAGES = 6;
+// Primary preview plus up to three additional screenshots per project.
+export const MAX_PROJECT_GALLERY_IMAGES = 3;
 
 interface StringOptions {
   min?: number;
@@ -245,6 +247,20 @@ function assetField(
   );
 }
 
+function projectImageField(
+  validator: Validator,
+  value: unknown,
+  path: string,
+): void {
+  validator.object(value, path, {
+    src: (entry, entryPath) =>
+      assetField(validator, entry, entryPath, { allowDataImage: true }),
+    alt: (entry, entryPath) => validator.string(entry, entryPath, { max: 300 }),
+    width: (entry, entryPath) => validator.integer(entry, entryPath, 1, 6000),
+    height: (entry, entryPath) => validator.integer(entry, entryPath, 1, 6000),
+  });
+}
+
 export function validateContent(value: unknown): ValidationResult {
   const v = new Validator();
 
@@ -412,16 +428,16 @@ export function validateContent(value: unknown): ValidationResult {
               v.string(entry, entryPath, { min: 1, max: 60 }),
             ),
           image: (image, imagePath) =>
-            v.object(image, imagePath, {
-              src: (entry, entryPath) =>
-                assetField(v, entry, entryPath, { allowDataImage: true }),
-              alt: (entry, entryPath) =>
-                v.string(entry, entryPath, { max: 300 }),
-              width: (entry, entryPath) =>
-                v.integer(entry, entryPath, 1, 6000),
-              height: (entry, entryPath) =>
-                v.integer(entry, entryPath, 1, 6000),
-            }),
+            projectImageField(v, image, imagePath),
+          images: (entries, entriesPath) => {
+            if (entries === undefined || entries === null) return;
+            v.array(
+              entries,
+              entriesPath,
+              MAX_PROJECT_GALLERY_IMAGES,
+              (item, itemPath) => projectImageField(v, item, itemPath),
+            );
+          },
           repository: (entry, entryPath) =>
             urlField(v, entry, entryPath, true),
           demo: (entry, entryPath) => urlField(v, entry, entryPath, true),
@@ -487,6 +503,7 @@ export function validateContent(value: unknown): ValidationResult {
 export interface InlineImage {
   kind: "portrait" | "project";
   index: number;
+  imageIndex: number;
   extension: string;
   buffer: Buffer;
 }
@@ -540,6 +557,7 @@ export function extractInlineImages(content: SiteContent): {
     src: string,
     kind: InlineImage["kind"],
     index: number,
+    imageIndex: number,
     path: string,
   ) => {
     const match = src.match(DATA_IMAGE_PATTERN);
@@ -599,18 +617,34 @@ export function extractInlineImages(content: SiteContent): {
       return;
     }
 
-    images.push({ kind, index, extension: detected, buffer });
+    images.push({ kind, index, imageIndex, extension: detected, buffer });
   };
 
-  collect(content.profile.portrait.src, "portrait", 0, "profile.portrait.src");
+  collect(
+    content.profile.portrait.src,
+    "portrait",
+    0,
+    0,
+    "profile.portrait.src",
+  );
 
   content.projects.forEach((project, index) => {
     collect(
       project.image.src,
       "project",
       index,
+      0,
       `projects[${index}].image.src`,
     );
+    project.images?.forEach((image, imageIndex) => {
+      collect(
+        image.src,
+        "project",
+        index,
+        imageIndex + 1,
+        `projects[${index}].images[${imageIndex}].src`,
+      );
+    });
   });
 
   return { images, issues };

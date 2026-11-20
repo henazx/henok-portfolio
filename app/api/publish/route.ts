@@ -118,9 +118,19 @@ export async function POST(request: NextRequest) {
     if (image.kind !== "project") continue;
     const project = content.projects[image.index];
     if (!project) continue;
-    const fileName = `${safeImageSlug(project.slug, `project-${image.index + 1}`)}.${image.extension}`;
+
+    const suffix = image.imageIndex === 0 ? "" : `-${image.imageIndex + 1}`;
+    const fileName = `${safeImageSlug(project.slug, `project-${image.index + 1}`)}${suffix}.${image.extension}`;
     const publicSrc = `/projects/${fileName}`;
-    project.image.src = publicSrc;
+
+    if (image.imageIndex === 0) {
+      project.image.src = publicSrc;
+    } else if (project.images?.[image.imageIndex - 1]) {
+      project.images[image.imageIndex - 1].src = publicSrc;
+    } else {
+      continue;
+    }
+
     images.push({
       path: `public${publicSrc}`,
       base64: image.buffer.toString("base64"),

@@ -60,6 +60,8 @@ export interface Project {
   description: string;
   technologies: string[];
   image: ProjectImage;
+  /** Optional additional screenshots, shown as a gallery on the project card. */
+  images?: ProjectImage[];
   repository?: string;
   demo?: string;
   note?: string;

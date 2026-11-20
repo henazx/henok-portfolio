@@ -66,10 +66,10 @@
     "availability": "Open to full-time & freelance",
     "workPreference": "Remote · Hybrid · On-site",
     "github": "https://github.com/henazx",
-    "linkedin": "",
+    "linkedin": "https://www.linkedin.com/in/henok-zx21/",
     "cv": {
-      "path": "/cv/your-name-cv.pdf",
-      "fileName": "Your-Name-CV.pdf"
+      "path": "/cv/henok-neknikie-cv.pdf",
+      "fileName": "Henok-Neknikie-CV.pdf"
     },
     "portrait": {
       "src": "/images/henok-portrait.jpg",
@@ -106,6 +106,7 @@
         "width": 1200,
         "height": 750
       },
+      "images": [],
       "repository": "https://github.com/henazx/smartcv",
       "demo": "https://smartcv-virid.vercel.app/"
     },
@@ -121,6 +122,7 @@
         "width": 1200,
         "height": 750
       },
+      "images": [],
       "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system"
     },
     {
@@ -135,6 +137,7 @@
         "width": 1200,
         "height": 750
       },
+      "images": [],
       "repository": "https://github.com/henazx/telegram-job-board"
     },
     {
@@ -149,6 +152,7 @@
         "width": 1200,
         "height": 750
       },
+      "images": [],
       "note": "Academic project"
     }
   ],

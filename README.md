@@ -31,8 +31,8 @@ All editable copy lives in **`data/content.json`**. The TypeScript files in `dat
 | Placeholder | Where to change it |
 | --- | --- |
 | `SITE_URL` | Vercel environment variable (or `.env.local`); `VERCEL_URL` is detected automatically |
-| CV file | `public/cv/your-name-cv.pdf` and `data/content.json` → `profile.cv` |
-| LinkedIn | `data/content.json` → `profile.linkedin` (hidden while empty) |
+| LinkedIn | `data/content.json` → `profile.linkedin` |
+| Project screenshots | `public/projects/` and `data/content.json` → `projects[].image` / `projects[].images` |
 | Experience, education, certifications | `data/content.json` → `experience`, `education`, `certifications` |
 | Project links and screenshots | `data/content.json` → `projects`, `public/projects/` |
 | Skills, navigation, SEO description | `data/content.json` → `skills`, `site` |
@@ -88,7 +88,7 @@ No password is stored in `localStorage` or `sessionStorage`, and no password is 
 
 ### What you can edit
 
-Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, and per-project preview image.
+Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery.
 
 - **Drafts** — changes update the page instantly and are saved in `localStorage`. They are private to your browser until published.
 - **Download JSON** — saves the current draft as `content.json` so edits can be copied into the project manually when GitHub publishing is not configured.

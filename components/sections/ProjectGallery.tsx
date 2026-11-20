@@ -115,6 +115,11 @@ function ProjectCard({
   wide: boolean;
 }) {
   const hasLinks = Boolean(project.repository || project.demo);
+  const gallery = [project.image, ...(project.images ?? [])];
+  const [activeImage, setActiveImage] = useState(0);
+  const activeIndex = Math.min(activeImage, gallery.length - 1);
+  const active = gallery[activeIndex] ?? project.image;
+  const hasGallery = gallery.length > 1;
 
   return (
     <article
@@ -123,10 +128,15 @@ function ProjectCard({
       }`}
       data-glow
     >
-      <div className={styles.media}>
+      <div
+        className={`${styles.media} ${
+          hasGallery ? styles.mediaWithGallery : ""
+        }`}
+      >
         <Image
-          src={project.image.src}
-          alt={project.image.alt}
+          key={active.src}
+          src={active.src}
+          alt={active.alt}
           fill
           unoptimized
           sizes={
@@ -147,10 +157,33 @@ function ProjectCard({
           <span className={styles.note}>{project.note}</span>
         ) : null}
 
-        <span className={styles.hoverCue} aria-hidden="true">
-          {project.demo ? "Live deployment" : "View repository"}
-          <ArrowUpRight />
-        </span>
+        {hasGallery ? (
+          <div
+            className={styles.gallery}
+            role="group"
+            aria-label={`${project.name} images`}
+          >
+            {gallery.map((image, imageIndex) => (
+              <button
+                key={`${image.src}-${imageIndex}`}
+                type="button"
+                className={`${styles.thumb} ${
+                  imageIndex === activeIndex ? styles.thumbActive : ""
+                }`}
+                onClick={() => setActiveImage(imageIndex)}
+                aria-label={`Show ${project.name} image ${imageIndex + 1}`}
+                aria-pressed={imageIndex === activeIndex}
+              >
+                <Image src={image.src} alt="" fill unoptimized sizes="64px" />
+              </button>
+            ))}
+          </div>
+        ) : (
+          <span className={styles.hoverCue} aria-hidden="true">
+            {project.demo ? "Live deployment" : "View repository"}
+            <ArrowUpRight />
+          </span>
+        )}
       </div>
 
       <div className={styles.body}>
