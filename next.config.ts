@@ -53,6 +53,15 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/cv/your-name-cv.pdf",
+        destination: "/cv/henok-neknikie-cv.pdf",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
