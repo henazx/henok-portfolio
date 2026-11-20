@@ -72,9 +72,9 @@
       "fileName": "Your-Name-CV.pdf"
     },
     "portrait": {
-      "src": "/images/portrait-placeholder.svg",
+      "src": "/images/henok-portrait.jpg",
       "alt": "Portrait of Henok Neknikie",
-      "isPlaceholder": true
+      "isPlaceholder": false
     }
   },
   "experience": [

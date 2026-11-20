@@ -32,13 +32,12 @@ All editable copy lives in **`data/content.json`**. The TypeScript files in `dat
 | --- | --- |
 | `SITE_URL` | Vercel environment variable (or `.env.local`); `VERCEL_URL` is detected automatically |
 | CV file | `public/cv/your-name-cv.pdf` and `data/content.json` → `profile.cv` |
-| Portrait | `public/images/portrait-placeholder.svg` and `data/content.json` → `profile.portrait` |
 | LinkedIn | `data/content.json` → `profile.linkedin` (hidden while empty) |
 | Experience, education, certifications | `data/content.json` → `experience`, `education`, `certifications` |
 | Project links and screenshots | `data/content.json` → `projects`, `public/projects/` |
 | Skills, navigation, SEO description | `data/content.json` → `skills`, `site` |
 
-The portrait shows a “Portrait placeholder” label while `profile.portrait.isPlaceholder` is `true`. Set it to `false` after adding a real photograph. Replace placeholders with verified details only.
+The live portrait is `public/images/henok-portrait.jpg`. The editor can replace it with another approved photograph; `profile.portrait.isPlaceholder` should stay `false`. Replace remaining placeholders with verified details only.
 
 ---
 
