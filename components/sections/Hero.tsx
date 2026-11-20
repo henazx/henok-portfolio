@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { MapPin } from "lucide-react";
+import { ArrowRight, Download, MapPin } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
@@ -115,6 +115,21 @@ export function Hero() {
           </ul>
 
           <p className={styles.summary}>{profile.summary}</p>
+
+          <div className={styles.actions}>
+            <a className="btn btn-primary" href="#projects">
+              Explore Projects
+              <ArrowRight aria-hidden="true" />
+            </a>
+            <a
+              className="btn btn-secondary"
+              href={profile.cv.path}
+              download={profile.cv.fileName}
+            >
+              Download CV
+              <Download aria-hidden="true" />
+            </a>
+          </div>
 
           <div className={styles.footerRow}>
             <SocialLinks links={socialLinks} className="social-links" />

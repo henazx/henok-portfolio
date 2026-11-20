@@ -273,12 +273,19 @@
   line-height: 1.78;
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(22px, 2.8vw, 28px);
+}
+
 .footerRow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 20px;
-  margin-top: clamp(24px, 3vw, 32px);
+  margin-top: clamp(18px, 2.2vw, 24px);
 }
 
 .location {
@@ -761,6 +768,10 @@
 @media (max-width: 520px) {
   .hero {
     padding-top: 20px;
+  }
+
+  .actions a {
+    flex: 1 1 100%;
   }
 
   .name {
