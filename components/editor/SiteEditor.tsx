@@ -10,6 +10,7 @@ import {
 import type {
   ExperienceEntry,
   Project,
+  ProjectCaseStudy,
   ProjectCategory,
   ProjectImage,
   SectionKey,
@@ -545,6 +546,60 @@ const emptyProject: Project = {
   images: [],
 };
 
+function CaseStudyField({
+  index,
+  project,
+}: {
+  index: number;
+  project: Project;
+}) {
+  const { setField } = useEditor();
+  const basePath = `projects.${index}.caseStudy`;
+
+  const addCaseStudy = () => {
+    const template: ProjectCaseStudy = {
+      role: "",
+      problem: "",
+      approach: "",
+      decisions: [],
+      outcome: "",
+      learnings: "",
+    };
+    setField(basePath, template);
+  };
+
+  return (
+    <fieldset className={styles.list}>
+      <legend>Case study</legend>
+      {project.caseStudy ? (
+        <>
+          <Field label="Your role" path={`${basePath}.role`} />
+          <Field label="Problem" path={`${basePath}.problem`} multiline />
+          <Field label="Approach" path={`${basePath}.approach`} multiline />
+          <StringList
+            label="Technical decisions"
+            path={`${basePath}.decisions`}
+            template="Decision and why"
+          />
+          <Field label="Outcome" path={`${basePath}.outcome`} multiline />
+          <Field label="What you learned" path={`${basePath}.learnings`} multiline />
+          <button
+            type="button"
+            className={styles.removeButton}
+            onClick={() => setField(basePath, undefined)}
+          >
+            Remove case study
+          </button>
+        </>
+      ) : (
+        <button type="button" className={styles.addButton} onClick={addCaseStudy}>
+          + Add case study
+        </button>
+      )}
+    </fieldset>
+  );
+}
+
 function ProjectsTab() {
   const { content, addItem, removeItem, setField } = useEditor();
   return (
@@ -590,6 +645,7 @@ function ProjectsTab() {
           <Field label="Note" path={`projects.${index}.note`} />
           <ProjectImageField index={index} />
           <ProjectGalleryField index={index} project={project} />
+          <CaseStudyField index={index} project={project} />
         </ItemCard>
       ))}
       <button

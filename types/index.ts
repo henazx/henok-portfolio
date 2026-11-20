@@ -59,6 +59,15 @@ export interface ProjectImage {
   height: number;
 }
 
+export interface ProjectCaseStudy {
+  role: string;
+  problem: string;
+  approach: string;
+  decisions: string[];
+  outcome: string;
+  learnings?: string;
+}
+
 export interface Project {
   slug: string;
   name: string;
@@ -68,6 +77,7 @@ export interface Project {
   image: ProjectImage;
   /** Optional additional screenshots, shown as a gallery on the project card. */
   images?: ProjectImage[];
+  caseStudy?: ProjectCaseStudy;
   repository?: string;
   demo?: string;
   note?: string;

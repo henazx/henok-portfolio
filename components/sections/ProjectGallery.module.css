@@ -407,6 +407,69 @@
   line-height: 1.75;
 }
 
+.caseStudy {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.caseStudy summary {
+  width: fit-content;
+  color: var(--accent-hover);
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  list-style: none;
+  transition: color 0.2s var(--ease-smooth);
+}
+
+.caseStudy summary::-webkit-details-marker {
+  display: none;
+}
+
+.caseStudy summary::after {
+  content: " +";
+  color: var(--text-subtle);
+}
+
+.caseStudy[open] summary::after {
+  content: " −";
+}
+
+.caseStudy summary:hover {
+  color: var(--text);
+}
+
+.caseStudyList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.caseStudyList dt {
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.caseStudyList dd {
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.caseStudyList ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 18px;
+  list-style: disc;
+}
+
 .tech {
   display: flex;
   flex-wrap: wrap;

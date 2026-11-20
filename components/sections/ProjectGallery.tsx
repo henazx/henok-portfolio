@@ -120,6 +120,16 @@ function ProjectCard({
   const activeIndex = Math.min(activeImage, gallery.length - 1);
   const active = gallery[activeIndex] ?? project.image;
   const hasGallery = gallery.length > 1;
+  const study = project.caseStudy;
+  const hasCaseStudy = Boolean(
+    study &&
+      (study.role ||
+        study.problem ||
+        study.approach ||
+        study.outcome ||
+        study.learnings ||
+        study.decisions.length > 0),
+  );
 
   return (
     <article
@@ -214,6 +224,56 @@ function ProjectCard({
         </div>
 
         <p className={styles.description}>{project.description}</p>
+
+        {study && hasCaseStudy ? (
+          <details className={styles.caseStudy}>
+            <summary>Case study</summary>
+            <dl className={styles.caseStudyList}>
+              {study.role ? (
+                <div>
+                  <dt>Your role</dt>
+                  <dd>{study.role}</dd>
+                </div>
+              ) : null}
+              {study.problem ? (
+                <div>
+                  <dt>Problem</dt>
+                  <dd>{study.problem}</dd>
+                </div>
+              ) : null}
+              {study.approach ? (
+                <div>
+                  <dt>Approach</dt>
+                  <dd>{study.approach}</dd>
+                </div>
+              ) : null}
+              {study.decisions.length > 0 ? (
+                <div>
+                  <dt>Technical decisions</dt>
+                  <dd>
+                    <ul>
+                      {study.decisions.map((decision) => (
+                        <li key={decision}>{decision}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ) : null}
+              {study.outcome ? (
+                <div>
+                  <dt>Outcome</dt>
+                  <dd>{study.outcome}</dd>
+                </div>
+              ) : null}
+              {study.learnings ? (
+                <div>
+                  <dt>What I learned</dt>
+                  <dd>{study.learnings}</dd>
+                </div>
+              ) : null}
+            </dl>
+          </details>
+        ) : null}
 
         <ul className={styles.tech} aria-label="Technologies used">
           {project.technologies.map((technology) => (

@@ -88,7 +88,7 @@ No password is stored in `localStorage` or `sessionStorage`, and no password is 
 
 ### What you can edit
 
-Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery.
+Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery, plus an optional case study with your role, problem, approach, technical decisions, outcome, and learnings.
 
 - **Drafts** — changes update the page instantly and are saved in `localStorage`. They are private to your browser until published.
 - **Download JSON** — saves the current draft as `content.json` so edits can be copied into the project manually when GitHub publishing is not configured.

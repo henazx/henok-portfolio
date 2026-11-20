@@ -275,6 +275,53 @@ function organizationLogoField(
   });
 }
 
+function caseStudyField(
+  validator: Validator,
+  value: unknown,
+  path: string,
+): void {
+  if (value === undefined || value === null) return;
+
+  validator.object(value, path, {
+    role: (entry, entryPath) =>
+      validator.string(entry, entryPath, {
+        optional: true,
+        allowEmpty: true,
+        max: 200,
+      }),
+    problem: (entry, entryPath) =>
+      validator.string(entry, entryPath, {
+        optional: true,
+        allowEmpty: true,
+        max: 2500,
+      }),
+    approach: (entry, entryPath) =>
+      validator.string(entry, entryPath, {
+        optional: true,
+        allowEmpty: true,
+        max: 2500,
+      }),
+    decisions: (entries, entriesPath) => {
+      if (entries === undefined || entries === null) return;
+      validator.array(entries, entriesPath, 12, (entry, entryPath) =>
+        validator.string(entry, entryPath, { min: 1, max: 600 }),
+      );
+    },
+    outcome: (entry, entryPath) =>
+      validator.string(entry, entryPath, {
+        optional: true,
+        allowEmpty: true,
+        max: 2500,
+      }),
+    learnings: (entry, entryPath) =>
+      validator.string(entry, entryPath, {
+        optional: true,
+        allowEmpty: true,
+        max: 2500,
+      }),
+  });
+}
+
 export function validateContent(value: unknown): ValidationResult {
   const v = new Validator();
 
@@ -454,6 +501,8 @@ export function validateContent(value: unknown): ValidationResult {
               (item, itemPath) => projectImageField(v, item, itemPath),
             );
           },
+          caseStudy: (entry, entryPath) =>
+            caseStudyField(v, entry, entryPath),
           repository: (entry, entryPath) =>
             urlField(v, entry, entryPath, true),
           demo: (entry, entryPath) => urlField(v, entry, entryPath, true),
