@@ -39,6 +39,19 @@ All editable copy lives in **`data/content.json`**. The TypeScript files in `dat
 
 The live portrait is `public/images/henok-portrait.jpg`. The editor can replace it with another approved photograph; `profile.portrait.isPlaceholder` should stay `false`. Replace remaining placeholders with verified details only.
 
+### Project screenshot slots
+
+The current previews in `public/projects/*.svg` are stylised illustrations. Replace them with real screenshots when available:
+
+| Project | Preferred primary file | Additional screenshots |
+| --- | --- | --- |
+| SmartCV | `public/projects/smartcv.webp` | `smartcv-2.webp`, `smartcv-3.webp`, `smartcv-4.webp` |
+| Mesob Connect | `public/projects/mesob-connect.webp` | `mesob-connect-2.webp`, `mesob-connect-3.webp`, `mesob-connect-4.webp` |
+| Telegram Job Board | `public/projects/telegram-job-board.webp` | `telegram-job-board-2.webp`, `telegram-job-board-3.webp`, `telegram-job-board-4.webp` |
+| High School Counseling Website | `public/projects/high-school-counseling.webp` | `high-school-counseling-2.webp`, `high-school-counseling-3.webp`, `high-school-counseling-4.webp` |
+
+Use WebP or PNG, about 1200×750, under 2 MB each, with meaningful alt text. Upload them in the editor under **Projects → Project preview image** and **Additional images**, or add the files and tell me to wire them up. Publishing rewrites uploads to `/projects/<slug>.<ext>` and `/projects/<slug>-2.<ext>`, etc.
+
 ---
 
 ## Environment variables
@@ -89,7 +102,7 @@ No password is stored in `localStorage` or `sessionStorage`, and no password is 
 
 ### What you can edit
 
-Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery, plus an optional case study with your role, problem, approach, technical decisions, outcome, and learnings.
+Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery, plus an optional case study with your role, problem, approach, stack decisions, outcome, and learnings.
 
 - **Drafts** — changes update the page instantly and are saved in `localStorage`. They are private to your browser until published.
 - **Download JSON** — saves the current draft as `content.json` so edits can be copied into the project manually when GitHub publishing is not configured.

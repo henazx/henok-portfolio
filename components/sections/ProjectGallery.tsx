@@ -188,12 +188,12 @@ function ProjectCard({
               </button>
             ))}
           </div>
-        ) : (
+        ) : hasLinks ? (
           <span className={styles.hoverCue} aria-hidden="true">
             {project.demo ? "Live deployment" : "View repository"}
             <ArrowUpRight />
           </span>
-        )}
+        ) : null}
       </div>
 
       <div className={styles.body}>
@@ -249,7 +249,7 @@ function ProjectCard({
               ) : null}
               {study.decisions.length > 0 ? (
                 <div>
-                  <dt>Technical decisions</dt>
+                  <dt>Stack decisions</dt>
                   <dd>
                     <ul>
                       {study.decisions.map((decision) => (

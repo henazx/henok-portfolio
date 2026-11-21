@@ -583,7 +583,7 @@ function CaseStudyField({
           <Field label="Problem" path={`${basePath}.problem`} multiline />
           <Field label="Approach" path={`${basePath}.approach`} multiline />
           <StringList
-            label="Technical decisions"
+            label="Stack decisions"
             path={`${basePath}.decisions`}
             template="Decision and why"
           />

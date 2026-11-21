@@ -144,8 +144,16 @@
       "slug": "mesob-connect",
       "name": "Mesob Connect",
       "category": "IT & Systems",
-      "description": "An internal messaging and document management system designed to improve communication and information sharing within an organization.",
-      "technologies": ["JavaScript", "React", "Node.js", "Express.js", "MySQL"],
+      "description": "An internal messaging and document management system for formal correspondence, attachments, message tracking, and direct messages.",
+      "technologies": [
+        "React",
+        "Vite",
+        "Node.js",
+        "Express.js",
+        "MySQL",
+        "JWT",
+        "WebAuthn"
+      ],
       "image": {
         "src": "/projects/mesob-connect.svg",
         "alt": "Stylised preview of the Mesob Connect messaging and document management interface",
@@ -153,14 +161,35 @@
         "height": 750
       },
       "images": [],
-      "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system"
+      "caseStudy": {
+        "role": "[TODO: confirm your exact role and which parts you personally built]",
+        "problem": "Organizations need one place to compose formal letters, manage correspondence, attach documents, and track message status instead of relying on scattered messages and files. [TODO: add the real organizational context].",
+        "approach": "Developed a full-stack internal messaging system with formal-letter templates, attachment support, inbox/sent/drafts filters, message event history, direct messages, and admin-managed users and departments. [TODO: clarify which parts you personally owned].",
+        "decisions": [
+          "Separate React/Vite client and Express/MySQL server, matching the repository structure.",
+          "MySQL schema with a message status lifecycle and a message_events table to support tracking and audit history.",
+          "JWT authentication with admin-created accounts; WebAuthn dependencies are present in the repo. [TODO: confirm whether WebAuthn was implemented and whether you owned it].",
+          "CORS allowlist, security headers, a 2 MB JSON limit, and 10 MB upload error handling in the server.",
+          "Generated PDFs are served only through an authenticated /api/messages/:id/pdf route."
+        ],
+        "outcome": "A working full-stack system with a reachable demo covering correspondence, formal letters, attachments, tracking, and admin management. [TODO: add adoption, users, departments, or measurable outcomes].",
+        "learnings": "Designing a status-driven data model, separating client and server concerns, and applying auth, CORS, and CSP controls to internal tools. [TODO: add your personal reflection]."
+      },
+      "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system",
+      "demo": "https://mesob-messaging-system-client.vercel.app/"
     },
     {
       "slug": "telegram-job-board",
       "name": "Telegram Job Board",
       "category": "Development",
-      "description": "A project focused on sharing job opportunities through Telegram, helping users discover relevant employment opportunities in one place.",
-      "technologies": ["JavaScript", "Node.js", "Telegram Bot API"],
+      "description": "Collects job posts from Telegram channels into one searchable board with filters, deadline sorting, and saved jobs.",
+      "technologies": [
+        "React",
+        "Node.js",
+        "Telegram Bot API",
+        "Groq",
+        "Supabase"
+      ],
       "image": {
         "src": "/projects/telegram-job-board.svg",
         "alt": "Stylised preview of the Telegram Job Board showing a feed of job listings",
@@ -168,13 +197,28 @@
         "height": 750
       },
       "images": [],
+      "caseStudy": {
+        "role": "[TODO: confirm your role and which parts you personally built]",
+        "problem": "Job opportunities are posted across multiple Telegram channels; the code brings them into one searchable board. [TODO: confirm this was the original problem and add the real context — the repository README is still Create React App boilerplate].",
+        "approach": "Collected posts from configured Telegram channels, parsed them with Groq into structured job fields including Amharic and English, stored them in Supabase, and exposed a filterable board with search, location/channel filters, deadline sorting, and saved jobs. [TODO: clarify your personal contribution].",
+        "decisions": [
+          "React with hash-based routing for Home, Saved, Channels, and Admin pages.",
+          "Telegram Bot API getUpdates and a Telegram client path using API ID, API hash, and session credentials as two ingestion options.",
+          "Groq llama-3.3-70b-versatile to extract title, company, location, salary, deadline, skills, and apply links, including Amharic and English text.",
+          "Supabase jobs table for persistence, deadline ordering, and structured fields.",
+          "localStorage for saved jobs.",
+          "[TODO: review the testParser() and testSaver() calls that currently run at module load in parser.js and saver.js]."
+        ],
+        "outcome": "A working codebase with ingestion, parsing, persistence, and a filterable UI. [TODO: add a deployment URL, job volume, extraction accuracy, or user impact — none are stated in the repository].",
+        "learnings": "Working with LLM extraction across Amharic and English, normalizing messy dates, and persisting structured records in Supabase. [TODO: add your personal reflection and any measured accuracy]."
+      },
       "repository": "https://github.com/henazx/telegram-job-board"
     },
     {
       "slug": "high-school-counseling",
       "name": "High School Counseling Website",
       "category": "UI/UX Design",
-      "description": "An academic project developed to give high school students access to academic guidance, emotional support resources, and educational information.",
+      "description": "An academic UX/UI project giving high school students access to academic guidance, emotional support resources, and educational information.",
       "technologies": ["UX/UI Design", "Figma", "Wireframing"],
       "image": {
         "src": "/projects/counseling-website.svg",
@@ -183,6 +227,17 @@
         "height": 750
       },
       "images": [],
+      "caseStudy": {
+        "role": "[TODO: confirm your role in this academic project]",
+        "problem": "An academic project developed to give high school students access to academic guidance, emotional support resources, and educational information.",
+        "approach": "[TODO: describe your research, wireframes, and design process. No repository, README, or design document is currently linked for this project].",
+        "decisions": [
+          "UX/UI Design, Figma, and wireframing are the tools listed in the portfolio entry.",
+          "[TODO: add specific design decisions — information architecture, navigation, visual system, and accessibility choices]."
+        ],
+        "outcome": "[TODO: add the final deliverable, audience feedback, or academic result].",
+        "learnings": "[TODO: add what you learned about designing for students and support resources]."
+      },
       "note": "Academic project"
     }
   ],
