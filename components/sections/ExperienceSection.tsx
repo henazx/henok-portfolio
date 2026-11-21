@@ -68,11 +68,25 @@ export function ExperienceSection() {
                   <p className={styles.summary}>{entry.summary}</p>
                 ) : null}
 
-                <ul className={styles.highlights}>
-                  {entry.highlights.map((highlight, itemIndex) => (
-                    <li key={`${itemIndex}-${highlight}`}>{highlight}</li>
-                  ))}
-                </ul>
+                <div className={styles.detailGroup}>
+                  <h4 className={styles.detailTitle}>Key responsibilities</h4>
+                  <ul className={styles.highlights}>
+                    {entry.highlights.map((highlight, itemIndex) => (
+                      <li key={`${itemIndex}-${highlight}`}>{highlight}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {entry.impact?.length ? (
+                  <div className={styles.detailGroup}>
+                    <h4 className={styles.detailTitle}>Impact</h4>
+                    <ul className={`${styles.highlights} ${styles.impact}`}>
+                      {entry.impact.map((item, itemIndex) => (
+                        <li key={`${itemIndex}-${item}`}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </li>
           ))}

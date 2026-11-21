@@ -84,12 +84,18 @@
       "location": "Addis Ababa, Ethiopia",
       "period": "Present",
       "current": true,
-      "summary": "Providing day-to-day technical support and keeping business-critical systems, hardware, and networks dependable.",
+      "summary": "Keep Addis Mesob’s people and systems working by resolving IT issues and maintaining the hardware, software, and networks the team relies on.",
       "highlights": [
-        "Provided technical support and troubleshooting for hardware, software, and network-related issues.",
-        "Installed, configured, and maintained computers, printers, and IT systems.",
-        "Assisted employees with technical problems and daily IT operations.",
-        "Supported software development and technology-related projects."
+        "Troubleshoot hardware, software, and network issues reported by staff.",
+        "Install, configure, and maintain computers, printers, and IT systems.",
+        "Help employees with day-to-day technical problems and IT operations.",
+        "Contribute to [TODO: name the software or technology project] by [TODO: describe your specific contribution]."
+      ],
+      "impact": [
+        "Resolved hardware, software, and network issues for [TODO: number] staff, with [TODO: average resolution time] average resolution time.",
+        "Kept computers, printers, and core IT systems available for [TODO: number] staff, with [TODO: uptime/availability figure].",
+        "Reduced [TODO: most common recurring issue] through [TODO: fix or process change], saving [TODO: time saved per week/month].",
+        "Delivered [TODO: concrete project outcome] for [TODO: project name]."
       ]
     }
   ],

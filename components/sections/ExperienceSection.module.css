@@ -138,11 +138,28 @@
   line-height: 1.7;
 }
 
+.detailGroup {
+  margin-top: 20px;
+}
+
+.detailTitle {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .highlights {
   display: flex;
   flex-direction: column;
   gap: 9px;
-  margin-top: 20px;
+  margin-top: 10px;
+}
+
+.impact li {
+  color: var(--text);
 }
 
 .highlights li {
