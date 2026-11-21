@@ -41,44 +41,6 @@
   font-size: 0.8125rem;
 }
 
-.notice {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 14px;
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-  border-radius: 11px;
-  background: linear-gradient(
-    150deg,
-    var(--accent-soft),
-    rgba(255, 255, 255, 0.02)
-  );
-  box-shadow: var(--glass-inner);
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  line-height: 1.6;
-}
-
-.notice svg {
-  flex-shrink: 0;
-  width: 15px;
-  height: 15px;
-  margin-top: 2px;
-  color: var(--accent-hover);
-}
-
-.noticeLink {
-  color: var(--text);
-  text-decoration: underline;
-  text-decoration-color: var(--border-strong);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.2s var(--ease-smooth);
-}
-
-.noticeLink:hover {
-  text-decoration-color: var(--accent);
-}
-
 .row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

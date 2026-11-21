@@ -19,7 +19,7 @@ function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
   ];
 }
 
-export function Contact({ configured }: { configured: boolean }) {
+export function Contact() {
   const { content } = useEditor();
   const { profile, sections } = content;
   const copy = sections.contact;
@@ -80,7 +80,7 @@ export function Contact({ configured }: { configured: boolean }) {
           </div>
 
           <div data-reveal style={{ transitionDelay: "80ms" }}>
-            <ContactForm configured={configured} email={profile.email} />
+            <ContactForm />
           </div>
         </div>
       </div>

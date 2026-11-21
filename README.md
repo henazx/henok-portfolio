@@ -55,9 +55,9 @@ Copy `.env.example` to `.env.local` for local development. **Never commit real v
 | `GITHUB_BRANCH` | No | Deployed branch; defaults to `main`. |
 | `GITHUB_CONTENT_PATH` | No | Content file to commit; defaults to `data/content.json`. |
 | `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` | Recommended in production | Shared rate-limit counters on serverless. `KV_REST_API_URL` / `KV_REST_API_TOKEN` are accepted as aliases. |
-| `RESEND_API_KEY` | No | Enables server-side contact delivery. |
-| `CONTACT_TO_EMAIL` | No | Inbox for contact messages. |
-| `CONTACT_FROM_EMAIL` | No | Verified Resend sender, e.g. `Portfolio Contact <contact@your-domain.com>`. |
+| `RESEND_API_KEY` | Required for contact delivery | Resend API key used only by the server route. |
+| `CONTACT_TO_EMAIL` | Required for contact delivery | Inbox that receives contact messages. |
+| `CONTACT_FROM_EMAIL` | Required for contact delivery | Verified Resend sender, e.g. `Portfolio Contact <contact@your-domain.com>`. |
 
 Without a Redis/KV configuration, rate limiting falls back to a per-instance in-memory bucket. That is fine locally, but **not sufficient on Vercel**, where requests may hit different instances. Configure the shared store before relying on the limits.
 
@@ -65,10 +65,11 @@ Without a Redis/KV configuration, rate limiting falls back to a per-instance in-
 
 ## Contact form
 
-- The server component `app/page.tsx` decides whether email delivery is configured and passes a boolean to the client form. Client code never reads private environment variables.
-- With Resend configured, `app/api/contact/route.ts` validates input, checks origin, rate-limits requests, escapes HTML, strips CRLF from the subject, and sends via the Resend REST API.
-- Without Resend, the form still validates and then opens an honest prefilled `mailto:` draft. It never claims the message was sent.
+- The form always submits to `app/api/contact/route.ts`; client code never reads private environment variables.
+- The route validates input, checks origin, rate-limits requests, escapes HTML, strips CRLF from the subject, and sends through the Resend REST API.
+- Set `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and `CONTACT_FROM_EMAIL` in Vercel Production, then redeploy. Until then the route returns a clear configuration error instead of pretending a message was delivered.
 - Validation rules are shared by client and server in `lib/contact.ts`. A hidden honeypot field discards bot submissions.
+- The form shows inline loading, success, and error states with `aria-live="polite"`.
 
 ---
 

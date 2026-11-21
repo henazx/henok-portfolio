@@ -1,14 +1,7 @@
 "use client";
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import {
-  AlertCircle,
-  CheckCircle2,
-  Info,
-  Loader2,
-  Mail,
-  Send,
-} from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 
 import {
   CONTACT_LIMITS,
@@ -34,12 +27,7 @@ const initialValues: FormValues = {
   company: "",
 };
 
-interface ContactFormProps {
-  configured: boolean;
-  email: string;
-}
-
-export function ContactForm({ configured, email }: ContactFormProps) {
+export function ContactForm() {
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -75,22 +63,6 @@ export function ContactForm({ configured, email }: ContactFormProps) {
       setStatus("idle");
       const firstInvalid = Object.keys(nextErrors)[0] as ContactField;
       document.getElementById(`contact-${firstInvalid}`)?.focus();
-      return;
-    }
-
-    // Without a configured email provider, hand the message to the user's
-    // email client instead of pretending the form was delivered.
-    if (!configured) {
-      const subject = encodeURIComponent(`Portfolio enquiry from ${data.name}`);
-      const body = encodeURIComponent(
-        `Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
-      );
-
-      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-      setStatus("success");
-      setFeedback(
-        "Your email app should open with the message prepared. If nothing happens, email me directly using the address on the left.",
-      );
       return;
     }
 
@@ -148,21 +120,6 @@ export function ContactForm({ configured, email }: ContactFormProps) {
           Fields marked with an asterisk are required.
         </p>
       </div>
-
-      {!configured ? (
-        <div className={styles.notice}>
-          <Info aria-hidden="true" />
-          <p>
-            Email delivery isn&apos;t connected on this deployment yet, so
-            submitting opens a pre-filled message in your email app. You can
-            also{" "}
-            <a href={`mailto:${email}`} className={styles.noticeLink}>
-              email me directly
-            </a>
-            .
-          </p>
-        </div>
-      ) : null}
 
       <div className={styles.row}>
         <div className={styles.field}>
@@ -266,15 +223,10 @@ export function ContactForm({ configured, email }: ContactFormProps) {
             <Loader2 className={styles.spinner} aria-hidden="true" />
             Sending…
           </>
-        ) : configured ? (
+        ) : (
           <>
             <Send aria-hidden="true" />
             Send message
-          </>
-        ) : (
-          <>
-            <Mail aria-hidden="true" />
-            Compose email
           </>
         )}
       </button>
