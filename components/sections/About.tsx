@@ -37,6 +37,9 @@ export function About() {
           </div>
 
           <div className={styles.bodyColumn}>
+            {profile.summary ? (
+              <p className={styles.intro}>{profile.summary}</p>
+            ) : null}
             {profile.about.paragraphs.map((paragraph, index) => (
               <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
             ))}
@@ -74,10 +77,12 @@ export function About() {
           <div className={styles.fact}>
             <dt>Focus</dt>
             <dd>
-              IT support &amp; systems
-              <span className={styles.factDetail}>
-                Software development · UX/UI design
-              </span>
+              {profile.currentFocus ?? profile.about.focus[0]}
+              {profile.currentFocus && profile.about.focus[1] ? (
+                <span className={styles.factDetail}>
+                  {profile.about.focus.slice(1).join(" · ")}
+                </span>
+              ) : null}
             </dd>
           </div>
         </dl>

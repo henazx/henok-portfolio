@@ -39,6 +39,8 @@ All editable copy lives in **`data/content.json`**. The TypeScript files in `dat
 
 The live portrait is `public/images/henok-portrait.jpg`. The editor can replace it with another approved photograph; `profile.portrait.isPlaceholder` should stay `false`. Replace remaining placeholders with verified details only.
 
+The live CV is `public/cv/henok-neknikie-cv.pdf`, with `profile.cv.path` and `profile.cv.fileName` in `data/content.json` controlling the download link. If you replace the PDF under the same path, no content change is needed; if you rename it, update both fields and keep or replace the permanent redirect for the old `/cv/your-name-cv.pdf` path.
+
 ### Project screenshot slots
 
 The current previews in `public/projects/*.svg` are stylised illustrations. Replace them with real screenshots when available:

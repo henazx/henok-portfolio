@@ -27,10 +27,20 @@ function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
 
 function statusRowsFor(profile: SiteContent["profile"]) {
   return [
-    { label: "system.status", value: "Available", tone: "live" as const },
-    { label: "role", value: profile.role },
-    { label: "focus", value: profile.positioning[0] ?? "Software Development" },
-    { label: "location", value: profile.location.split(",")[0] },
+    {
+      label: "Availability",
+      value: profile.availability || "Open to opportunities",
+      tone: "live" as const,
+    },
+    { label: "Role", value: profile.role },
+    {
+      label: "Focus",
+      value:
+        profile.currentFocus ??
+        profile.positioning[0] ??
+        "Software development",
+    },
+    { label: "Location", value: profile.location.split(",")[0] },
   ];
 }
 
@@ -108,15 +118,7 @@ export function Hero() {
             <circle cx="412" cy="856" r="6" />
             <path d="M412 846v-6M412 866v6M402 856h-6M422 856h6" />
           </g>
-          <g className={styles.annotations}>
-            <text x="376" y="158">BUS.A</text>
-            <text x="108" y="356">NODE.01</text>
-            <text x="652" y="132">REF.02</text>
-            <text x="506" y="542">DATA.LINK</text>
-            <text x="76" y="668">CLK.02</text>
-          </g>
         </svg>
-        <span className={styles.bpLeft}>REF // HN·01 — Portfolio system</span>
       </div>
 
       <div className={`container ${styles.grid}`}>
@@ -133,15 +135,14 @@ export function Hero() {
 
           <TypedName name={profile.name} />
 
-          <p className={styles.role}>{profile.role}</p>
+          <p className={styles.headline}>
+            {profile.headline ?? profile.role}
+          </p>
 
-          <ul className={styles.positioning}>
-            {profile.positioning.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-
-          <p className={styles.summary}>{profile.summary}</p>
+          <p className={styles.focus}>
+            <span className={styles.focusLabel}>Currently focused on</span>
+            {profile.currentFocus ?? profile.positioning.join(" · ")}
+          </p>
 
           <div className={styles.actions}>
             <a className="btn btn-primary" href="#projects">
@@ -196,9 +197,9 @@ export function Hero() {
                 <i />
                 <i />
               </span>
-              <span className={styles.consoleTitle}>profile.console</span>
+              <span className={styles.consoleTitle}>Profile snapshot</span>
               <span className={styles.consoleState}>
-                <span aria-hidden="true">●</span> online
+                <span aria-hidden="true">●</span> Available
               </span>
             </div>
 

@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { bypassImageOptimization } from "@/lib/image";
 import styles from "./ExperienceSection.module.css";
 
 export function ExperienceSection() {
@@ -47,7 +48,7 @@ export function ExperienceSection() {
                         alt={entry.logo.alt}
                         width={56}
                         height={56}
-                        unoptimized
+                        unoptimized={bypassImageOptimization(entry.logo.src)}
                         className={styles.logo}
                       />
                     </span>

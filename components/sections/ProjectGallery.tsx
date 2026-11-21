@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 
 import { GitHubIcon } from "@/components/ui/BrandIcons";
+import { bypassImageOptimization } from "@/lib/image";
 import type { Project, ProjectCategory } from "@/types";
 import styles from "./ProjectGallery.module.css";
 
@@ -149,7 +150,7 @@ function ProjectCard({
           src={active.src}
           alt={active.alt}
           fill
-          unoptimized
+          unoptimized={bypassImageOptimization(active.src)}
           sizes={
             featured
               ? "(max-width: 900px) 100vw, 58vw"
@@ -185,7 +186,13 @@ function ProjectCard({
                 aria-label={`Show ${project.name} image ${imageIndex + 1}`}
                 aria-pressed={imageIndex === activeIndex}
               >
-                <Image src={image.src} alt="" fill unoptimized sizes="64px" />
+                <Image
+                  src={image.src}
+                  alt=""
+                  fill
+                  unoptimized={bypassImageOptimization(image.src)}
+                  sizes="64px"
+                />
               </button>
             ))}
           </div>
@@ -290,6 +297,7 @@ function ProjectCard({
                 className={`btn btn-secondary ${styles.linkButton}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Source code for ${project.name} (opens in a new tab)`}
               >
                 <GitHubIcon />
                 Source code
@@ -302,6 +310,7 @@ function ProjectCard({
                 className={`btn btn-primary ${styles.linkButton}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Live demo for ${project.name} (opens in a new tab)`}
               >
                 <ExternalLink aria-hidden="true" />
                 Live demo

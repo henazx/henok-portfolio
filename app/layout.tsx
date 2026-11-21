@@ -8,9 +8,10 @@ import { Footer } from "@/components/layout/Footer";
 import { Backdrop } from "@/components/layout/Backdrop";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { PointerGlow } from "@/components/interaction/PointerGlow";
+import { AuthGate } from "@/components/editor/AuthGate";
 import { ContentProvider } from "@/components/editor/ContentProvider";
 import { EditUnlock } from "@/components/editor/EditUnlock";
-import { SiteEditor } from "@/components/editor/SiteEditor";
+import { EditorMount } from "@/components/editor/EditorMount";
 import { education } from "@/data/education";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
@@ -158,7 +159,8 @@ export default function RootLayout({
           <main id="main">{children}</main>
           <Footer />
           <EditUnlock />
-          <SiteEditor />
+          <AuthGate />
+          <EditorMount />
         </ContentProvider>
         <script
           type="application/ld+json"

@@ -435,7 +435,7 @@ html[data-theme="light"] [data-glow]::after {
   gap: 7px;
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   line-height: 1;

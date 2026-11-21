@@ -13,20 +13,20 @@
   },
   "sections": {
     "about": {
-      "title": "A technical foundation with a designer's eye.",
-      "description": "Support work taught me how systems fail. Development taught me how to build them. Design taught me why the details matter."
+      "title": "IT support, software, and design grounded in real use.",
+      "description": "I keep systems running, build practical web applications, and design interfaces around how people actually work."
     },
     "experience": {
-      "title": "Where I've put technology to work.",
-      "description": "Hands-on experience supporting the people and systems that keep an organization running."
+      "title": "Applying IT support in a working organization.",
+      "description": "Day-to-day troubleshooting, maintenance, and technical project work at Addis Mesob."
     },
     "projects": {
-      "title": "Selected work, built to be used.",
-      "description": "A mix of product development, internal systems, and design-led academic work — each shown with the stack it actually uses."
+      "title": "Selected work, with the decisions behind it.",
+      "description": "Web apps, internal systems, and design projects — with source, demos, and case studies where available."
     },
     "skills": {
-      "title": "A practical, maintained toolkit.",
-      "description": "The technologies and methods I use day to day — grouped by discipline rather than scored with arbitrary percentages."
+      "title": "Tools I use, with evidence.",
+      "description": "Grouped by discipline and linked to the projects or experience where they appear — no arbitrary percentages."
     },
     "credentials": {
       "title": "Formal study, continued learning.",
@@ -50,7 +50,7 @@
     ],
     "summary": "I'm a Computer Science graduate with practical experience in IT support, software development, and user-centered design. I build and maintain reliable systems, and I care about the details that make technology feel simple for the people who use it.",
     "about": {
-      "lead": "I work at the intersection of technology and people — keeping systems running, building practical software, and designing interfaces that get out of the way.",
+      "lead": "I keep systems running, build practical web applications, and design interfaces that stay out of the way.",
       "paragraphs": [
         "I am a Computer Science graduate with practical experience in Information Technology support, troubleshooting, hardware and software maintenance, and software development. My day-to-day work involves helping people resolve technical problems and keeping the systems they depend on available and reliable.",
         "Alongside IT operations, I build web applications using JavaScript, React, Next.js and Node.js. I also have a strong interest in UX/UI design, and I use Figma to turn requirements into clear, usable interfaces — from wireframes through to implementation.",

@@ -17,7 +17,6 @@ import type {
   SkillCategory,
   SkillIcon,
 } from "@/types";
-import { AuthGate } from "./AuthGate";
 import { useEditor } from "./ContentProvider";
 import styles from "./SiteEditor.module.css";
 
@@ -832,7 +831,6 @@ export function SiteEditor() {
 
   return (
     <>
-      <AuthGate />
       {unlocked && !editorOpen ? (
         <div className={styles.launcher} role="status">
           <span className={styles.launcherDot} aria-hidden="true" />

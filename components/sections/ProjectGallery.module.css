@@ -65,7 +65,7 @@
   background: var(--surface);
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
 }
 
 .filterActive .count {
@@ -188,7 +188,7 @@
   border-radius: 6px;
   background: color-mix(in srgb, var(--bg) 58%, transparent);
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.08em;
   line-height: 1.5;
   text-transform: uppercase;
@@ -214,6 +214,12 @@
   border-color: color-mix(in srgb, var(--success) 32%, transparent);
   background: color-mix(in srgb, #04120d 54%, transparent);
   color: #a7f3d0;
+}
+
+:global(html[data-theme="light"]) .live {
+  border-color: rgba(4, 120, 87, 0.45);
+  background: rgba(4, 120, 87, 0.92);
+  color: #ecfdf5;
 }
 
 .live span {
@@ -329,7 +335,7 @@
   margin-bottom: 12px;
   color: var(--accent-hover);
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -358,7 +364,7 @@
   flex-shrink: 0;
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
 }
 
@@ -451,7 +457,7 @@
 .caseStudyList dt {
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }

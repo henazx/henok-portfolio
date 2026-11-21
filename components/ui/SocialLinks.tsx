@@ -25,7 +25,7 @@ export function SocialLinks({ links, className }: SocialLinksProps) {
           <li key={link.label}>
             <a
               href={link.href}
-              aria-label={link.label}
+              aria-label={`${link.label}${isExternal ? " (opens in a new tab)" : ""}`}
               {...(isExternal
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
