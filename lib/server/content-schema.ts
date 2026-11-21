@@ -28,6 +28,8 @@ const SECTION_KEYS = [
 
 const NAV_HREFS =
   /^#(home|about|experience|projects|skills|credentials|contact)$/;
+const EVIDENCE_HREFS =
+  /^#(home|about|experience|projects|skills|credentials|contact|project-[a-z0-9]+(?:-[a-z0-9]+)*)$/;
 
 const PROJECT_CATEGORIES = ["Development", "IT & Systems", "UI/UX Design"];
 const SKILL_ICONS = [
@@ -238,6 +240,24 @@ function certificateLinkField(
   );
 }
 
+function evidenceHrefField(
+  validator: Validator,
+  value: unknown,
+  path: string,
+): void {
+  const text = validator.string(value, path, {
+    optional: true,
+    allowEmpty: true,
+    max: 300,
+  });
+  if (!text) return;
+  if (EVIDENCE_HREFS.test(text) || isHttpsUrl(text)) return;
+  validator.fail(
+    path,
+    "Must be an on-page #anchor or a full https:// link.",
+  );
+}
+
 function emailField(validator: Validator, value: unknown, path: string): void {
   const text = validator.string(value, path, {
     min: 3,
@@ -405,6 +425,18 @@ export function validateContent(value: unknown): ValidationResult {
           v.string(entry, entryPath, { min: 1, max: 4 }),
         role: (entry, entryPath) =>
           v.string(entry, entryPath, { min: 1, max: 120 }),
+        headline: (entry, entryPath) =>
+          v.string(entry, entryPath, {
+            optional: true,
+            allowEmpty: true,
+            max: 160,
+          }),
+        currentFocus: (entry, entryPath) =>
+          v.string(entry, entryPath, {
+            optional: true,
+            allowEmpty: true,
+            max: 160,
+          }),
         positioning: (entries, entriesPath) =>
           v.array(entries, entriesPath, 6, (item, itemPath) =>
             v.string(item, itemPath, { min: 1, max: 80 }),
@@ -560,6 +592,14 @@ export function validateContent(value: unknown): ValidationResult {
             v.array(list, listPath, 20, (entry, entryPath) =>
               v.string(entry, entryPath, { min: 1, max: 80 }),
             ),
+          evidenceLabel: (entry, entryPath) =>
+            v.string(entry, entryPath, {
+              optional: true,
+              allowEmpty: true,
+              max: 100,
+            }),
+          evidenceHref: (entry, entryPath) =>
+            evidenceHrefField(v, entry, entryPath),
         }),
       ),
 

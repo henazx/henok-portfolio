@@ -99,6 +99,9 @@ export interface SkillCategory {
   description: string;
   icon: SkillIcon;
   skills: string[];
+  /** Optional, factual cross-reference to a project or experience entry. */
+  evidenceLabel?: string;
+  evidenceHref?: string;
 }
 
 export interface SectionCopy {
@@ -125,6 +128,8 @@ export interface SiteContent {
     name: string;
     monogram: string;
     role: string;
+    headline?: string;
+    currentFocus?: string;
     positioning: string[];
     summary: string;
     about: {

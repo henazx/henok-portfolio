@@ -133,6 +133,7 @@ function ProjectCard({
 
   return (
     <article
+      id={`project-${project.slug}`}
       className={`${styles.card} ${featured ? styles.featured : ""} ${
         wide ? styles.wide : ""
       }`}

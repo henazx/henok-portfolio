@@ -369,7 +369,9 @@ function ProfileTab() {
     <>
       <Field label="Full name" path="profile.name" />
       <Field label="Main role" path="profile.role" />
-      <Field label="Hero introduction" path="profile.summary" multiline />
+      <Field label="Hero headline" path="profile.headline" />
+      <Field label="Currently focused on" path="profile.currentFocus" />
+      <Field label="About introduction" path="profile.summary" multiline />
       <StringList label="Positioning tags" path="profile.positioning" />
       <Field label="About — lead line" path="profile.about.lead" multiline />
       <StringList
@@ -710,6 +712,14 @@ function SkillsTab() {
             label="Skills"
             path={`skills.${index}.skills`}
             template="Skill"
+          />
+          <Field
+            label="Evidence link label"
+            path={`skills.${index}.evidenceLabel`}
+          />
+          <Field
+            label="Evidence link URL or #anchor"
+            path={`skills.${index}.evidenceHref`}
           />
         </ItemCard>
       ))}

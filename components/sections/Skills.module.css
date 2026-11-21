@@ -122,6 +122,28 @@
   color: var(--text);
 }
 
+.evidence {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--accent-hover);
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: color 0.2s var(--ease-smooth);
+}
+
+.evidence svg {
+  width: 13px;
+  height: 13px;
+}
+
+.evidence:hover {
+  color: var(--text);
+}
+
 .grid > :nth-child(2) {
   --reveal-delay: 60ms;
 }

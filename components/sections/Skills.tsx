@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowUpRight,
   Boxes,
   Database,
   LayoutTemplate,
@@ -47,6 +48,9 @@ export function Skills() {
         <div className={styles.grid}>
           {content.skills.map((category, index) => {
             const Icon = icons[category.icon];
+            const evidenceHref = category.evidenceHref?.trim();
+            const evidenceLabel = category.evidenceLabel?.trim();
+            const externalEvidence = evidenceHref?.startsWith("https://");
 
             return (
               <article
@@ -73,6 +77,19 @@ export function Skills() {
                     <li key={`${skill}-${skillIndex}`}>{skill}</li>
                   ))}
                 </ul>
+
+                {evidenceHref && evidenceLabel ? (
+                  <a
+                    className={styles.evidence}
+                    href={evidenceHref}
+                    target={externalEvidence ? "_blank" : undefined}
+                    rel={externalEvidence ? "noopener noreferrer" : undefined}
+                    aria-label={`${evidenceLabel}${externalEvidence ? " (opens in a new tab)" : ""}`}
+                  >
+                    {evidenceLabel}
+                    <ArrowUpRight aria-hidden="true" />
+                  </a>
+                ) : null}
               </article>
             );
           })}

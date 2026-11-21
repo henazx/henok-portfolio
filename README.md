@@ -35,7 +35,7 @@ All editable copy lives in **`data/content.json`**. The TypeScript files in `dat
 | Project screenshots | `public/projects/` and `data/content.json` → `projects[].image` / `projects[].images` |
 | Experience, education, certifications | `data/content.json` → `experience`, `education`, `certifications` |
 | Project links and screenshots | `data/content.json` → `projects`, `public/projects/` |
-| Skills, navigation, SEO description | `data/content.json` → `skills`, `site` |
+| Skills, navigation, SEO description, skill evidence links | `data/content.json` → `skills`, `site` |
 
 The live portrait is `public/images/henok-portrait.jpg`. The editor can replace it with another approved photograph; `profile.portrait.isPlaceholder` should stay `false`. Replace remaining placeholders with verified details only.
 

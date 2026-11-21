@@ -41,6 +41,8 @@
     "name": "Henok Neknikie",
     "monogram": "HN",
     "role": "Information Technology Specialist",
+    "headline": "IT specialist, web developer, and UX/UI designer in Addis Ababa.",
+    "currentFocus": "IT support, web applications, and UX/UI design.",
     "positioning": [
       "Computer Science Graduate",
       "Software Developer",
@@ -246,19 +248,25 @@
       "title": "Frontend Development",
       "description": "Component-driven interfaces built to stay clear and responsive.",
       "icon": "frontend",
-      "skills": ["React", "Next.js", "JavaScript", "Responsive layouts"]
+      "skills": ["React", "Next.js", "JavaScript", "Responsive layouts"],
+      "evidenceLabel": "SmartCV case study",
+      "evidenceHref": "#project-smartcv"
     },
     {
       "title": "Backend Development",
       "description": "Application logic, server routes, and API workflows.",
       "icon": "backend",
-      "skills": ["Node.js", "Express.js", "JavaScript"]
+      "skills": ["Node.js", "Express.js", "JavaScript"],
+      "evidenceLabel": "Mesob Connect case study",
+      "evidenceHref": "#project-mesob-connect"
     },
     {
       "title": "Databases",
       "description": "Structured storage and dependable data access.",
       "icon": "database",
-      "skills": ["MySQL", "SQL"]
+      "skills": ["MySQL", "SQL"],
+      "evidenceLabel": "Mesob data model",
+      "evidenceHref": "#project-mesob-connect"
     },
     {
       "title": "IT Infrastructure & Support",
@@ -270,7 +278,9 @@
         "Software Installation & Configuration",
         "Network Troubleshooting",
         "System Maintenance"
-      ]
+      ],
+      "evidenceLabel": "Addis Mesob role",
+      "evidenceHref": "#experience"
     },
     {
       "title": "UI/UX Design",
@@ -282,13 +292,17 @@
         "UX/UI Design",
         "Wireframing",
         "User-Centered Design"
-      ]
+      ],
+      "evidenceLabel": "Counseling design project",
+      "evidenceHref": "#project-high-school-counseling"
     },
     {
       "title": "Development Tools",
       "description": "The everyday environment behind the work.",
       "icon": "tools",
-      "skills": ["Git & GitHub", "Vercel", "Figma", "Adobe Photoshop"]
+      "skills": ["Git & GitHub", "Vercel", "Figma", "Adobe Photoshop"],
+      "evidenceLabel": "Projects and repositories",
+      "evidenceHref": "#projects"
     }
   ],
   "education": [
