@@ -41,7 +41,6 @@ No certificate files or official verification URLs were supplied. When available
 
 - **GitHub API activity/pinned repositories** — not implemented because `GITHUB_TOKEN` publishing access is not configured and no approved live API integration was supplied.
 - **Certificate viewer** — not implemented because no certificate files or verification URLs exist.
-- **Download JSON from the browser editor** — the editor still relies on GitHub publishing; no file-download implementation was verified in the current codebase.
 
 ## Configuration required for full functionality
 
