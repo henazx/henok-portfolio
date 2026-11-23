@@ -1,5 +1,8 @@
+"use client";
+
 import { Mail } from "lucide-react";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
 import type { SocialLink } from "@/types";
 
@@ -15,6 +18,8 @@ interface SocialLinksProps {
 }
 
 export function SocialLinks({ links, className }: SocialLinksProps) {
+  const { t } = useLanguage();
+
   return (
     <ul className={className}>
       {links.map((link) => {
@@ -25,7 +30,7 @@ export function SocialLinks({ links, className }: SocialLinksProps) {
           <li key={link.label}>
             <a
               href={link.href}
-              aria-label={`${link.label}${isExternal ? " (opens in a new tab)" : ""}`}
+              aria-label={`${link.label}${isExternal ? t(" (opens in a new tab)") : ""}`}
               {...(isExternal
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { T } from "@/components/i18n/T";
+
 export const metadata: Metadata = {
   title: "Page not found",
   robots: { index: false, follow: false },
@@ -20,7 +22,7 @@ export default function NotFound() {
           }}
         >
           <p className="mono" style={{ marginBottom: 20 }}>
-            Error 404
+            <T text="Error 404" />
           </p>
           <h1
             style={{
@@ -28,15 +30,14 @@ export default function NotFound() {
               marginBottom: 16,
             }}
           >
-            This page doesn&apos;t exist.
+            <T text="This page doesn't exist." />
           </h1>
           <p style={{ color: "var(--text-muted)", marginBottom: 32 }}>
-            The link may be out of date, or the page may have moved. Head back
-            to the portfolio to keep exploring.
+            <T text="The link may be out of date, or the page may have moved. Head back to the portfolio to keep exploring." />
           </p>
           <Link href="/" className="btn btn-primary">
             <ArrowLeft aria-hidden="true" />
-            Back to the homepage
+            <T text="Back to the homepage" />
           </Link>
         </div>
       </div>

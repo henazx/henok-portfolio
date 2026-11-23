@@ -3,24 +3,35 @@
 import { ArrowUpRight, MapPin } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { SiteContent, SocialLink } from "@/types";
 import { ContactForm } from "./ContactForm";
 import styles from "./Contact.module.css";
 
-function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
+function socialLinksFor(
+  profile: SiteContent["profile"],
+  t: (text: string) => string,
+): SocialLink[] {
   return [
-    { label: "GitHub", href: profile.github, icon: "github" },
+    { label: t("GitHub"), href: profile.github, icon: "github" },
     ...(profile.linkedin
-      ? [{ label: "LinkedIn", href: profile.linkedin, icon: "linkedin" as const }]
+      ? [
+          {
+            label: t("LinkedIn"),
+            href: profile.linkedin,
+            icon: "linkedin" as const,
+          },
+        ]
       : []),
-    { label: "Email", href: `mailto:${profile.email}`, icon: "mail" },
+    { label: t("Email"), href: `mailto:${profile.email}`, icon: "mail" },
   ];
 }
 
 export function Contact() {
   const { content } = useEditor();
+  const { t } = useLanguage();
   const { profile, sections } = content;
   const copy = sections.contact;
 
@@ -29,16 +40,16 @@ export function Contact() {
       <div className="container">
         <SectionHeading
           index="06"
-          eyebrow="Contact"
+          eyebrow={t("Contact")}
           titleId="contact-title"
-          title={copy.title}
-          description={copy.description}
+          title={t(copy.title)}
+          description={t(copy.description)}
         />
 
         <div className={styles.grid}>
           <div className={styles.info} data-reveal>
             <div>
-              <p className="mono">Email</p>
+              <p className="mono">{t("Email")}</p>
               <a className={styles.email} href={`mailto:${profile.email}`}>
                 {profile.email}
                 <ArrowUpRight aria-hidden="true" />
@@ -47,33 +58,33 @@ export function Contact() {
 
             <dl className={styles.details}>
               <div className={styles.detail}>
-                <dt>Location</dt>
+                <dt>{t("Location")}</dt>
                 <dd>
                   <span className={styles.inlineIcon} aria-hidden="true">
                     <MapPin />
                   </span>
-                  {profile.location}
+                  {t(profile.location)}
                 </dd>
               </div>
               <div className={styles.detail}>
-                <dt>Availability</dt>
+                <dt>{t("Availability")}</dt>
                 <dd>
                   <span className={styles.statusDot} aria-hidden="true" />
-                  {profile.availability}
+                  {t(profile.availability)}
                 </dd>
               </div>
               <div className={styles.detail}>
-                <dt>Work style</dt>
-                <dd>{profile.workPreference}</dd>
+                <dt>{t("Work style")}</dt>
+                <dd>{t(profile.workPreference)}</dd>
               </div>
             </dl>
 
             <div>
               <p className="mono" style={{ marginBottom: 12 }}>
-                Elsewhere
+                {t("Elsewhere")}
               </p>
               <SocialLinks
-                links={socialLinksFor(profile)}
+                links={socialLinksFor(profile, t)}
                 className="social-links"
               />
             </div>

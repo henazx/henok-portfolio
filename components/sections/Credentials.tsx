@@ -3,11 +3,13 @@
 import { BadgeCheck, ExternalLink, GraduationCap } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./Credentials.module.css";
 
 export function Credentials() {
   const { content } = useEditor();
+  const { t } = useLanguage();
   const copy = content.sections.credentials;
 
   return (
@@ -19,17 +21,17 @@ export function Credentials() {
       <div className="container">
         <SectionHeading
           index="05"
-          eyebrow="Education & Certifications"
+          eyebrow={t("Education & Certifications")}
           titleId="credentials-title"
-          title={copy.title}
-          description={copy.description}
+          title={t(copy.title)}
+          description={t(copy.description)}
         />
 
         <div className={styles.grid}>
           <div data-reveal>
             <h3 className={styles.columnTitle}>
               <GraduationCap aria-hidden="true" />
-              Education
+              {t("Education")}
             </h3>
 
             <ol className={styles.educationList}>
@@ -40,11 +42,11 @@ export function Credentials() {
                 >
                   <span className={styles.period}>{entry.period}</span>
                   <h4 className={styles.qualification}>
-                    {entry.qualification}
+                    {t(entry.qualification)}
                   </h4>
-                  <p className={styles.institution}>{entry.institution}</p>
+                  <p className={styles.institution}>{t(entry.institution)}</p>
                   {entry.detail ? (
-                    <p className={styles.educationDetail}>{entry.detail}</p>
+                    <p className={styles.educationDetail}>{t(entry.detail)}</p>
                   ) : null}
                 </li>
               ))}
@@ -54,7 +56,7 @@ export function Credentials() {
           <div data-reveal style={{ transitionDelay: "80ms" }}>
             <h3 className={styles.columnTitle}>
               <BadgeCheck aria-hidden="true" />
-              Certifications
+              {t("Certifications")}
             </h3>
 
             <ul className={styles.certList}>
@@ -71,18 +73,18 @@ export function Credentials() {
                           href={entry.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`Open certificate for ${entry.name} (opens in a new tab)`}
+                          aria-label={`${t("Open certificate for")} ${t(entry.name)} ${t("(opens in a new tab)")}`}
                         >
-                          {entry.name}
+                          {t(entry.name)}
                           <ExternalLink aria-hidden="true" />
                         </a>
                       ) : (
-                        entry.name
+                        t(entry.name)
                       )}
                     </p>
                     <p className={styles.certIssuer}>{entry.issuer}</p>
                     {entry.note ? (
-                      <p className={styles.certNote}>{entry.note}</p>
+                      <p className={styles.certNote}>{t(entry.note)}</p>
                     ) : null}
                   </div>
                 </li>
@@ -90,8 +92,9 @@ export function Credentials() {
             </ul>
 
             <p className={styles.disclaimer}>
-              These are professional certificates and completed courses — not
-              licenses.
+              {t(
+                "These are professional certificates and completed courses — not licenses.",
+              )}
             </p>
           </div>
         </div>

@@ -3,6 +3,8 @@ import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/globals.css";
+import { LanguageProvider } from "@/components/i18n/LanguageProvider";
+import { T } from "@/components/i18n/T";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Backdrop } from "@/components/layout/Backdrop";
@@ -97,6 +99,9 @@ export const viewport: Viewport = {
  */
 const themeScript = `(function(){try{var stored=localStorage.getItem("theme");var theme=stored==="light"||stored==="dark"?stored:"dark";document.documentElement.setAttribute("data-theme",theme);}catch(e){}})();`;
 
+/** Applies the saved language before paint so the correct font stack is used. */
+const languageScript = `(function(){try{var stored=localStorage.getItem("henok-portfolio-language");var language=stored==="am"?"am":"en";document.documentElement.lang=language;document.documentElement.setAttribute("data-language",language);}catch(e){}})();`;
+
 // Derived from the same editable content source as the visible page, rather
 // than duplicating personal details in the layout.
 const [addressLocality, addressCountry] = profile.location
@@ -148,19 +153,24 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
+        <Script id="language-init" strategy="beforeInteractive">
+          {languageScript}
+        </Script>
         <ContentProvider>
-          <Backdrop />
-          <ScrollReveal />
-          <PointerGlow />
-          <a className="skip-link" href="#main">
-            Skip to content
-          </a>
-          <Navbar />
-          <main id="main">{children}</main>
-          <Footer />
-          <EditUnlock />
-          <AuthGate />
-          <EditorMount />
+          <LanguageProvider>
+            <Backdrop />
+            <ScrollReveal />
+            <PointerGlow />
+            <a className="skip-link" href="#main">
+              <T text="Skip to content" />
+            </a>
+            <Navbar />
+            <main id="main">{children}</main>
+            <Footer />
+            <EditUnlock />
+            <AuthGate />
+            <EditorMount />
+          </LanguageProvider>
         </ContentProvider>
         <script
           type="application/ld+json"

@@ -132,6 +132,10 @@
   gap: 8px;
 }
 
+.languageToggle {
+  display: inline-flex;
+}
+
 .cvButton {
   display: inline-flex;
   align-items: center;
@@ -287,6 +291,10 @@
 
   .actions {
     margin-left: auto;
+  }
+
+  .languageToggle {
+    display: none;
   }
 
   .menuButton {

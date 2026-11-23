@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Download, ExternalLink, FileText } from "lucide-react";
 
+import { T } from "@/components/i18n/T";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
 import styles from "./cv.module.css";
@@ -33,20 +34,25 @@ export default function CvPage() {
   return (
     <div className={styles.page}>
       <div className="container">
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+        <nav className={styles.breadcrumb} aria-label={undefined}>
           <Link href="/#home">
             <ArrowLeft aria-hidden="true" />
-            Back to portfolio
+            <T text="Back to portfolio" />
           </Link>
         </nav>
 
         <header className={styles.header}>
           <div>
-            <p className="mono">Document</p>
-            <h1>CV / Résumé</h1>
+            <p className="mono">
+              <T text="Document" />
+            </p>
+            <h1>
+              <T text="CV / Résumé" />
+            </h1>
             <p className={styles.intro}>
-              A current copy of {profile.name}&apos;s CV is embedded below. Use
-              the download button if you would like to keep a local copy.
+              <T text="A current copy of " />
+              {profile.name}
+              <T text="'s CV is embedded below. Use the download button if you would like to keep a local copy." />
             </p>
           </div>
 
@@ -55,20 +61,18 @@ export default function CvPage() {
               className="btn btn-primary"
               href={pdfUrl}
               download={fileName}
-              aria-label={`Download CV — ${fileName}`}
             >
               <Download aria-hidden="true" />
-              Download CV
+              <T text="Download CV" />
             </a>
             <a
               className="btn btn-secondary"
               href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open in new tab — ${fileName}`}
             >
               <ExternalLink aria-hidden="true" />
-              Open in new tab
+              <T text="Open in new tab" />
             </a>
           </div>
         </header>
@@ -82,22 +86,24 @@ export default function CvPage() {
               <FileText aria-hidden="true" />
               {fileName}
             </span>
-            <span className={styles.hint}>Scroll inside the frame to read</span>
+            <span className={styles.hint}>
+              <T text="Scroll inside the frame to read" />
+            </span>
           </div>
 
           <h2 id="cv-viewer-title" className="sr-only">
-            Embedded CV document
+            <T text="Embedded CV document" />
           </h2>
           <iframe
             className={styles.frame}
             src={pdfUrl}
-            title={`${profile.name} CV document`}
+            title={`${profile.name} — CV / Résumé`}
           />
 
           <p className={styles.fallback}>
-            If the document does not load,{" "}
+            <T text="If the document does not load, " />
             <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-              open the CV in a new tab
+              <T text="open the CV in a new tab" />
             </a>
             .
           </p>
@@ -105,9 +111,11 @@ export default function CvPage() {
 
         <footer className={styles.footer}>
           <p>
-            Prefer to talk first?{" "}
-            <Link href="/#contact">Use the contact form</Link> and I will reply
-            directly.
+            <T text="Prefer to talk first? " />
+            <Link href="/#contact">
+              <T text="Use the contact form" />
+            </Link>
+            <T text=" and I will reply directly." />
           </p>
           <p className="mono">{siteConfig.url}</p>
         </footer>

@@ -3,12 +3,14 @@
 import Image from "next/image";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { bypassImageOptimization } from "@/lib/image";
 import styles from "./ExperienceSection.module.css";
 
 export function ExperienceSection() {
   const { content } = useEditor();
+  const { t } = useLanguage();
   const copy = content.sections.experience;
 
   return (
@@ -20,10 +22,10 @@ export function ExperienceSection() {
       <div className="container">
         <SectionHeading
           index="02"
-          eyebrow="Experience"
+          eyebrow={t("Experience")}
           titleId="experience-title"
-          title={copy.title}
-          description={copy.description}
+          title={t(copy.title)}
+          description={t(copy.description)}
         />
 
         <ol className={styles.timeline} data-reveal>
@@ -33,9 +35,9 @@ export function ExperienceSection() {
               key={`${entry.role}-${entry.organization}-${index}`}
             >
               <div className={styles.meta}>
-                <span className={styles.period}>{entry.period}</span>
+                <span className={styles.period}>{t(entry.period)}</span>
                 {entry.current ? (
-                  <span className={styles.current}>Current</span>
+                  <span className={styles.current}>{t("Current")}</span>
                 ) : null}
               </div>
 
@@ -45,7 +47,7 @@ export function ExperienceSection() {
                     <span className={styles.logoFrame}>
                       <Image
                         src={entry.logo.src}
-                        alt={entry.logo.alt}
+                        alt={t(entry.logo.alt)}
                         width={56}
                         height={56}
                         unoptimized={bypassImageOptimization(entry.logo.src)}
@@ -54,36 +56,38 @@ export function ExperienceSection() {
                     </span>
                   ) : null}
                   <div className={styles.headingText}>
-                    <h3 className={styles.role}>{entry.role}</h3>
+                    <h3 className={styles.role}>{t(entry.role)}</h3>
                     <p className={styles.organization}>
-                      {entry.organization}
+                      {t(entry.organization)}
                       <span className={styles.separator} aria-hidden="true">
                         ·
                       </span>
-                      {entry.location}
+                      {t(entry.location)}
                     </p>
                   </div>
                 </div>
 
                 {entry.summary ? (
-                  <p className={styles.summary}>{entry.summary}</p>
+                  <p className={styles.summary}>{t(entry.summary)}</p>
                 ) : null}
 
                 <div className={styles.detailGroup}>
-                  <h4 className={styles.detailTitle}>Key responsibilities</h4>
+                  <h4 className={styles.detailTitle}>
+                    {t("Key responsibilities")}
+                  </h4>
                   <ul className={styles.highlights}>
                     {entry.highlights.map((highlight, itemIndex) => (
-                      <li key={`${itemIndex}-${highlight}`}>{highlight}</li>
+                      <li key={`${itemIndex}-${highlight}`}>{t(highlight)}</li>
                     ))}
                   </ul>
                 </div>
 
                 {entry.impact?.length ? (
                   <div className={styles.detailGroup}>
-                    <h4 className={styles.detailTitle}>Impact</h4>
+                    <h4 className={styles.detailTitle}>{t("Impact")}</h4>
                     <ul className={`${styles.highlights} ${styles.impact}`}>
                       {entry.impact.map((item, itemIndex) => (
-                        <li key={`${itemIndex}-${item}`}>{item}</li>
+                        <li key={`${itemIndex}-${item}`}>{t(item)}</li>
                       ))}
                     </ul>
                   </div>

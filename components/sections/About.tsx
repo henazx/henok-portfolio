@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./About.module.css";
 
@@ -17,6 +18,7 @@ const capabilityIcons: LucideIcon[] = [Wrench, Code2, PenTool];
 
 export function About() {
   const { content } = useEditor();
+  const { t } = useLanguage();
   const { profile, education, experience, sections } = content;
   const currentRole = experience.find((entry) => entry.current) ?? experience[0];
   const primaryDegree = education[0];
@@ -27,17 +29,17 @@ export function About() {
       <div className="container">
         <SectionHeading
           index="01"
-          eyebrow="About"
+          eyebrow={t("About")}
           titleId="about-title"
-          title={copy.title}
-          description={copy.description}
+          title={t(copy.title)}
+          description={t(copy.description)}
         />
 
         <div className={styles.grid} data-reveal>
           <div className={styles.leadColumn} data-glow>
-            <p className={styles.lead}>{profile.about.lead}</p>
+            <p className={styles.lead}>{t(profile.about.lead)}</p>
 
-            <ul className={styles.capabilities} aria-label="Focus areas">
+            <ul className={styles.capabilities} aria-label={t("Focus areas")}>
               {profile.about.focus.map((item, index) => {
                 const Icon = capabilityIcons[index % capabilityIcons.length];
                 return (
@@ -45,7 +47,7 @@ export function About() {
                     <span className={styles.capabilityIcon} aria-hidden="true">
                       <Icon />
                     </span>
-                    <span>{item}</span>
+                    <span>{t(item)}</span>
                   </li>
                 );
               })}
@@ -54,10 +56,10 @@ export function About() {
 
           <div className={styles.bodyColumn}>
             {profile.summary ? (
-              <p className={styles.intro}>{profile.summary}</p>
+              <p className={styles.intro}>{t(profile.summary)}</p>
             ) : null}
             {profile.about.paragraphs.map((paragraph, index) => (
-              <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+              <p key={`${index}-${paragraph.slice(0, 24)}`}>{t(paragraph)}</p>
             ))}
           </div>
         </div>
@@ -69,34 +71,34 @@ export function About() {
           style={{ transitionDelay: "80ms" }}
         >
           <div className={styles.fact}>
-            <dt>Based in</dt>
-            <dd>{profile.location}</dd>
+            <dt>{t("Based in")}</dt>
+            <dd>{t(profile.location)}</dd>
           </div>
           <div className={styles.fact}>
-            <dt>Education</dt>
+            <dt>{t("Education")}</dt>
             <dd>
-              {primaryDegree?.qualification}
+              {t(primaryDegree?.qualification ?? "")}
               <span className={styles.factDetail}>
-                {primaryDegree?.institution}
+                {t(primaryDegree?.institution ?? "")}
               </span>
             </dd>
           </div>
           <div className={styles.fact}>
-            <dt>Current role</dt>
+            <dt>{t("Current role")}</dt>
             <dd>
-              {currentRole?.role}
+              {t(currentRole?.role ?? "")}
               <span className={styles.factDetail}>
-                {currentRole?.organization}
+                {t(currentRole?.organization ?? "")}
               </span>
             </dd>
           </div>
           <div className={styles.fact}>
-            <dt>Focus</dt>
+            <dt>{t("Focus")}</dt>
             <dd>
-              {profile.currentFocus ?? profile.about.focus[0]}
+              {t(profile.currentFocus ?? profile.about.focus[0])}
               {profile.currentFocus && profile.about.focus[1] ? (
                 <span className={styles.factDetail}>
-                  {profile.about.focus.slice(1).join(" · ")}
+                  {profile.about.focus.slice(1).map((item) => t(item)).join(" · ")}
                 </span>
               ) : null}
             </dd>
@@ -105,7 +107,7 @@ export function About() {
 
         <section className={styles.timeline} aria-labelledby="background-title">
           <h3 id="background-title" className="mono">
-            Background
+            {t("Background")}
           </h3>
           <ol>
             {currentRole ? (
@@ -115,11 +117,11 @@ export function About() {
                 </span>
                 <div>
                   <span className={styles.timelinePeriod}>
-                    {currentRole.period}
+                    {t(currentRole.period)}
                   </span>
-                  <strong>{currentRole.role}</strong>
+                  <strong>{t(currentRole.role)}</strong>
                   <span className={styles.timelineDetail}>
-                    {currentRole.organization}
+                    {t(currentRole.organization)}
                   </span>
                 </div>
               </li>
@@ -132,9 +134,9 @@ export function About() {
                 </span>
                 <div>
                   <span className={styles.timelinePeriod}>{entry.period}</span>
-                  <strong>{entry.qualification}</strong>
+                  <strong>{t(entry.qualification)}</strong>
                   <span className={styles.timelineDetail}>
-                    {entry.institution}
+                    {t(entry.institution)}
                   </span>
                 </div>
               </li>

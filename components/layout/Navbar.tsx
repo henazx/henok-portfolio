@@ -5,27 +5,39 @@ import Link from "next/link";
 import { FileText, Menu, X } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { BrandMark } from "@/components/ui/BrandMark";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import type { SiteContent, SocialLink } from "@/types";
+import { LanguageToggle } from "./LanguageToggle";
 import { ThemeToggle } from "./ThemeToggle";
 import styles from "./Navbar.module.css";
 
-function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
+function socialLinksFor(
+  profile: SiteContent["profile"],
+  t: (text: string) => string,
+): SocialLink[] {
   return [
-    { label: "GitHub", href: profile.github, icon: "github" },
+    { label: t("GitHub"), href: profile.github, icon: "github" },
     ...(profile.linkedin
-      ? [{ label: "LinkedIn", href: profile.linkedin, icon: "linkedin" as const }]
+      ? [
+          {
+            label: t("LinkedIn"),
+            href: profile.linkedin,
+            icon: "linkedin" as const,
+          },
+        ]
       : []),
-    { label: "Email", href: `mailto:${profile.email}`, icon: "mail" },
+    { label: t("Email"), href: `mailto:${profile.email}`, icon: "mail" },
   ];
 }
 
 export function Navbar() {
   const { content } = useEditor();
+  const { t } = useLanguage();
   const navigation = content.site.navigation;
   const profile = content.profile;
-  const socialLinks = socialLinksFor(profile);
+  const socialLinks = socialLinksFor(profile, t);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
@@ -127,7 +139,7 @@ export function Navbar() {
           <a
             href="#home"
             className={styles.brand}
-            aria-label={`${profile.name} — back to top`}
+            aria-label={`${profile.name}${t(" — back to top")}`}
             onClick={closeMenu}
           >
             <span className={styles.mark} aria-hidden="true">
@@ -136,7 +148,7 @@ export function Navbar() {
             <span className={styles.brandName}>{profile.name}</span>
           </a>
 
-          <nav className={styles.desktopNav} aria-label="Primary">
+          <nav className={styles.desktopNav} aria-label={t("Primary")}>
             <ul>
               {navigation.map((item) => {
                 const isActive = active === item.href.slice(1);
@@ -147,7 +159,7 @@ export function Navbar() {
                       className={isActive ? styles.active : undefined}
                       aria-current={isActive ? "location" : undefined}
                     >
-                      {item.label}
+                      {t(item.label)}
                     </a>
                   </li>
                 );
@@ -156,9 +168,10 @@ export function Navbar() {
           </nav>
 
           <div className={styles.actions}>
+            <LanguageToggle className={styles.languageToggle} />
             <Link href="/cv" className={styles.cvButton}>
               <FileText aria-hidden="true" />
-              CV
+              {t("CV")}
             </Link>
             <ThemeToggle />
             <button
@@ -168,7 +181,7 @@ export function Navbar() {
               onClick={() => setOpen((value) => !value)}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              aria-label={open ? "Close menu" : "Open menu"}
+              aria-label={t(open ? "Close menu" : "Open menu")}
             >
               {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
             </button>
@@ -183,9 +196,9 @@ export function Navbar() {
           ref={menuRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Mobile navigation"
+          aria-label={t("Mobile navigation")}
         >
-          <nav className={styles.mobileNav} aria-label="Primary mobile">
+          <nav className={styles.mobileNav} aria-label={t("Primary mobile")}>
             <ul>
               {navigation.map((item, index) => {
                 const isActive = active === item.href.slice(1);
@@ -200,7 +213,7 @@ export function Navbar() {
                       <span className={styles.mobileIndex} aria-hidden="true">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      {item.label}
+                      {t(item.label)}
                     </a>
                   </li>
                 );
@@ -209,18 +222,19 @@ export function Navbar() {
           </nav>
 
           <div className={styles.mobileFooter}>
+            <LanguageToggle inline />
             <Link
               href="/cv"
               className={`btn btn-secondary ${styles.mobileCv}`}
               onClick={closeMenu}
             >
               <FileText aria-hidden="true" />
-              View CV / Résumé
+              {t("View CV / Résumé")}
             </Link>
 
             <div>
               <p className="mono" style={{ marginBottom: 12 }}>
-                Elsewhere
+                {t("Elsewhere")}
               </p>
               <SocialLinks
                 links={socialLinks}

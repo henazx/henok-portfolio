@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, ExternalLink } from "lucide-react";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { ProjectLightbox } from "@/components/interaction/ProjectLightbox";
 import { GitHubIcon } from "@/components/ui/BrandIcons";
 import { bypassImageOptimization } from "@/lib/image";
@@ -18,6 +19,7 @@ interface ProjectGalleryProps {
 }
 
 export function ProjectGallery({ projects }: ProjectGalleryProps) {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState<Filter>("All");
   const filters: Filter[] = [
     "All",
@@ -38,7 +40,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
         <div
           className={styles.filters}
           role="group"
-          aria-label="Filter projects by category"
+          aria-label={t("Filter projects by category")}
         >
           {filters.map((option) => {
             const count =
@@ -57,7 +59,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
                 aria-pressed={filter === option}
                 onClick={() => setFilter(option)}
               >
-                {option}
+                {t(option)}
                 <span className={styles.count}>{count}</span>
               </button>
             );
@@ -66,7 +68,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
 
         <p className={styles.resultCount} aria-live="polite">
           {visibleProjects.length}{" "}
-          {visibleProjects.length === 1 ? "project" : "projects"}
+          {t(visibleProjects.length === 1 ? "project" : "projects")}
         </p>
       </div>
 
@@ -92,6 +94,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
               index={index}
               featured={featured}
               wide={wide}
+              t={t}
             />
           );
         })}
@@ -99,7 +102,7 @@ export function ProjectGallery({ projects }: ProjectGalleryProps) {
 
       {visibleProjects.length === 0 ? (
         <p className={styles.empty}>
-          No projects in this category yet. Check back soon.
+          {t("No projects in this category yet. Check back soon.")}
         </p>
       ) : null}
     </div>
@@ -111,11 +114,13 @@ function ProjectCard({
   index,
   featured,
   wide,
+  t,
 }: {
   project: Project;
   index: number;
   featured: boolean;
   wide: boolean;
+  t: (text: string) => string;
 }) {
   const hasLinks = Boolean(project.repository || project.demo);
   const gallery = [project.image, ...(project.images ?? [])];
@@ -155,7 +160,7 @@ function ProjectCard({
         <Image
           key={active.src}
           src={active.src}
-          alt={active.alt}
+          alt={t(active.alt)}
           fill
           unoptimized={bypassImageOptimization(active.src)}
           sizes={
@@ -165,22 +170,22 @@ function ProjectCard({
           }
           className={styles.image}
         />
-        <span className={styles.badge}>{project.category}</span>
+        <span className={styles.badge}>{t(project.category)}</span>
         {project.demo ? (
           <span className={styles.live}>
             <span aria-hidden="true" />
-            Live
+            {t("Live")}
           </span>
         ) : null}
         {project.note ? (
-          <span className={styles.note}>{project.note}</span>
+          <span className={styles.note}>{t(project.note)}</span>
         ) : null}
 
         {hasGallery ? (
           <div
             className={styles.gallery}
             role="group"
-            aria-label={`${project.name} images`}
+            aria-label={`${t(project.name)} ${t("images")}`}
           >
             {gallery.map((image, imageIndex) => (
               <button
@@ -190,7 +195,7 @@ function ProjectCard({
                   imageIndex === activeIndex ? styles.thumbActive : ""
                 }`}
                 onClick={() => setActiveImage(imageIndex)}
-                aria-label={`Show ${project.name} image ${imageIndex + 1}`}
+                aria-label={`${t("Show")} ${t(project.name)} ${t("image")} ${imageIndex + 1}`}
                 aria-pressed={imageIndex === activeIndex}
               >
                 <Image
@@ -205,7 +210,7 @@ function ProjectCard({
           </div>
         ) : hasLinks ? (
           <span className={styles.hoverCue} aria-hidden="true">
-            {project.demo ? "Live deployment" : "View repository"}
+            {t(project.demo ? "Live deployment" : "View repository")}
             <ArrowUpRight />
           </span>
         ) : null}
@@ -222,7 +227,7 @@ function ProjectCard({
       <div className={styles.body}>
         {featured ? (
           <p className={styles.featuredLabel}>
-            <span aria-hidden="true">◆</span> Featured project
+            <span aria-hidden="true">◆</span> {t("Featured project")}
           </p>
         ) : null}
 
@@ -231,7 +236,7 @@ function ProjectCard({
             <span className={styles.projectIndex} aria-hidden="true">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className={styles.title}>{project.name}</h3>
+            <h3 className={styles.title}>{t(project.name)}</h3>
           </div>
           {project.demo ? (
             <a
@@ -239,55 +244,55 @@ function ProjectCard({
               className={styles.quickLink}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open the ${project.name} live site (opens in a new tab)`}
+              aria-label={`${t("Live demo")} — ${t(project.name)} ${t("(opens in a new tab)")}`}
             >
               <ExternalLink aria-hidden="true" />
             </a>
           ) : null}
         </div>
 
-        <p className={styles.description}>{project.description}</p>
+        <p className={styles.description}>{t(project.description)}</p>
 
         {hasCaseStudy ? (
           <Link
             href={`/projects/${project.slug}`}
             className={styles.caseLink}
-            aria-label={`Read case study: ${project.name}`}
+            aria-label={`${t("Read case study")}: ${t(project.name)}`}
           >
-            Read case study
+            {t("Read case study")}
             <ArrowRight aria-hidden="true" />
           </Link>
         ) : null}
 
         {study && hasCaseStudy ? (
           <details className={styles.caseStudy}>
-            <summary>Case study</summary>
+            <summary>{t("Case study")}</summary>
             <dl className={styles.caseStudyList}>
               {study.role ? (
                 <div>
-                  <dt>Your role</dt>
-                  <dd>{study.role}</dd>
+                  <dt>{t("Your role")}</dt>
+                  <dd>{t(study.role)}</dd>
                 </div>
               ) : null}
               {study.problem ? (
                 <div>
-                  <dt>Problem</dt>
-                  <dd>{study.problem}</dd>
+                  <dt>{t("Problem")}</dt>
+                  <dd>{t(study.problem)}</dd>
                 </div>
               ) : null}
               {study.approach ? (
                 <div>
-                  <dt>Approach</dt>
-                  <dd>{study.approach}</dd>
+                  <dt>{t("Approach")}</dt>
+                  <dd>{t(study.approach)}</dd>
                 </div>
               ) : null}
               {study.decisions.length > 0 ? (
                 <div>
-                  <dt>Stack decisions</dt>
+                  <dt>{t("Stack decisions")}</dt>
                   <dd>
                     <ul>
                       {study.decisions.map((decision) => (
-                        <li key={decision}>{decision}</li>
+                        <li key={decision}>{t(decision)}</li>
                       ))}
                     </ul>
                   </dd>
@@ -295,23 +300,23 @@ function ProjectCard({
               ) : null}
               {study.outcome ? (
                 <div>
-                  <dt>Outcome</dt>
-                  <dd>{study.outcome}</dd>
+                  <dt>{t("Outcome")}</dt>
+                  <dd>{t(study.outcome)}</dd>
                 </div>
               ) : null}
               {study.learnings ? (
                 <div>
-                  <dt>What I learned</dt>
-                  <dd>{study.learnings}</dd>
+                  <dt>{t("What I learned")}</dt>
+                  <dd>{t(study.learnings)}</dd>
                 </div>
               ) : null}
             </dl>
           </details>
         ) : null}
 
-        <ul className={styles.tech} aria-label="Technologies used">
+        <ul className={styles.tech} aria-label={t("Technologies used")}>
           {project.technologies.map((technology) => (
-            <li key={technology}>{technology}</li>
+            <li key={technology}>{t(technology)}</li>
           ))}
         </ul>
 
@@ -323,11 +328,14 @@ function ProjectCard({
                 className={`btn btn-secondary ${styles.linkButton}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Source code for ${project.name} (opens in a new tab)`}
+                aria-label={`${t("Source code")} — ${t(project.name)} ${t("(opens in a new tab)")}`}
               >
                 <GitHubIcon />
-                Source code
-                <span className="sr-only"> for {project.name}</span>
+                {t("Source code")}
+                <span className="sr-only">
+                  {" "}
+                  {t("for")} {t(project.name)}
+                </span>
               </a>
             ) : null}
             {project.demo ? (
@@ -336,11 +344,14 @@ function ProjectCard({
                 className={`btn btn-primary ${styles.linkButton}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Live demo for ${project.name} (opens in a new tab)`}
+                aria-label={`${t("Live demo")} — ${t(project.name)} ${t("(opens in a new tab)")}`}
               >
                 <ExternalLink aria-hidden="true" />
-                Live demo
-                <span className="sr-only"> for {project.name}</span>
+                {t("Live demo")}
+                <span className="sr-only">
+                  {" "}
+                  {t("for")} {t(project.name)}
+                </span>
               </a>
             ) : null}
           </div>

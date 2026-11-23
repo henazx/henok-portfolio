@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { bypassImageOptimization } from "@/lib/image";
 import type { ProjectImage } from "@/types";
 import styles from "./ProjectLightbox.module.css";
@@ -23,6 +24,7 @@ export function ProjectLightbox({
   label,
   children,
 }: ProjectLightboxProps) {
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -104,7 +106,10 @@ export function ProjectLightbox({
         type="button"
         className={`${styles.trigger} ${className ?? ""}`}
         onClick={() => setOpenIndex(0)}
-        aria-label={label ?? `View ${projectName} images in full size`}
+        aria-label={
+          label ??
+          `${t("View")} ${t(projectName)} ${t("images in full size")}`
+        }
       >
         {children ?? <Maximize2 aria-hidden="true" />}
       </button>
@@ -121,7 +126,7 @@ export function ProjectLightbox({
             className={styles.dialog}
             role="dialog"
             aria-modal="true"
-            aria-label={`${projectName} image gallery`}
+            aria-label={`${t(projectName)} ${t("image gallery")}`}
           >
             <div className={styles.bar}>
               <span>
@@ -132,7 +137,7 @@ export function ProjectLightbox({
                 type="button"
                 className={styles.iconButton}
                 onClick={() => setOpenIndex(null)}
-                aria-label="Close image gallery"
+                aria-label={t("Close image gallery")}
               >
                 <X aria-hidden="true" />
               </button>
@@ -142,7 +147,7 @@ export function ProjectLightbox({
               <Image
                 key={active.src}
                 src={active.src}
-                alt={active.alt}
+                alt={t(active.alt)}
                 fill
                 unoptimized={bypassImageOptimization(active.src)}
                 sizes="100vw"
@@ -159,7 +164,7 @@ export function ProjectLightbox({
                         (activeIndex - 1 + images.length) % images.length,
                       )
                     }
-                    aria-label="Previous image"
+                    aria-label={t("Previous image")}
                   >
                     <ChevronLeft aria-hidden="true" />
                   </button>
@@ -169,7 +174,7 @@ export function ProjectLightbox({
                     onClick={() =>
                       setOpenIndex((activeIndex + 1) % images.length)
                     }
-                    aria-label="Next image"
+                    aria-label={t("Next image")}
                   >
                     <ChevronRight aria-hidden="true" />
                   </button>
@@ -178,7 +183,7 @@ export function ProjectLightbox({
             </div>
 
             {active.alt ? (
-              <p className={styles.caption}>{active.alt}</p>
+              <p className={styles.caption}>{t(active.alt)}</p>
             ) : null}
           </div>
         </div>

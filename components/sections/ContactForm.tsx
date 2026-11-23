@@ -3,6 +3,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import {
   CONTACT_LIMITS,
   validateContact,
@@ -28,6 +29,7 @@ const initialValues: FormValues = {
 };
 
 export function ContactForm() {
+  const { t } = useLanguage();
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -88,20 +90,24 @@ export function ContactForm() {
         }
         setStatus("error");
         setFeedback(
-          payload?.message ??
-            "The message could not be sent. Please email me directly instead.",
+          t(
+            payload?.message ??
+              "The message could not be sent. Please email me directly instead.",
+          ),
         );
         return;
       }
 
       setStatus("success");
-      setFeedback("Thanks — your message has been sent.");
+      setFeedback(t("Thanks — your message has been sent."));
       setValues(initialValues);
       setErrors({});
     } catch {
       setStatus("error");
       setFeedback(
-        "The message could not be sent. Check your connection, or use the direct email address on the left.",
+        t(
+          "The message could not be sent. Check your connection, or use the direct email address on the left.",
+        ),
       );
     }
   }
@@ -115,16 +121,16 @@ export function ContactForm() {
       aria-busy={status === "submitting"}
     >
       <div className={styles.formHeader}>
-        <h3 className={styles.formTitle}>Send a message</h3>
+        <h3 className={styles.formTitle}>{t("Send a message")}</h3>
         <p className={styles.formSubtitle}>
-          Fields marked with an asterisk are required.
+          {t("Fields marked with an asterisk are required.")}
         </p>
       </div>
 
       <div className={styles.row}>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="contact-name">
-            Name <span className={styles.required}>*</span>
+            {t("Name")} <span className={styles.required}>*</span>
           </label>
           <input
             id="contact-name"
@@ -133,7 +139,7 @@ export function ContactForm() {
             className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
             value={values.name}
             onChange={handleChange("name")}
-            placeholder="Your name"
+            placeholder={t("Your name")}
             autoComplete="name"
             maxLength={CONTACT_LIMITS.name}
             aria-invalid={errors.name ? true : undefined}
@@ -141,14 +147,14 @@ export function ContactForm() {
           />
           {errors.name ? (
             <p className={styles.errorText} id="contact-name-error">
-              {errors.name}
+              {t(errors.name)}
             </p>
           ) : null}
         </div>
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="contact-email">
-            Email <span className={styles.required}>*</span>
+            {t("Email")} <span className={styles.required}>*</span>
           </label>
           <input
             id="contact-email"
@@ -166,7 +172,7 @@ export function ContactForm() {
           />
           {errors.email ? (
             <p className={styles.errorText} id="contact-email-error">
-              {errors.email}
+              {t(errors.email)}
             </p>
           ) : null}
         </div>
@@ -175,7 +181,7 @@ export function ContactForm() {
       <div className={styles.field}>
         <div className={styles.labelRow}>
           <label className={styles.label} htmlFor="contact-message">
-            Message <span className={styles.required}>*</span>
+            {t("Message")} <span className={styles.required}>*</span>
           </label>
           <span className={styles.counter}>
             {values.message.length}/{CONTACT_LIMITS.message}
@@ -188,20 +194,20 @@ export function ContactForm() {
           className={`${styles.textarea} ${errors.message ? styles.inputError : ""}`}
           value={values.message}
           onChange={handleChange("message")}
-          placeholder="A little about the role, project, or question…"
+          placeholder={t("A little about the role, project, or question…")}
           maxLength={CONTACT_LIMITS.message}
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? "contact-message-error" : undefined}
         />
         {errors.message ? (
           <p className={styles.errorText} id="contact-message-error">
-            {errors.message}
+            {t(errors.message)}
           </p>
         ) : null}
       </div>
 
       <div className={styles.honeypot} aria-hidden="true">
-        <label htmlFor="contact-company">Company</label>
+        <label htmlFor="contact-company">{t("Company")}</label>
         <input
           id="contact-company"
           name="company"
@@ -221,19 +227,20 @@ export function ContactForm() {
         {status === "submitting" ? (
           <>
             <Loader2 className={styles.spinner} aria-hidden="true" />
-            Sending…
+            {t("Sending…")}
           </>
         ) : (
           <>
             <Send aria-hidden="true" />
-            Send message
+            {t("Send message")}
           </>
         )}
       </button>
 
       <p className={styles.privacy}>
-        Your details are only used to reply to this message. No newsletter, no
-        sharing.
+        {t(
+          "Your details are only used to reply to this message. No newsletter, no sharing.",
+        )}
       </p>
 
       <div role="status" aria-live="polite">

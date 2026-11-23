@@ -16,6 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import type { ArchitectureLayer } from "@/types";
 import styles from "./ArchitecturePanel.module.css";
 
@@ -29,6 +30,7 @@ const layerIcons: LucideIcon[] = [
 ];
 
 export function ArchitecturePanel({ layers }: { layers: ArchitectureLayer[] }) {
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
   const idBase = useId().replace(/:/g, "");
@@ -63,7 +65,7 @@ export function ArchitecturePanel({ layers }: { layers: ArchitectureLayer[] }) {
       <div
         className={styles.tabs}
         role="tablist"
-        aria-label="System architecture layers"
+        aria-label={t("System architecture layers")}
         aria-orientation="vertical"
       >
         {layers.map((layer, index) => (
@@ -86,8 +88,8 @@ export function ArchitecturePanel({ layers }: { layers: ArchitectureLayer[] }) {
               {String(index + 1).padStart(2, "0")}
             </span>
             <span>
-              <strong>{layer.title}</strong>
-              {layer.subtitle ? <small>{layer.subtitle}</small> : null}
+              <strong>{t(layer.title)}</strong>
+              {layer.subtitle ? <small>{t(layer.subtitle)}</small> : null}
             </span>
           </button>
         ))}
@@ -105,13 +107,13 @@ export function ArchitecturePanel({ layers }: { layers: ArchitectureLayer[] }) {
             <Icon />
           </span>
           <div>
-            <p className="mono">Selected layer</p>
-            <h3>{selected.title}</h3>
+            <p className="mono">{t("Selected layer")}</p>
+            <h3>{t(selected.title)}</h3>
           </div>
         </div>
 
         {selected.subtitle ? (
-          <p className={styles.subtitle}>{selected.subtitle}</p>
+          <p className={styles.subtitle}>{t(selected.subtitle)}</p>
         ) : null}
 
         <ol className={styles.nodes}>
@@ -119,8 +121,8 @@ export function ArchitecturePanel({ layers }: { layers: ArchitectureLayer[] }) {
             <li key={`${node.title}-${index}`}>
               <span className={styles.nodeMarker} aria-hidden="true" />
               <div>
-                <h4>{node.title}</h4>
-                <p>{node.description}</p>
+                <h4>{t(node.title)}</h4>
+                <p>{t(node.description)}</p>
               </div>
             </li>
           ))}

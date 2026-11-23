@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   ArrowUpRight,
   Boxes,
@@ -13,13 +12,9 @@ import {
 } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { TechEcosystem } from "@/components/interaction/TechEcosystem";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import {
-  skillsUi,
-  translateSkillsCopy,
-  type SkillsLanguage,
-} from "@/lib/i18n/skills";
 import type { SkillIcon } from "@/types";
 import styles from "./Skills.module.css";
 
@@ -35,47 +30,23 @@ const icons: Record<SkillIcon, LucideIcon> = {
 export function Skills() {
   const { content } = useEditor();
   const copy = content.sections.skills;
-  const [language, setLanguage] = useState<SkillsLanguage>("en");
-  const ui = skillsUi[language];
-  const t = (text: string) => translateSkillsCopy(text, language);
+  const { language, t } = useLanguage();
 
   return (
     <section
       className={`section ${styles.skillsSection}`}
       id="skills"
       aria-labelledby="skills-title"
-      lang={language === "am" ? "am" : undefined}
+      lang={language}
     >
       <div className="container">
-        <div className={styles.headingRow}>
-          <SectionHeading
-            index="04"
-            eyebrow={ui.eyebrow}
-            titleId="skills-title"
-            title={t(copy.title)}
-            description={t(copy.description)}
-          />
-
-          <div className={styles.language}>
-            <span className={styles.languageLabel}>{ui.languageLabel}</span>
-            <div className={styles.languageButtons} role="group" aria-label={ui.languageGroup}>
-              <button
-                type="button"
-                aria-pressed={language === "en"}
-                onClick={() => setLanguage("en")}
-              >
-                {ui.english}
-              </button>
-              <button
-                type="button"
-                aria-pressed={language === "am"}
-                onClick={() => setLanguage("am")}
-              >
-                {ui.amharic}
-              </button>
-            </div>
-          </div>
-        </div>
+        <SectionHeading
+          index="04"
+          eyebrow={t("Skills")}
+          titleId="skills-title"
+          title={t(copy.title)}
+          description={t(copy.description)}
+        />
 
         <div className={styles.heritageBand} aria-hidden="true">
           <span />

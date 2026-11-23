@@ -2,9 +2,12 @@
 
 import { Moon, Sun } from "lucide-react";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import styles from "./ThemeToggle.module.css";
 
 export function ThemeToggle() {
+  const { t } = useLanguage();
+
   function toggleTheme() {
     const root = document.documentElement;
     const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
@@ -23,8 +26,8 @@ export function ThemeToggle() {
       type="button"
       className={styles.toggle}
       onClick={toggleTheme}
-      aria-label="Toggle dark and light theme"
-      title="Toggle theme"
+      aria-label={t("Toggle dark and light theme")}
+      title={t("Toggle theme")}
     >
       <Sun className={styles.sun} aria-hidden="true" />
       <Moon className={styles.moon} aria-hidden="true" />

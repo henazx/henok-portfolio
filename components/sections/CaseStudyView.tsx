@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { ArchitecturePanel } from "@/components/interaction/ArchitecturePanel";
 import { ProjectLightbox } from "@/components/interaction/ProjectLightbox";
 import { GitHubIcon } from "@/components/ui/BrandIcons";
@@ -21,25 +22,29 @@ import { projects as publishedProjects } from "@/data/projects";
 import { bypassImageOptimization } from "@/lib/image";
 import styles from "./CaseStudyView.module.css";
 
+type Translate = (text: string) => string;
+
 function SectionCard({
   eyebrow,
   title,
+  t,
   children,
 }: {
   eyebrow: string;
   title: string;
+  t: Translate;
   children: ReactNode;
 }) {
   return (
     <section className={styles.card}>
-      <p className="mono">{eyebrow}</p>
-      <h2>{title}</h2>
+      <p className="mono">{t(eyebrow)}</p>
+      <h2>{t(title)}</h2>
       <div className={styles.cardBody}>{children}</div>
     </section>
   );
 }
 
-function BulletList({ items }: { items: string[] }) {
+function BulletList({ items, t }: { items: string[]; t: Translate }) {
   if (items.length === 0) return null;
 
   return (
@@ -47,7 +52,7 @@ function BulletList({ items }: { items: string[] }) {
       {items.map((item, index) => (
         <li key={`${item}-${index}`}>
           <CheckCircle2 aria-hidden="true" />
-          <span>{item}</span>
+          <span>{t(item)}</span>
         </li>
       ))}
     </ul>
@@ -56,6 +61,7 @@ function BulletList({ items }: { items: string[] }) {
 
 export function CaseStudyView({ slug }: { slug: string }) {
   const { content } = useEditor();
+  const { t } = useLanguage();
   const project =
     content.projects.find((entry) => entry.slug === slug) ??
     publishedProjects.find((entry) => entry.slug === slug);
@@ -63,16 +69,16 @@ export function CaseStudyView({ slug }: { slug: string }) {
   if (!project || !project.caseStudy) {
     return (
       <div className={`container ${styles.notFound}`}>
-        <p className="mono">Case study unavailable</p>
-        <h1>This case study is not available.</h1>
+        <p className="mono">{t("Case study unavailable")}</p>
+        <h1>{t("This case study is not available.")}</h1>
         <p>
-          The project may have been renamed or removed from the editable
-          content. You can return to the project list and choose another case
-          study.
+          {t(
+            "The project may have been renamed or removed from the editable content. You can return to the project list and choose another case study.",
+          )}
         </p>
         <Link href="/#projects" className="btn btn-primary">
           <ArrowLeft aria-hidden="true" />
-          Back to projects
+          {t("Back to projects")}
         </Link>
       </div>
     );
@@ -97,39 +103,41 @@ export function CaseStudyView({ slug }: { slug: string }) {
   return (
     <article className={styles.page}>
       <div className="container">
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/#home">Portfolio</Link>
+        <nav className={styles.breadcrumb} aria-label={t("Breadcrumb")}>
+          <Link href="/#home">{t("Portfolio")}</Link>
           <span aria-hidden="true">/</span>
-          <Link href="/#projects">Projects</Link>
+          <Link href="/#projects">{t("Projects")}</Link>
           <span aria-hidden="true">/</span>
-          <span aria-current="page">{project.name}</span>
+          <span aria-current="page">{t(project.name)}</span>
         </nav>
 
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
-            <p className="mono">{project.category} · Case study</p>
-            <h1>{project.name}</h1>
+            <p className="mono">
+              {t(project.category)} · {t("Case study")}
+            </p>
+            <h1>{t(project.name)}</h1>
             <p className={styles.lede}>
-              {study.overview ?? project.description}
+              {t(study.overview ?? project.description)}
             </p>
 
             <dl className={styles.facts}>
               {study.role ? (
                 <div>
-                  <dt>Role</dt>
-                  <dd>{study.role}</dd>
+                  <dt>{t("Role")}</dt>
+                  <dd>{t(study.role)}</dd>
                 </div>
               ) : null}
               <div>
-                <dt>Built with</dt>
-                <dd>{project.technologies.join(" · ")}</dd>
+                <dt>{t("Built with")}</dt>
+                <dd>{project.technologies.map((item) => t(item)).join(" · ")}</dd>
               </div>
               {project.demo ? (
                 <div>
-                  <dt>Status</dt>
+                  <dt>{t("Status")}</dt>
                   <dd>
                     <span className={styles.liveDot} aria-hidden="true" />
-                    Live deployment available
+                    {t("Live deployment available")}
                   </dd>
                 </div>
               ) : null}
@@ -142,10 +150,10 @@ export function CaseStudyView({ slug }: { slug: string }) {
                   href={project.demo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Live demo — ${project.name} (opens in a new tab)`}
+                  aria-label={`${t("Live demo")} — ${t(project.name)} ${t("(opens in a new tab)")}`}
                 >
                   <ExternalLink aria-hidden="true" />
-                  Live demo
+                  {t("Live demo")}
                 </a>
               ) : null}
               {project.repository ? (
@@ -154,14 +162,14 @@ export function CaseStudyView({ slug }: { slug: string }) {
                   href={project.repository}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Source code — ${project.name} (opens in a new tab)`}
+                  aria-label={`${t("Source code")} — ${t(project.name)} ${t("(opens in a new tab)")}`}
                 >
                   <GitHubIcon />
-                  Source code
+                  {t("Source code")}
                 </a>
               ) : null}
               <Link href="/#contact" className="btn btn-secondary">
-                Discuss a similar project
+                {t("Discuss a similar project")}
                 <ArrowRight aria-hidden="true" />
               </Link>
             </div>
@@ -171,7 +179,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
             <div className={styles.imageFrame}>
               <Image
                 src={project.image.src}
-                alt={project.image.alt}
+                alt={t(project.image.alt)}
                 fill
                 priority
                 unoptimized={bypassImageOptimization(project.image.src)}
@@ -179,37 +187,37 @@ export function CaseStudyView({ slug }: { slug: string }) {
               />
             </div>
             <figcaption>
-              <span>{project.image.alt}</span>
+              <span>{t(project.image.alt)}</span>
               <ProjectLightbox
                 images={gallery}
-                projectName={project.name}
+                projectName={t(project.name)}
                 className={styles.expandButton}
-                label={`Expand preview — ${project.name} images`}
+                label={`${t("Expand preview")} — ${t(project.name)} ${t("images")}`}
               >
-                Expand preview
+                {t("Expand preview")}
               </ProjectLightbox>
             </figcaption>
           </figure>
         </header>
 
         <div className={styles.sectionGrid}>
-          <SectionCard eyebrow="Context" title="Problem">
-            <p>{study.problem}</p>
+          <SectionCard eyebrow="Context" title="Problem" t={t}>
+            <p>{t(study.problem)}</p>
           </SectionCard>
 
           {study.solution ? (
-            <SectionCard eyebrow="Direction" title="Solution">
-              <p>{study.solution}</p>
+            <SectionCard eyebrow="Direction" title="Solution" t={t}>
+              <p>{t(study.solution)}</p>
             </SectionCard>
           ) : null}
 
-          <SectionCard eyebrow="Process" title="Approach">
-            <p>{study.approach}</p>
+          <SectionCard eyebrow="Process" title="Approach" t={t}>
+            <p>{t(study.approach)}</p>
           </SectionCard>
 
           {study.features && study.features.length > 0 ? (
-            <SectionCard eyebrow="Scope" title="What it does">
-              <BulletList items={study.features} />
+            <SectionCard eyebrow="Scope" title="What it does" t={t}>
+              <BulletList items={study.features} t={t} />
             </SectionCard>
           ) : null}
         </div>
@@ -221,11 +229,12 @@ export function CaseStudyView({ slug }: { slug: string }) {
                 <Wrench />
               </span>
               <div>
-                <p className="mono">System design</p>
-                <h2>Architecture</h2>
+                <p className="mono">{t("System design")}</p>
+                <h2>{t("Architecture")}</h2>
                 <p>
-                  Select a layer to see the parts it contains and how they
-                  support the workflow.
+                  {t(
+                    "Select a layer to see the parts it contains and how they support the workflow.",
+                  )}
                 </p>
               </div>
             </div>
@@ -235,14 +244,14 @@ export function CaseStudyView({ slug }: { slug: string }) {
 
         <div className={styles.sectionGrid}>
           {study.decisions.length > 0 ? (
-            <SectionCard eyebrow="Reasoning" title="Key decisions">
+            <SectionCard eyebrow="Reasoning" title="Key decisions" t={t}>
               <ol className={styles.decisions}>
                 {study.decisions.map((decision, index) => (
                   <li key={`${decision}-${index}`}>
                     <span aria-hidden="true">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <p>{decision}</p>
+                    <p>{t(decision)}</p>
                   </li>
                 ))}
               </ol>
@@ -250,12 +259,12 @@ export function CaseStudyView({ slug }: { slug: string }) {
           ) : null}
 
           {study.challenges && study.challenges.length > 0 ? (
-            <SectionCard eyebrow="Trade-offs" title="Challenges">
+            <SectionCard eyebrow="Trade-offs" title="Challenges" t={t}>
               <ul className={styles.challenges}>
                 {study.challenges.map((challenge, index) => (
                   <li key={`${challenge}-${index}`}>
                     <Target aria-hidden="true" />
-                    <span>{challenge}</span>
+                    <span>{t(challenge)}</span>
                   </li>
                 ))}
               </ul>
@@ -265,14 +274,14 @@ export function CaseStudyView({ slug }: { slug: string }) {
 
         <div className={styles.sectionGrid}>
           {study.outcome ? (
-            <SectionCard eyebrow="Result" title="Outcome">
-              <p>{study.outcome}</p>
+            <SectionCard eyebrow="Result" title="Outcome" t={t}>
+              <p>{t(study.outcome)}</p>
             </SectionCard>
           ) : null}
 
           {study.learnings ? (
-            <SectionCard eyebrow="Reflection" title="What I learned">
-              <p>{study.learnings}</p>
+            <SectionCard eyebrow="Reflection" title="What I learned" t={t}>
+              <p>{t(study.learnings)}</p>
             </SectionCard>
           ) : null}
         </div>
@@ -280,8 +289,8 @@ export function CaseStudyView({ slug }: { slug: string }) {
         {relatedSkills.length > 0 ? (
           <section className={styles.related}>
             <div>
-              <p className="mono">Evidence</p>
-              <h2>Skills connected to this project</h2>
+              <p className="mono">{t("Evidence")}</p>
+              <h2>{t("Skills connected to this project")}</h2>
             </div>
             <ul>
               {relatedSkills.map((category) => (
@@ -289,8 +298,8 @@ export function CaseStudyView({ slug }: { slug: string }) {
                   <Link href="/#skills">
                     <Lightbulb aria-hidden="true" />
                     <span>
-                      <strong>{category.title}</strong>
-                      <small>{category.description}</small>
+                      <strong>{t(category.title)}</strong>
+                      <small>{t(category.description)}</small>
                     </span>
                     <ArrowRight aria-hidden="true" />
                   </Link>
@@ -302,9 +311,9 @@ export function CaseStudyView({ slug }: { slug: string }) {
 
         {nextProject && nextProject.slug !== project.slug ? (
           <Link href={`/projects/${nextProject.slug}`} className={styles.next}>
-            <span className="mono">Next case study</span>
+            <span className="mono">{t("Next case study")}</span>
             <span className={styles.nextTitle}>
-              {nextProject.name}
+              {t(nextProject.name)}
               <ArrowRight aria-hidden="true" />
             </span>
           </Link>
@@ -312,11 +321,11 @@ export function CaseStudyView({ slug }: { slug: string }) {
 
         <footer className={styles.pageFooter}>
           <p>
-            Want to see more of the thinking behind the work?{" "}
-            <Link href="/#contact">Get in touch</Link>.
+            {t("Want to see more of the thinking behind the work? ")}
+            <Link href="/#contact">{t("Get in touch")}</Link>.
           </p>
           <Link href="/#projects" className="mono">
-            ← All projects
+            {t("← All projects")}
           </Link>
         </footer>
       </div>

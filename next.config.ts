@@ -23,6 +23,11 @@ const contentSecurityPolicy = [
   "upgrade-insecure-requests",
 ].join("; ");
 
+const contentSecurityPolicyWithSelfFraming = contentSecurityPolicy.replace(
+  "frame-ancestors 'none'",
+  "frame-ancestors 'self'",
+);
+
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
@@ -41,6 +46,14 @@ const securityHeaders = [
         },
       ]
     : []),
+];
+
+// The CV page embeds its PDF in a same-origin iframe. The document itself must
+// therefore allow same-origin framing; every HTML route keeps the stricter
+// `frame-ancestors 'none'` policy from `securityHeaders`.
+const cvDocumentHeaders = [
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Content-Security-Policy", value: contentSecurityPolicyWithSelfFraming },
 ];
 
 const nextConfig: NextConfig = {
@@ -67,6 +80,10 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: securityHeaders,
+      },
+      {
+        source: "/cv/henok-neknikie-cv.pdf",
+        headers: cvDocumentHeaders,
       },
     ];
   },

@@ -160,6 +160,11 @@ html {
   background-color: var(--bg);
 }
 
+html[lang="am"] body {
+  font-family:
+    "Noto Sans Ethiopic", "Abyssinica SIL", Nyala, Geza, var(--font-sans);
+}
+
 body {
   min-height: 100dvh;
   background-color: transparent;

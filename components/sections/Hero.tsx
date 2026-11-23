@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight, Download, MapPin } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import {
   FigmaIcon,
@@ -15,32 +16,45 @@ import {
 import type { SiteContent, SocialLink } from "@/types";
 import styles from "./Hero.module.css";
 
-function socialLinksFor(profile: SiteContent["profile"]): SocialLink[] {
+function socialLinksFor(
+  profile: SiteContent["profile"],
+  t: (text: string) => string,
+): SocialLink[] {
   return [
-    { label: "GitHub", href: profile.github, icon: "github" },
+    { label: t("GitHub"), href: profile.github, icon: "github" },
     ...(profile.linkedin
-      ? [{ label: "LinkedIn", href: profile.linkedin, icon: "linkedin" as const }]
+      ? [
+          {
+            label: t("LinkedIn"),
+            href: profile.linkedin,
+            icon: "linkedin" as const,
+          },
+        ]
       : []),
-    { label: "Email", href: `mailto:${profile.email}`, icon: "mail" },
+    { label: t("Email"), href: `mailto:${profile.email}`, icon: "mail" },
   ];
 }
 
-function statusRowsFor(profile: SiteContent["profile"]) {
+function statusRowsFor(
+  profile: SiteContent["profile"],
+  t: (text: string) => string,
+) {
   return [
     {
-      label: "Availability",
-      value: profile.availability || "Open to opportunities",
+      label: t("Availability"),
+      value: t(profile.availability || "Open to opportunities"),
       tone: "live" as const,
     },
-    { label: "Role", value: profile.role },
+    { label: t("Role"), value: t(profile.role) },
     {
-      label: "Focus",
-      value:
+      label: t("Focus"),
+      value: t(
         profile.currentFocus ??
-        profile.positioning[0] ??
-        "Software development",
+          profile.positioning[0] ??
+          "Software development",
+      ),
     },
-    { label: "Location", value: profile.location.split(",")[0] },
+    { label: t("Location"), value: t(profile.location.split(",")[0]) },
   ];
 }
 
@@ -75,9 +89,10 @@ function TypedName({ name }: { name: string }) {
 
 export function Hero() {
   const { content } = useEditor();
+  const { t } = useLanguage();
   const profile = content.profile;
-  const socialLinks = socialLinksFor(profile);
-  const statusRows = statusRowsFor(profile);
+  const socialLinks = socialLinksFor(profile, t);
+  const statusRows = statusRowsFor(profile, t);
 
   return (
     <section id="home" className={styles.hero} aria-labelledby="hero-title">
@@ -125,32 +140,34 @@ export function Hero() {
         <div className={styles.content}>
           <p className={styles.kicker} aria-hidden="true">
             <span>01</span>
-            Introduction
+            {t("Introduction")}
           </p>
 
           <p className={styles.availability}>
             <span className={styles.dot} aria-hidden="true" />
-            {profile.availability}
+            {t(profile.availability)}
           </p>
 
           <TypedName name={profile.name} />
 
           <p className={styles.headline}>
-            {profile.headline ?? profile.role}
+            {t(profile.headline ?? profile.role)}
           </p>
 
           <p className={styles.focus}>
-            <span className={styles.focusLabel}>Currently focused on</span>
-            {profile.currentFocus ?? profile.positioning.join(" · ")}
+            <span className={styles.focusLabel}>
+              {t("Currently focused on")}
+            </span>
+            {t(profile.currentFocus ?? profile.positioning.join(" · "))}
           </p>
 
           <div className={styles.actions}>
             <a className="btn btn-primary" href="#projects">
-              Explore Projects
+              {t("Explore Projects")}
               <ArrowRight aria-hidden="true" />
             </a>
             <a className="btn btn-secondary" href="#contact">
-              Contact me
+              {t("Contact me")}
               <ArrowRight aria-hidden="true" />
             </a>
             <a
@@ -158,7 +175,7 @@ export function Hero() {
               href={profile.cv.path}
               download={profile.cv.fileName}
             >
-              Download CV
+              {t("Download CV")}
               <Download aria-hidden="true" />
             </a>
           </div>
@@ -167,7 +184,7 @@ export function Hero() {
             <SocialLinks links={socialLinks} className="social-links" />
             <p className={styles.location}>
               <MapPin aria-hidden="true" />
-              {profile.location}
+              {t(profile.location)}
             </p>
           </div>
         </div>
@@ -201,9 +218,11 @@ export function Hero() {
                 <i />
                 <i />
               </span>
-              <span className={styles.consoleTitle}>Profile snapshot</span>
+              <span className={styles.consoleTitle}>
+                {t("Profile snapshot")}
+              </span>
               <span className={styles.consoleState}>
-                <span aria-hidden="true">●</span> Available
+                <span aria-hidden="true">●</span> {t("Available")}
               </span>
             </div>
 
@@ -211,7 +230,7 @@ export function Hero() {
               <div className={styles.portraitFrame}>
                 <Image
                   src={profile.portrait.src}
-                  alt={profile.portrait.alt}
+                  alt={t(profile.portrait.alt)}
                   fill
                   priority
                   sizes="(max-width: 900px) 88vw, 440px"
@@ -220,12 +239,15 @@ export function Hero() {
                 <span className={styles.scanline} aria-hidden="true" />
                 {profile.portrait.isPlaceholder ? (
                   <span className={styles.placeholderTag}>
-                    Portrait placeholder
+                    {t("Portrait placeholder")}
                   </span>
                 ) : null}
               </div>
 
-              <dl className={styles.statusPanel} aria-label="Profile summary">
+              <dl
+                className={styles.statusPanel}
+                aria-label={t("Profile summary")}
+              >
                 {statusRows.map((row) => (
                   <div className={styles.statusRow} key={row.label}>
                     <dt>{row.label}</dt>
