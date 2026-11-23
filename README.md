@@ -47,7 +47,7 @@ Unresolved facts are documented in **`DATA_GAPS.md`** instead of being shown as 
 
 ## Routes and features
 
-- `/` — the main portfolio sections, including an interactive skills-to-evidence map and a background timeline.
+- `/` — the main portfolio sections, including the restored technology constellation, a Skills-only Ethiopian visual treatment, an EN/አማ switcher for Skills UI and key copy, and a background timeline.
 - `/projects/[slug]` — a dedicated case study for each project with a `caseStudy` block. Cards on the homepage link here; architecture layers are selectable with mouse or keyboard.
 - `/cv` — an embedded PDF viewer with direct **Download** and **Open in new tab** actions. The navbar and mobile menu link here.
 - Project previews open in an accessible lightbox with Escape, arrow-key navigation, a focus trap, and focus restored to the trigger on close.
@@ -116,7 +116,7 @@ No password is stored in `localStorage` or `sessionStorage`, and no password is 
 
 ### What you can edit
 
-Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery and lightbox, plus an optional case study with your role, overview, problem, solution, approach, features, stack decisions, challenges, outcome, and learnings. Architecture layers are maintained in `data/content.json`.
+Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery and lightbox, plus an optional case study with your role, overview, problem, solution, approach, features, stack decisions, challenges, outcome, and learnings. Architecture layers are maintained in `data/content.json`. The Skills section keeps the original technology constellation and adds an EN/አማ toggle for its UI and key copy only; untranslated editor-provided copy falls back to English.
 
 - **Drafts** — changes update the page instantly and are saved in `localStorage`. They are private to your browser until published.
 - **Download JSON** — saves the current draft as `content.json` so edits can be copied into the project manually when GitHub publishing is not configured.
@@ -141,6 +141,7 @@ Raw GitHub errors are not returned to the client; failures are reported as sanit
 - **Pointer lighting** — one passive listener updates only the hovered surface; disabled on touch and reduced-motion devices.
 - **Scroll reveal** — progressive enhancement through one `IntersectionObserver`. Content stays visible without JavaScript.
 - **Preferences** — `prefers-reduced-motion` disables decorative motion; `prefers-reduced-transparency` swaps glass for opaque surfaces.
+- **Localization** — the EN/አማ switcher is scoped to the Skills section; the rest of the portfolio remains English until verified translations are supplied.
 - **Keyboard support** — skip link, visible focus rings, labelled icon buttons, and the editor dialog traps focus for the password prompt.
 
 ---
@@ -175,7 +176,7 @@ app/
 
 components/
 ├── editor/                     # hidden editor, auth dialog, content provider
-├── interaction/                # architecture tabs, lightbox, skill map, pointer glow
+├── interaction/                # architecture tabs, lightbox, tech ecosystem, pointer glow
 ├── layout/                     # navbar, footer, backdrop, scroll reveal
 ├── sections/                   # hero, about, experience, projects, case studies, skills, credentials, contact
 └── ui/                         # shared headings and social links
@@ -185,7 +186,8 @@ lib/
 ├── server/                     # server-only auth, HTTP, validation, GitHub, rate limit
 ├── publish-client.ts           # browser-side session/CSRF plumbing
 ├── contact.ts                  # shared contact validation
-└── editor.ts                   # keyword, drafts, path helpers
+├── editor.ts                   # keyword, drafts, path helpers
+└── i18n/skills.ts              # Skills-only EN/Amharic copy map
 
 public/                         # CV, portrait, project previews
 types/                          # shared TypeScript contracts

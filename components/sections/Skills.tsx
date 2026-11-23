@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   ArrowUpRight,
   Boxes,
@@ -12,8 +13,13 @@ import {
 } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
-import { SkillMap } from "@/components/interaction/SkillMap";
+import { TechEcosystem } from "@/components/interaction/TechEcosystem";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import {
+  skillsUi,
+  translateSkillsCopy,
+  type SkillsLanguage,
+} from "@/lib/i18n/skills";
 import type { SkillIcon } from "@/types";
 import styles from "./Skills.module.css";
 
@@ -29,20 +35,56 @@ const icons: Record<SkillIcon, LucideIcon> = {
 export function Skills() {
   const { content } = useEditor();
   const copy = content.sections.skills;
+  const [language, setLanguage] = useState<SkillsLanguage>("en");
+  const ui = skillsUi[language];
+  const t = (text: string) => translateSkillsCopy(text, language);
 
   return (
-    <section className="section" id="skills" aria-labelledby="skills-title">
+    <section
+      className={`section ${styles.skillsSection}`}
+      id="skills"
+      aria-labelledby="skills-title"
+      lang={language === "am" ? "am" : undefined}
+    >
       <div className="container">
-        <SectionHeading
-          index="04"
-          eyebrow="Skills"
-          titleId="skills-title"
-          title={copy.title}
-          description={copy.description}
-        />
+        <div className={styles.headingRow}>
+          <SectionHeading
+            index="04"
+            eyebrow={ui.eyebrow}
+            titleId="skills-title"
+            title={t(copy.title)}
+            description={t(copy.description)}
+          />
+
+          <div className={styles.language}>
+            <span className={styles.languageLabel}>{ui.languageLabel}</span>
+            <div className={styles.languageButtons} role="group" aria-label={ui.languageGroup}>
+              <button
+                type="button"
+                aria-pressed={language === "en"}
+                onClick={() => setLanguage("en")}
+              >
+                {ui.english}
+              </button>
+              <button
+                type="button"
+                aria-pressed={language === "am"}
+                onClick={() => setLanguage("am")}
+              >
+                {ui.amharic}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.heritageBand} aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
 
         <div data-reveal>
-          <SkillMap categories={content.skills} />
+          <TechEcosystem />
         </div>
 
         <div className={styles.grid}>
@@ -51,6 +93,7 @@ export function Skills() {
             const evidenceHref = category.evidenceHref?.trim();
             const evidenceLabel = category.evidenceLabel?.trim();
             const externalEvidence = evidenceHref?.startsWith("https://");
+            const translatedLabel = evidenceLabel ? t(evidenceLabel) : "";
 
             return (
               <article
@@ -68,25 +111,27 @@ export function Skills() {
                   </span>
                 </div>
 
-                <h3 className={styles.title}>{category.title}</h3>
+                <h3 className={styles.title}>{t(category.title)}</h3>
 
-                <p className={styles.description}>{category.description}</p>
+                <p className={styles.description}>
+                  {t(category.description)}
+                </p>
 
                 <ul className={styles.tags}>
                   {category.skills.map((skill, skillIndex) => (
-                    <li key={`${skill}-${skillIndex}`}>{skill}</li>
+                    <li key={`${skill}-${skillIndex}`}>{t(skill)}</li>
                   ))}
                 </ul>
 
-                {evidenceHref && evidenceLabel ? (
+                {evidenceHref && translatedLabel ? (
                   <a
                     className={styles.evidence}
                     href={evidenceHref}
                     target={externalEvidence ? "_blank" : undefined}
                     rel={externalEvidence ? "noopener noreferrer" : undefined}
-                    aria-label={`${evidenceLabel}${externalEvidence ? " (opens in a new tab)" : ""}`}
+                    aria-label={`${translatedLabel}${externalEvidence ? ` ${t("(opens in a new tab)")}` : ""}`}
                   >
-                    {evidenceLabel}
+                    {translatedLabel}
                     <ArrowUpRight aria-hidden="true" />
                   </a>
                 ) : null}

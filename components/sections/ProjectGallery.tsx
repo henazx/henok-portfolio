@@ -252,7 +252,7 @@ function ProjectCard({
           <Link
             href={`/projects/${project.slug}`}
             className={styles.caseLink}
-            aria-label={`Read the ${project.name} case study`}
+            aria-label={`Read case study: ${project.name}`}
           >
             Read case study
             <ArrowRight aria-hidden="true" />

@@ -1,3 +1,169 @@
+.skillsSection {
+  --skill-green: #3fd39a;
+  --skill-yellow: #f2c75c;
+  --skill-red: #f28d7f;
+  --skill-accent-contrast: #04150f;
+  position: relative;
+  isolation: isolate;
+}
+
+:global(html[data-theme="light"]) .skillsSection {
+  --skill-green: #087a52;
+  --skill-yellow: #8a6200;
+  --skill-red: #a83232;
+  --skill-accent-contrast: #ffffff;
+}
+
+.skillsSection::before,
+.skillsSection::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.skillsSection::before {
+  background:
+    radial-gradient(
+      circle at 8% 12%,
+      color-mix(in srgb, var(--skill-green) 13%, transparent),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 92% 10%,
+      color-mix(in srgb, var(--skill-yellow) 10%, transparent),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 84% 88%,
+      color-mix(in srgb, var(--skill-red) 10%, transparent),
+      transparent 32%
+    );
+}
+
+.skillsSection::after {
+  opacity: 0.11;
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 47%,
+      var(--skill-yellow) 48%,
+      var(--skill-yellow) 52%,
+      transparent 53%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 47%,
+      var(--skill-green) 48%,
+      var(--skill-green) 52%,
+      transparent 53%
+    );
+  background-size: 34px 34px;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 18%,
+    #000 82%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 18%,
+    #000 82%,
+    transparent
+  );
+}
+
+.skillsSection[lang="am"] :is(h2, h3, p, span, li, button, a) {
+  font-family:
+    "Noto Sans Ethiopic", "Abyssinica SIL", Nyala, Geza, var(--font-sans);
+}
+
+.headingRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.headingRow > header {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.language {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.languageLabel {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.languageButtons {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--glass-3-bg);
+}
+
+.languageButtons button {
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.2;
+  transition:
+    color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth);
+}
+
+.languageButtons button:hover {
+  color: var(--text);
+}
+
+.languageButtons button[aria-pressed="true"] {
+  background: var(--skill-green);
+  color: var(--skill-accent-contrast);
+}
+
+.heritageBand {
+  display: flex;
+  width: min(280px, 100%);
+  height: 3px;
+  margin: 26px 0 24px;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.heritageBand span {
+  flex: 1 1 0;
+}
+
+.heritageBand span:nth-child(1) {
+  background: var(--skill-green);
+}
+
+.heritageBand span:nth-child(2) {
+  background: var(--skill-yellow);
+}
+
+.heritageBand span:nth-child(3) {
+  background: var(--skill-red);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5,6 +171,7 @@
 }
 
 .card {
+  --card-accent: var(--skill-green);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -12,6 +179,7 @@
   overflow: hidden;
   background: var(--glass-2-bg);
   border: 1px solid var(--glass-border);
+  border-left: 2px solid var(--card-accent);
   border-radius: var(--radius-lg);
   box-shadow:
     var(--glass-shadow-soft),
@@ -20,8 +188,17 @@
   backdrop-filter: blur(20px) saturate(160%);
   transition:
     border-color 0.25s var(--ease-smooth),
+    border-left-color 0.25s var(--ease-smooth),
     transform 0.25s var(--ease-smooth),
     background 0.25s var(--ease-smooth);
+}
+
+.card:nth-child(3n + 2) {
+  --card-accent: var(--skill-yellow);
+}
+
+.card:nth-child(3n + 3) {
+  --card-accent: var(--skill-red);
 }
 
 .card::before {
@@ -31,13 +208,13 @@
   left: clamp(20px, 2.4vw, 28px);
   width: 44px;
   height: 1px;
-  background: linear-gradient(90deg, var(--accent), transparent);
+  background: linear-gradient(90deg, var(--card-accent), transparent);
   opacity: 0.75;
-  box-shadow: 0 0 14px var(--accent);
 }
 
 .card:hover {
   border-color: var(--border-strong);
+  border-left-color: var(--card-accent);
   background: var(--glass-1-bg);
   transform: translateY(-2px);
 }
@@ -55,18 +232,10 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent) 38%, transparent);
   border-radius: 10px;
-  background:
-    linear-gradient(
-      145deg,
-      color-mix(in srgb, var(--accent) 22%, transparent),
-      color-mix(in srgb, var(--accent) 5%, transparent)
-    );
-  color: var(--accent-hover);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 10px 26px -18px rgba(59, 130, 246, 0.9);
+  background: color-mix(in srgb, var(--card-accent) 12%, transparent);
+  color: var(--card-accent);
 }
 
 .icon svg {
@@ -75,7 +244,7 @@
 }
 
 .index {
-  color: var(--text-subtle);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.12em;
@@ -129,7 +298,7 @@
   gap: 5px;
   margin-top: auto;
   padding-top: 18px;
-  color: var(--accent-hover);
+  color: var(--skill-green);
   font-size: 0.78rem;
   font-weight: 500;
   transition: color 0.2s var(--ease-smooth);
@@ -167,6 +336,16 @@
 @media (max-width: 1000px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .headingRow {
+    flex-direction: column;
+  }
+
+  .language {
+    align-items: flex-start;
   }
 }
 
