@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { FileText, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
@@ -169,10 +168,6 @@ export function Navbar() {
 
           <div className={styles.actions}>
             <LanguageToggle className={styles.languageToggle} />
-            <Link href="/cv" className={styles.cvButton}>
-              <FileText aria-hidden="true" />
-              {t("CV")}
-            </Link>
             <ThemeToggle />
             <button
               ref={toggleRef}
@@ -223,14 +218,6 @@ export function Navbar() {
 
           <div className={styles.mobileFooter}>
             <LanguageToggle inline />
-            <Link
-              href="/cv"
-              className={`btn btn-secondary ${styles.mobileCv}`}
-              onClick={closeMenu}
-            >
-              <FileText aria-hidden="true" />
-              {t("View CV / Résumé")}
-            </Link>
 
             <div>
               <p className="mono" style={{ marginBottom: 12 }}>
