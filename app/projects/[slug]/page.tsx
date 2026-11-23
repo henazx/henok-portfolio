@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { CaseStudyView } from "@/components/sections/CaseStudyView";
+import { languageAlternates } from "@/lib/i18n/seo";
 import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site";
 
@@ -35,7 +36,10 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: canonicalPath },
+    alternates: {
+      canonical: canonicalPath,
+      languages: languageAlternates(canonicalPath),
+    },
     openGraph: {
       type: "article",
       url: canonicalPath,

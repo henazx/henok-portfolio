@@ -8,6 +8,93 @@
   border-radius: var(--radius-lg);
 }
 
+.flow {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 12px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface);
+  scrollbar-width: thin;
+}
+
+.flowNode {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1 0 auto;
+  min-width: 140px;
+  padding: 4px 18px 4px 4px;
+  opacity: 0.72;
+  transition:
+    opacity 0.2s var(--ease-smooth),
+    color 0.2s var(--ease-smooth);
+}
+
+.flowNode:last-child {
+  padding-right: 4px;
+}
+
+.flowNode:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  color: var(--text-subtle);
+  font-size: 0.95rem;
+  transform: translateY(-50%);
+}
+
+.flowNodeActive {
+  opacity: 1;
+}
+
+.flowIndex {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+}
+
+.flowNodeActive .flowIndex {
+  border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.flowLabel {
+  min-width: 0;
+}
+
+.flowLabel strong,
+.flowLabel small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flowLabel strong {
+  font-size: 0.79rem;
+  font-weight: 550;
+}
+
+.flowLabel small {
+  margin-top: 2px;
+  color: var(--text-subtle);
+  font-size: 0.66rem;
+}
+
 .tabs {
   display: flex;
   flex-direction: column;

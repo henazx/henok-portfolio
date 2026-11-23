@@ -39,7 +39,7 @@ export function Contact() {
     <section className="section" id="contact" aria-labelledby="contact-title">
       <div className="container">
         <SectionHeading
-          index="06"
+          index="07"
           eyebrow={t("Contact")}
           titleId="contact-title"
           title={t(copy.title)}

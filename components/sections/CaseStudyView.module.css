@@ -309,40 +309,78 @@
   line-height: 1.5;
 }
 
-.next {
-  display: flex;
-  flex-wrap: wrap;
+.projectNav {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   margin-top: clamp(48px, 7vw, 76px);
-  padding: clamp(22px, 3vw, 32px);
+  padding-top: clamp(24px, 4vw, 36px);
+  border-top: 1px solid var(--border);
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 16px 18px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   background: var(--surface);
   transition:
     border-color 0.2s var(--ease-smooth),
     background-color 0.2s var(--ease-smooth);
 }
 
-.next:hover {
+.navLink:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   background: var(--accent-soft);
 }
 
-.nextTitle {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
-  font-weight: 550;
-  letter-spacing: -0.025em;
+.navLink svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  color: var(--accent-hover);
 }
 
-.nextTitle svg {
-  width: 20px;
-  height: 20px;
+.navLink span span,
+.navLink strong {
+  display: block;
+}
+
+.navLink .mono {
+  color: var(--text-subtle);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.navLink strong {
+  overflow: hidden;
+  margin-top: 4px;
+  font-size: 0.92rem;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navNext {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.navAll {
   color: var(--accent-hover);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.navAll:hover {
+  color: var(--text);
 }
 
 .pageFooter {
@@ -396,6 +434,20 @@
 @media (max-width: 680px) {
   .sectionGrid {
     grid-template-columns: 1fr;
+  }
+
+  .projectNav {
+    grid-template-columns: 1fr;
+  }
+
+  .navNext {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .navAll {
+    order: -1;
+    justify-self: start;
   }
 
   .related ul {

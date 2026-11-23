@@ -1,6 +1,7 @@
 .toggle {
   display: inline-flex;
-  gap: 2px;
+  align-items: center;
+  gap: 1px;
   padding: 3px;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -8,12 +9,14 @@
 }
 
 .toggle button {
-  padding: 5px 9px;
+  min-width: 32px;
+  padding: 5px 7px;
   border-radius: 999px;
   color: var(--text-muted);
   font-size: 0.72rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.2;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   transition:
     color 0.2s var(--ease-smooth),
@@ -22,11 +25,18 @@
 
 .toggle button:hover {
   color: var(--text);
+  background: var(--accent-soft);
 }
 
 .toggle button[aria-pressed="true"] {
   background: var(--accent-strong);
   color: var(--accent-contrast);
+}
+
+.divider {
+  width: 1px;
+  height: 12px;
+  background: var(--border);
 }
 
 .inline {

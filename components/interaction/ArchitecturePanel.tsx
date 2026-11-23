@@ -62,6 +62,23 @@ export function ArchitecturePanel({ layers }: { layers: ArchitectureLayer[] }) {
 
   return (
     <div className={styles.panel}>
+      <div className={styles.flow} aria-hidden="true">
+        {layers.map((layer, index) => (
+          <div
+            key={`flow-${layer.title}`}
+            className={`${styles.flowNode} ${active === index ? styles.flowNodeActive : ""}`}
+          >
+            <span className={styles.flowIndex}>
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className={styles.flowLabel}>
+              <strong>{t(layer.title)}</strong>
+              {layer.subtitle ? <small>{t(layer.subtitle)}</small> : null}
+            </span>
+          </div>
+        ))}
+      </div>
+
       <div
         className={styles.tabs}
         role="tablist"

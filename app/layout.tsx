@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Ethiopic } from "next/font/google";
 
 import "@/app/globals.css";
 import { LanguageProvider } from "@/components/i18n/LanguageProvider";
+import { LocalizedMetadata } from "@/components/i18n/LocalizedMetadata";
 import { T } from "@/components/i18n/T";
 import { Navbar } from "@/components/layout/Navbar";
+import { BackToTop } from "@/components/layout/BackToTop";
 import { Footer } from "@/components/layout/Footer";
 import { Backdrop } from "@/components/layout/Backdrop";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
@@ -15,6 +17,7 @@ import { ContentProvider } from "@/components/editor/ContentProvider";
 import { EditUnlock } from "@/components/editor/EditUnlock";
 import { EditorMount } from "@/components/editor/EditorMount";
 import { education } from "@/data/education";
+import { languageAlternates } from "@/lib/i18n/seo";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
 import { skillCategories } from "@/data/skills";
@@ -28,6 +31,12 @@ const geist = Geist({
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
+  display: "swap",
+});
+
+const notoSansEthiopic = Noto_Sans_Ethiopic({
+  subsets: ["ethiopic"],
+  variable: "--font-amharic",
   display: "swap",
 });
 
@@ -56,6 +65,7 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "/",
+    languages: languageAlternates("/"),
   },
   openGraph: {
     type: "website",
@@ -93,14 +103,14 @@ export const viewport: Viewport = {
 };
 
 /**
- * Runs before paint so the saved theme is applied without a flash. The site is
- * dark-first, so first-time visitors get the dark theme unless they have picked
- * one before.
+ * Runs before paint so the saved theme is applied without a flash. First-time
+ * visitors follow their system preference; the dark theme is the fallback when
+ * that preference is unavailable.
  */
-const themeScript = `(function(){try{var stored=localStorage.getItem("theme");var theme=stored==="light"||stored==="dark"?stored:"dark";document.documentElement.setAttribute("data-theme",theme);}catch(e){}})();`;
+const themeScript = `(function(){try{var root=document.documentElement;var stored=localStorage.getItem("theme");var mode=stored==="light"||stored==="dark"||stored==="system"?stored:"system";var resolved=mode==="system"?(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):mode;root.setAttribute("data-theme-mode",mode);root.setAttribute("data-theme",resolved);}catch(e){}})();`;
 
-/** Applies the saved language before paint so the correct font stack is used. */
-const languageScript = `(function(){try{var stored=localStorage.getItem("henok-portfolio-language");var language=stored==="am"?"am":"en";document.documentElement.lang=language;document.documentElement.setAttribute("data-language",language);}catch(e){}})();`;
+/** Applies the saved or URL language before paint so the correct font loads. */
+const languageScript = `(function(){try{var root=document.documentElement;var fromUrl=new URLSearchParams(window.location.search).get("lang");var stored=localStorage.getItem("henok-portfolio-language");var language=fromUrl==="am"||fromUrl==="en"?fromUrl:stored==="am"?"am":"en";root.lang=language;root.dir="ltr";root.setAttribute("data-language",language);}catch(e){}})();`;
 
 // Derived from the same editable content source as the visible page, rather
 // than duplicating personal details in the layout.
@@ -145,7 +155,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${geistMono.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${notoSansEthiopic.variable}`}
       suppressHydrationWarning
     >
       {/* Browser extensions can add attributes to body before hydration. */}
@@ -158,6 +168,7 @@ export default function RootLayout({
         </Script>
         <ContentProvider>
           <LanguageProvider>
+            <LocalizedMetadata />
             <Backdrop />
             <ScrollReveal />
             <PointerGlow />
@@ -167,6 +178,7 @@ export default function RootLayout({
             <Navbar />
             <main id="main">{children}</main>
             <Footer />
+            <BackToTop />
             <EditUnlock />
             <AuthGate />
             <EditorMount />

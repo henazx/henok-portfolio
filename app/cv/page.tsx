@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Download, ExternalLink, FileText } from "lucide-react";
 
 import { T } from "@/components/i18n/T";
+import { languageAlternates } from "@/lib/i18n/seo";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
 import styles from "./cv.module.css";
@@ -12,7 +13,10 @@ const canonicalPath = "/cv";
 export const metadata: Metadata = {
   title: "CV / Résumé",
   description: `View or download ${profile.name}'s CV.`,
-  alternates: { canonical: canonicalPath },
+  alternates: {
+    canonical: canonicalPath,
+    languages: languageAlternates(canonicalPath),
+  },
   openGraph: {
     type: "article",
     url: canonicalPath,

@@ -78,7 +78,8 @@
 
 .skillsSection[lang="am"] :is(h2, h3, p, span, li, button, a) {
   font-family:
-    "Noto Sans Ethiopic", "Abyssinica SIL", Nyala, Geza, var(--font-sans);
+    var(--font-amharic), "Noto Sans Ethiopic", "Abyssinica SIL", Nyala, Geza,
+    var(--font-sans);
 }
 
 .headingRow {
@@ -137,6 +138,149 @@
 .languageButtons button[aria-pressed="true"] {
   background: var(--skill-green);
   color: var(--skill-accent-contrast);
+}
+
+.explorer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 28px 0 10px;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--glass-3-bg);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  transition:
+    color 0.2s var(--ease-smooth),
+    border-color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth);
+}
+
+.filter:hover {
+  color: var(--text);
+  border-color: var(--glass-border);
+}
+
+.filterActive {
+  border-color: var(--skill-green);
+  background: color-mix(in srgb, var(--skill-green) 16%, transparent);
+  color: var(--text);
+}
+
+.filterCount {
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+}
+
+.explorerHint {
+  margin-bottom: 24px;
+  color: var(--text-subtle);
+  font-size: 0.78rem;
+}
+
+.results {
+  margin-top: 26px;
+  padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid color-mix(in srgb, var(--skill-green) 30%, transparent);
+  border-radius: var(--radius-lg);
+  background: var(--glass-2-bg);
+  box-shadow: var(--glass-shadow-soft);
+}
+
+.resultHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.resultHead strong {
+  color: var(--text);
+}
+
+.verifiedNote {
+  margin-top: 5px;
+  color: var(--text-subtle);
+  font-size: 0.72rem;
+}
+
+.clear {
+  padding: 6px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 0.73rem;
+  transition: color 0.2s var(--ease-smooth);
+}
+
+.clear:hover {
+  color: var(--text);
+  border-color: var(--glass-border);
+}
+
+.resultList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.resultList a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 100%;
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition:
+    border-color 0.2s var(--ease-smooth),
+    background-color 0.2s var(--ease-smooth);
+}
+
+.resultList a:hover {
+  border-color: color-mix(in srgb, var(--skill-green) 45%, transparent);
+  background: var(--accent-soft);
+}
+
+.resultList strong,
+.resultList small {
+  display: block;
+}
+
+.resultList strong {
+  font-size: 0.85rem;
+}
+
+.resultList small {
+  margin-top: 2px;
+  color: var(--text-subtle);
+  font-size: 0.68rem;
+}
+
+.resultList svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--skill-green);
+}
+
+.empty {
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
 }
 
 .heritageBand {
@@ -272,6 +416,13 @@
 }
 
 .tags li {
+  display: flex;
+}
+
+.tagStatic,
+.skillButton {
+  display: inline-flex;
+  align-items: center;
   padding: 5px 9px;
   border: 1px solid var(--border);
   border-radius: 7px;
@@ -279,13 +430,29 @@
   color: var(--text-muted);
   font-size: 0.755rem;
   line-height: 1.5;
+  text-align: left;
   transition:
     color 0.2s var(--ease-smooth),
     border-color 0.2s var(--ease-smooth),
     background-color 0.2s var(--ease-smooth);
 }
 
-.card:hover .tags li {
+.skillButton:hover {
+  border-color: var(--skill-green);
+  color: var(--text);
+}
+
+.tagActive {
+  border-color: var(--skill-green);
+  background: color-mix(in srgb, var(--skill-green) 18%, transparent);
+  color: var(--text);
+}
+
+.cardLinked {
+  border-color: color-mix(in srgb, var(--skill-green) 45%, transparent);
+}
+
+.card:hover :is(.tagStatic, .skillButton) {
   border-color: var(--glass-border);
   background: var(--glass-3-bg);
   color: var(--text);
@@ -334,7 +501,8 @@
 }
 
 @media (max-width: 1000px) {
-  .grid {
+  .grid,
+  .resultList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -350,7 +518,8 @@
 }
 
 @media (max-width: 640px) {
-  .grid {
+  .grid,
+  .resultList {
     grid-template-columns: 1fr;
   }
 

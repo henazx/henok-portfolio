@@ -20,7 +20,7 @@ export function Credentials() {
     >
       <div className="container">
         <SectionHeading
-          index="05"
+          index="06"
           eyebrow={t("Education & Certifications")}
           titleId="credentials-title"
           title={t(copy.title)}
@@ -59,32 +59,31 @@ export function Credentials() {
               {t("Certifications")}
             </h3>
 
-            <ul className={styles.certList}>
+            <ul className={styles.certList} aria-label={t("Certifications")}>
               {content.certifications.map((entry, index) => (
                 <li className={styles.cert} key={`${entry.name}-${index}`}>
                   <span className={styles.certIcon} aria-hidden="true">
                     <BadgeCheck />
                   </span>
                   <div>
-                    <p className={styles.certName}>
-                      {entry.link ? (
-                        <a
-                          className={styles.certLink}
-                          href={entry.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${t("Open certificate for")} ${t(entry.name)} ${t("(opens in a new tab)")}`}
-                        >
-                          {t(entry.name)}
-                          <ExternalLink aria-hidden="true" />
-                        </a>
-                      ) : (
-                        t(entry.name)
-                      )}
+                    <h4 className={styles.certName}>{t(entry.name)}</h4>
+                    <p className={styles.certIssuer}>
+                      <span>{t("Issuer")}:</span> {entry.issuer}
                     </p>
-                    <p className={styles.certIssuer}>{entry.issuer}</p>
                     {entry.note ? (
                       <p className={styles.certNote}>{t(entry.note)}</p>
+                    ) : null}
+                    {entry.link ? (
+                      <a
+                        className={styles.certLink}
+                        href={entry.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${t("Verify certificate")}: ${t(entry.name)} ${t(" (opens in a new tab)")}`}
+                      >
+                        {t("Verify certificate")}
+                        <ExternalLink aria-hidden="true" />
+                      </a>
                     ) : null}
                   </div>
                 </li>

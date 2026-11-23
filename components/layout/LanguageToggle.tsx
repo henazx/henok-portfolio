@@ -3,6 +3,7 @@
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import styles from "./LanguageToggle.module.css";
 
+/** Compact EN | አማ selector shared by desktop, mobile and the footer. */
 export function LanguageToggle({
   inline = false,
   className = "",
@@ -16,21 +17,26 @@ export function LanguageToggle({
     <div
       className={`${styles.toggle} ${inline ? styles.inline : ""} ${className}`}
       role="group"
-      aria-label={t("Site language")}
+      aria-label={t("Select language")}
     >
       <button
         type="button"
+        lang="en"
+        aria-label={t("English language")}
         aria-pressed={language === "en"}
         onClick={() => setLanguage("en")}
       >
-        {t("English")}
+        EN
       </button>
+      <span className={styles.divider} aria-hidden="true" />
       <button
         type="button"
+        lang="am"
+        aria-label={t("Amharic language")}
         aria-pressed={language === "am"}
         onClick={() => setLanguage("am")}
       >
-        አማርኛ
+        አማ
       </button>
     </div>
   );

@@ -1,25 +1,44 @@
 "use client";
 
 import {
+  createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useSyncExternalStore,
-  createContext,
   type ReactNode,
 } from "react";
 
-import { translate, type Language } from "@/lib/i18n/dictionary";
+import {
+  isLanguage,
+  translate,
+  type Language,
+} from "@/lib/i18n/dictionary";
 
 const STORAGE_KEY = "henok-portfolio-language";
+const QUERY_KEY = "lang";
 
 const listeners = new Set<() => void>();
 
+function notify() {
+  listeners.forEach((listener) => listener());
+}
+
+function readUrlLanguage(): Language | null {
+  if (typeof window === "undefined") return null;
+  const value = new URLSearchParams(window.location.search).get(QUERY_KEY);
+  return isLanguage(value) ? value : null;
+}
+
 function readLanguage(): Language {
+  if (typeof window === "undefined") return "en";
+  const fromUrl = readUrlLanguage();
+  if (fromUrl) return fromUrl;
+
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored === "am" || stored === "en" ? stored : "en";
+    return isLanguage(stored) ? stored : "en";
   } catch {
     return "en";
   }
@@ -28,10 +47,24 @@ function readLanguage(): Language {
 function subscribe(listener: () => void) {
   listeners.add(listener);
   window.addEventListener("storage", listener);
+  window.addEventListener("popstate", listener);
   return () => {
     listeners.delete(listener);
     window.removeEventListener("storage", listener);
+    window.removeEventListener("popstate", listener);
   };
+}
+
+function updateUrl(next: Language) {
+  const url = new URL(window.location.href);
+  if (next === "en") {
+    url.searchParams.delete(QUERY_KEY);
+  } else {
+    url.searchParams.set(QUERY_KEY, next);
+  }
+  // replaceState keeps the switch instant and avoids a new history entry for
+  // every language change. Other query parameters and the hash are preserved.
+  window.history.replaceState(window.history.state, "", url);
 }
 
 function setStoredLanguage(next: Language) {
@@ -40,7 +73,8 @@ function setStoredLanguage(next: Language) {
   } catch {
     // Storage can be unavailable; the switch still works for this visit.
   }
-  listeners.forEach((listener) => listener());
+  updateUrl(next);
+  notify();
 }
 
 interface LanguageContextValue {
@@ -51,18 +85,35 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Server HTML is English. The preference is restored after hydration by
-  // useSyncExternalStore, so the first client render matches the server.
+export function LanguageProvider({
+  children,
+  initialLanguage = "en",
+}: {
+  children: ReactNode;
+  initialLanguage?: Language;
+}) {
+  // Server HTML uses the initial language. The visitor's saved/URL preference
+  // is restored after hydration by useSyncExternalStore, which keeps the first
+  // client render identical to the server render.
   const language = useSyncExternalStore<Language>(
     subscribe,
     readLanguage,
-    () => "en",
+    () => initialLanguage,
   );
 
   useEffect(() => {
     document.documentElement.lang = language;
+    document.documentElement.dir = "ltr";
     document.documentElement.setAttribute("data-language", language);
+
+    // An explicit ?lang= link should stick for later visits too.
+    if (readUrlLanguage()) {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, language);
+      } catch {
+        // Storage can be unavailable; the URL still carries the choice.
+      }
+    }
   }, [language]);
 
   const setLanguage = useCallback((next: Language) => {
@@ -80,7 +131,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
   );
 }
 

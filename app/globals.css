@@ -158,11 +158,20 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   background-color: var(--bg);
+  transition: background-color 0.25s var(--ease-smooth);
 }
 
 html[lang="am"] body {
   font-family:
-    "Noto Sans Ethiopic", "Abyssinica SIL", Nyala, Geza, var(--font-sans);
+    var(--font-amharic), "Noto Sans Ethiopic", "Abyssinica SIL", Nyala, Geza,
+    var(--font-sans);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+html[lang="am"] :is(h1, h2, h3, h4) {
+  line-height: 1.35;
+  letter-spacing: 0;
 }
 
 body {

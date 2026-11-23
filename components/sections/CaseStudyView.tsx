@@ -89,8 +89,12 @@ export function CaseStudyView({ slug }: { slug: string }) {
   const currentIndex = publishedProjects.findIndex(
     (entry) => entry.slug === project.slug,
   );
+  const previousProject =
+    currentIndex > 0 ? publishedProjects[currentIndex - 1] : null;
   const nextProject =
-    publishedProjects[(currentIndex + 1) % publishedProjects.length];
+    currentIndex < publishedProjects.length - 1
+      ? publishedProjects[currentIndex + 1]
+      : null;
   const relatedSkills = content.skills.filter((category) => {
     const href = category.evidenceHref ?? "";
     const label = category.evidenceLabel ?? "";
@@ -309,15 +313,46 @@ export function CaseStudyView({ slug }: { slug: string }) {
           </section>
         ) : null}
 
-        {nextProject && nextProject.slug !== project.slug ? (
-          <Link href={`/projects/${nextProject.slug}`} className={styles.next}>
-            <span className="mono">{t("Next case study")}</span>
-            <span className={styles.nextTitle}>
-              {t(nextProject.name)}
-              <ArrowRight aria-hidden="true" />
-            </span>
+        <nav
+          className={styles.projectNav}
+          aria-label={t("Project navigation")}
+        >
+          {previousProject ? (
+            <Link
+              href={`/projects/${previousProject.slug}`}
+              className={`${styles.navLink} ${styles.navPrev}`}
+              rel="prev"
+            >
+              <ArrowLeft aria-hidden="true" />
+              <span>
+                <span className="mono">{t("Previous case study")}</span>
+                <strong>{t(previousProject.name)}</strong>
+              </span>
+            </Link>
+          ) : (
+            <span aria-hidden="true" />
+          )}
+
+          <Link href="/#projects" className={styles.navAll}>
+            {t("All projects")}
           </Link>
-        ) : null}
+
+          {nextProject ? (
+            <Link
+              href={`/projects/${nextProject.slug}`}
+              className={`${styles.navLink} ${styles.navNext}`}
+              rel="next"
+            >
+              <span>
+                <span className="mono">{t("Next case study")}</span>
+                <strong>{t(nextProject.name)}</strong>
+              </span>
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          ) : (
+            <span aria-hidden="true" />
+          )}
+        </nav>
 
         <footer className={styles.pageFooter}>
           <p>
