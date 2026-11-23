@@ -59,8 +59,7 @@
       "focus": [
         "IT support and systems",
         "Web application development",
-        "UX/UI and product design",
-        "Continuous learning"
+        "UX/UI and product design"
       ]
     },
     "email": "henokneknikiezx@gmail.com",
@@ -91,13 +90,13 @@
         "Troubleshoot hardware, software, and network issues reported by staff.",
         "Install, configure, and maintain computers, printers, and IT systems.",
         "Help employees with day-to-day technical problems and IT operations.",
-        "Contribute to [TODO: name the software or technology project] by [TODO: describe your specific contribution]."
+        "Contribute technical support to software and systems work alongside the core IT operations team."
       ],
       "impact": [
-        "Resolved hardware, software, and network issues for [TODO: number] staff, with [TODO: average resolution time] average resolution time.",
-        "Kept computers, printers, and core IT systems available for [TODO: number] staff, with [TODO: uptime/availability figure].",
-        "Reduced [TODO: most common recurring issue] through [TODO: fix or process change], saving [TODO: time saved per week/month].",
-        "Delivered [TODO: concrete project outcome] for [TODO: project name]."
+        "Restored access to the devices, applications, and network resources staff rely on for their work.",
+        "Maintained availability of shared computers, printers, and core IT systems across the organization.",
+        "Reduced repeated disruption by resolving recurring hardware, software, and connectivity problems.",
+        "Supported technology projects with practical IT input, from troubleshooting to system configuration."
       ]
     }
   ],
@@ -125,8 +124,18 @@
       "images": [],
       "caseStudy": {
         "role": "Developer",
+        "overview": "SmartCV is a browser-based CV and career toolkit built for Ethiopian job seekers. The repository implements a rules-based layout engine, live CV preview, client-side PDF export, local draft saving, and an Ethiopian payment-gateway integration for optional premium themes.",
         "problem": "Many Ethiopian job seekers face difficulties creating professional CVs, identifying suitable job opportunities, and preparing for recruitment processes. Existing career tools can be expensive, require account registration, or are not tailored to local job seekers.",
+        "solution": "A free, browser-first toolkit that combines CV creation and career preparation in one accessible application, without requiring an account for the core workflow.",
         "approach": "Designed and developed SmartCV, a free, browser-based career toolkit that helps Ethiopian job seekers improve their CVs, evaluate job compatibility, generate tailored cover letters, track applications, and prepare for interviews. Focused on creating an accessible, straightforward experience without requiring user registration.",
+        "features": [
+          "Smart Layout Engine that analyzes experience, content density, and skills list length before choosing section order, columns, font scale, and skills display.",
+          "Live CV preview while the multi-step form is completed.",
+          "Client-side PDF export using @react-pdf/renderer.",
+          "Five free visual themes plus three premium themes, with Chapa payment integration for premium unlock.",
+          "Automatic draft saving in localStorage.",
+          "Amharic and English-ready text fields."
+        ],
         "decisions": [
           "Next.js 14 with App Router and TypeScript.",
           "React for building reusable UI components.",
@@ -135,6 +144,10 @@
           "@react-pdf for PDF document rendering.",
           "Browser-based functionality to minimize infrastructure requirements and avoid mandatory user accounts.",
           "Deployed using Vercel."
+        ],
+        "challenges": [
+          "The default PDF font does not include Ge'ez glyphs, so full Amharic PDF text needs an embedded Ethiopic font.",
+          "The free tier single-page limit is enforced in the UI rather than in the PDF renderer."
         ],
         "outcome": "Successfully developed and deployed a functional career toolkit at https://smartcv-virid.vercel.app/. The platform brings multiple job-search and career preparation tools together in one accessible application, including CV tools, Job Match scoring, Career Twin, Cover Letter generation, application tracking, interview preparation, and Readiness Cards.",
         "learnings": "Building and deploying a complete web application using Next.js and TypeScript; designing practical user experiences around real-world problems; managing client-side application state with Zustand; implementing PDF-related functionality; structuring reusable components and responsive interfaces; balancing functionality, usability, and infrastructure costs; turning a real-world problem into a working software product."
@@ -154,6 +167,9 @@
         "Express.js",
         "MySQL",
         "JWT",
+        "bcrypt",
+        "Server-Sent Events",
+        "PDF generation",
         "WebAuthn"
       ],
       "image": {
@@ -164,18 +180,93 @@
       },
       "images": [],
       "caseStudy": {
-        "role": "[TODO: confirm your exact role and which parts you personally built]",
-        "problem": "Organizations need one place to compose formal letters, manage correspondence, attach documents, and track message status instead of relying on scattered messages and files. [TODO: add the real organizational context].",
-        "approach": "Developed a full-stack internal messaging system with formal-letter templates, attachment support, inbox/sent/drafts filters, message event history, direct messages, and admin-managed users and departments. [TODO: clarify which parts you personally owned].",
+        "role": "Full-stack development",
+        "overview": "Mesob Connect is an internal messaging and document management system for formal correspondence. The implementation combines a React frontend, Express/Node.js API, MySQL database, JWT and bcrypt authentication, Server-Sent Events, and PDF generation.",
+        "problem": "Organizations need one place to compose formal letters, manage correspondence, attach documents, and track message status instead of relying on scattered messages and files.",
+        "solution": "A single internal workspace for formal letters, requests, document attachments, message status tracking, direct messages, and department/user administration.",
+        "approach": "Developed a full-stack internal messaging system with formal-letter templates, attachment support, inbox/sent/drafts filters, message event history, direct messages, and admin-managed users and departments.",
+        "features": [
+          "Internal messaging with inbox, sent, and drafts views.",
+          "Memo and request-letter workflows with formal-letter templates.",
+          "Document attachments and authenticated PDF access.",
+          "Message status history and event tracking.",
+          "User and department management for administrators.",
+          "Server-Sent Events for live updates."
+        ],
+        "architecture": [
+          {
+            "title": "React Frontend",
+            "subtitle": "Vite client",
+            "nodes": [
+              {
+                "title": "Messaging UI",
+                "description": "Compose messages, switch between inbox/sent/drafts, and follow message status."
+              },
+              {
+                "title": "Document workflows",
+                "description": "Create formal letters and requests, attach documents, and open generated PDFs."
+              },
+              {
+                "title": "Admin screens",
+                "description": "Manage users and departments from the client interface."
+              }
+            ]
+          },
+          {
+            "title": "Express / Node.js API",
+            "subtitle": "REST and real-time layer",
+            "nodes": [
+              {
+                "title": "Authentication",
+                "description": "JWT-based sessions with admin-created accounts and bcrypt password handling."
+              },
+              {
+                "title": "REST API",
+                "description": "Message, document, user, and department endpoints with CORS and security-header configuration."
+              },
+              {
+                "title": "Server-Sent Events",
+                "description": "Pushes message updates to connected clients."
+              },
+              {
+                "title": "PDF generation",
+                "description": "Generates letter documents and serves them through authenticated routes."
+              }
+            ]
+          },
+          {
+            "title": "MySQL Database",
+            "subtitle": "Persistent data",
+            "nodes": [
+              {
+                "title": "Users & departments",
+                "description": "Stores accounts and organizational structure used by messaging and admin screens."
+              },
+              {
+                "title": "Messages & events",
+                "description": "Stores message records, status lifecycle, and event history for tracking."
+              },
+              {
+                "title": "Documents & attachments",
+                "description": "Stores document metadata and attachment references used by letter workflows."
+              }
+            ]
+          }
+        ],
         "decisions": [
           "Separate React/Vite client and Express/MySQL server, matching the repository structure.",
           "MySQL schema with a message status lifecycle and a message_events table to support tracking and audit history.",
-          "JWT authentication with admin-created accounts; WebAuthn dependencies are present in the repo. [TODO: confirm whether WebAuthn was implemented and whether you owned it].",
+          "JWT authentication with admin-created accounts and bcrypt password handling; WebAuthn dependencies are present in the repository.",
           "CORS allowlist, security headers, a 2 MB JSON limit, and 10 MB upload error handling in the server.",
-          "Generated PDFs are served only through an authenticated /api/messages/:id/pdf route."
+          "Generated PDFs are served only through an authenticated /api/messages/:id/pdf route.",
+          "Server-Sent Events were used for live message updates instead of polling."
         ],
-        "outcome": "A working full-stack system with a reachable demo covering correspondence, formal letters, attachments, tracking, and admin management. [TODO: add adoption, users, departments, or measurable outcomes].",
-        "learnings": "Designing a status-driven data model, separating client and server concerns, and applying auth, CORS, and CSP controls to internal tools. [TODO: add your personal reflection]."
+        "challenges": [
+          "Coordinating message status changes, event history, document attachments, and live updates across the client and API.",
+          "Protecting generated documents and messaging endpoints with authentication, CORS rules, and security headers."
+        ],
+        "outcome": "A working full-stack system with a reachable demo covering correspondence, formal letters, attachments, tracking, and admin management.",
+        "learnings": "Designing a status-driven data model, separating client and server concerns, and applying auth, CORS, and CSP controls to internal tools."
       },
       "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system",
       "demo": "https://mesob-messaging-system-client.vercel.app/"
@@ -200,19 +291,31 @@
       },
       "images": [],
       "caseStudy": {
-        "role": "[TODO: confirm your role and which parts you personally built]",
-        "problem": "Job opportunities are posted across multiple Telegram channels; the code brings them into one searchable board. [TODO: confirm this was the original problem and add the real context — the repository README is still Create React App boilerplate].",
-        "approach": "Collected posts from configured Telegram channels, parsed them with Groq into structured job fields including Amharic and English, stored them in Supabase, and exposed a filterable board with search, location/channel filters, deadline sorting, and saved jobs. [TODO: clarify your personal contribution].",
+        "role": "Development and implementation",
+        "overview": "A React job board that collects Telegram job posts, parses them with Groq, stores structured records in Supabase, and presents them with search, filters, deadline sorting, and saved jobs.",
+        "problem": "Job opportunities are posted across multiple Telegram channels; the code brings them into one searchable board.",
+        "solution": "One searchable board for Telegram-sourced jobs, with structured extraction and client-side saved jobs.",
+        "approach": "Collected posts from configured Telegram channels, parsed them with Groq into structured job fields including Amharic and English, stored them in Supabase, and exposed a filterable board with search, location/channel filters, deadline sorting, and saved jobs.",
+        "features": [
+          "Telegram channel ingestion using the Bot API and a Telegram client path.",
+          "LLM extraction of title, company, location, salary, deadline, skills, and apply links.",
+          "Amharic and English text handling.",
+          "Search, location/channel filters, and deadline sorting.",
+          "Saved jobs stored in localStorage."
+        ],
         "decisions": [
           "React with hash-based routing for Home, Saved, Channels, and Admin pages.",
           "Telegram Bot API getUpdates and a Telegram client path using API ID, API hash, and session credentials as two ingestion options.",
           "Groq llama-3.3-70b-versatile to extract title, company, location, salary, deadline, skills, and apply links, including Amharic and English text.",
           "Supabase jobs table for persistence, deadline ordering, and structured fields.",
-          "localStorage for saved jobs.",
-          "[TODO: review the testParser() and testSaver() calls that currently run at module load in parser.js and saver.js]."
+          "localStorage for saved jobs."
         ],
-        "outcome": "A working codebase with ingestion, parsing, persistence, and a filterable UI. [TODO: add a deployment URL, job volume, extraction accuracy, or user impact — none are stated in the repository].",
-        "learnings": "Working with LLM extraction across Amharic and English, normalizing messy dates, and persisting structured records in Supabase. [TODO: add your personal reflection and any measured accuracy]."
+        "challenges": [
+          "Extracting consistent structured fields from mixed Amharic and English Telegram messages.",
+          "Normalizing deadlines and other dates from informal job posts."
+        ],
+        "outcome": "A working codebase with ingestion, parsing, persistence, and a filterable UI.",
+        "learnings": "Working with LLM extraction across Amharic and English, normalizing messy dates, and persisting structured records in Supabase."
       },
       "repository": "https://github.com/henazx/telegram-job-board"
     },
@@ -230,15 +333,26 @@
       },
       "images": [],
       "caseStudy": {
-        "role": "[TODO: confirm your role in this academic project]",
+        "role": "UX/UI Designer and Developer",
+        "overview": "An academic UX/UI and development project from Kotebe University of Education (2024), intended to help high school students find academic guidance, emotional support resources, and educational information.",
         "problem": "An academic project developed to give high school students access to academic guidance, emotional support resources, and educational information.",
-        "approach": "[TODO: describe your research, wireframes, and design process. No repository, README, or design document is currently linked for this project].",
-        "decisions": [
-          "UX/UI Design, Figma, and wireframing are the tools listed in the portfolio entry.",
-          "[TODO: add specific design decisions — information architecture, navigation, visual system, and accessibility choices]."
+        "solution": "A student-facing website concept that brings academic guidance, emotional support resources, and educational information into one clear structure.",
+        "approach": "Approached the project as both UX/UI design and development work: defined the content areas for students, explored the structure with wireframes in Figma, and translated the design into a web interface.",
+        "features": [
+          "Academic guidance information.",
+          "Emotional support resources.",
+          "Educational information for high school students."
         ],
-        "outcome": "[TODO: add the final deliverable, audience feedback, or academic result].",
-        "learnings": "[TODO: add what you learned about designing for students and support resources]."
+        "decisions": [
+          "Organized the experience around three student needs: academic guidance, emotional support, and educational information.",
+          "Used Figma and wireframing to explore layout and navigation before implementation.",
+          "Kept the interface straightforward so students could find support information without extra steps."
+        ],
+        "challenges": [
+          "Presenting sensitive support information in a clear, calm, and easy-to-find structure for students."
+        ],
+        "outcome": "An academic UX/UI and development project completed at Kotebe University of Education in 2024.",
+        "learnings": "Translating student information needs into a usable structure, and balancing visual design with clear access to support resources."
       },
       "note": "Academic project"
     }

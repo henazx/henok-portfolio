@@ -35,7 +35,7 @@
   );
   filter: blur(22px);
   transform: rotate(14deg);
-  animation: bpSweep 14s linear infinite;
+  animation: bpSweep 26s linear infinite;
 }
 
 .dotField {
@@ -57,7 +57,7 @@
     #000 0%,
     transparent 76%
   );
-  animation: dotDrift 26s ease-in-out infinite alternate;
+  animation: dotDrift 40s ease-in-out infinite alternate;
 }
 
 .schematic {
@@ -214,8 +214,8 @@
   display: inline-block;
   opacity: 0;
   transform: translateY(0.28em) scale(0.98);
-  filter: blur(6px);
-  animation: typeCharIn 0.62s var(--ease-smooth) both;
+  filter: blur(3px);
+  animation: typeCharIn 0.5s var(--ease-smooth) both;
   animation-delay: var(--char-delay);
   will-change: opacity, transform, filter;
 }

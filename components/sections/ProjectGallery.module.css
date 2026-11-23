@@ -130,10 +130,9 @@
 .card:hover,
 .card:focus-within {
   border-color: color-mix(in srgb, var(--accent) 34%, var(--glass-border));
-  transform: translate3d(0, -5px, 0) rotateX(1.1deg);
+  transform: translate3d(0, -3px, 0);
   box-shadow:
-    0 38px 84px -36px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(59, 130, 246, 0.1),
+    0 28px 60px -38px rgba(0, 0, 0, 0.8),
     var(--glass-inner);
 }
 
@@ -315,6 +314,18 @@
   object-fit: cover;
 }
 
+.mediaActions {
+  position: absolute;
+  top: 52px;
+  right: 12px;
+  z-index: 6;
+}
+
+.expandButton {
+  width: 34px;
+  height: 34px;
+}
+
 .body {
   display: flex;
   flex-direction: column;
@@ -412,6 +423,32 @@
 .wide .description {
   font-size: 0.95rem;
   line-height: 1.75;
+}
+
+.caseLink {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 7px;
+  margin-top: 16px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+  color: var(--accent-hover);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition:
+    color 0.2s var(--ease-smooth),
+    border-color 0.2s var(--ease-smooth);
+}
+
+.caseLink svg {
+  width: 14px;
+  height: 14px;
+}
+
+.caseLink:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
 }
 
 .caseStudy {

@@ -336,7 +336,19 @@ function caseStudyField(
         allowEmpty: true,
         max: 200,
       }),
+    overview: (entry, entryPath) =>
+      validator.string(entry, entryPath, {
+        optional: true,
+        allowEmpty: true,
+        max: 2500,
+      }),
     problem: (entry, entryPath) =>
+      validator.string(entry, entryPath, {
+        optional: true,
+        allowEmpty: true,
+        max: 2500,
+      }),
+    solution: (entry, entryPath) =>
       validator.string(entry, entryPath, {
         optional: true,
         allowEmpty: true,
@@ -348,7 +360,43 @@ function caseStudyField(
         allowEmpty: true,
         max: 2500,
       }),
+    features: (entries, entriesPath) => {
+      if (entries === undefined || entries === null) return;
+      validator.array(entries, entriesPath, 16, (entry, entryPath) =>
+        validator.string(entry, entryPath, { min: 1, max: 400 }),
+      );
+    },
+    architecture: (entries, entriesPath) => {
+      if (entries === undefined || entries === null) return;
+      validator.array(entries, entriesPath, 6, (layer, layerPath) => {
+        validator.object(layer, layerPath, {
+          title: (entry, entryPath) =>
+            validator.string(entry, entryPath, { min: 1, max: 120 }),
+          subtitle: (entry, entryPath) =>
+            validator.string(entry, entryPath, {
+              optional: true,
+              allowEmpty: true,
+              max: 200,
+            }),
+          nodes: (nodes, nodesPath) =>
+            validator.array(nodes, nodesPath, 8, (node, nodePath) => {
+              validator.object(node, nodePath, {
+                title: (entry, entryPath) =>
+                  validator.string(entry, entryPath, { min: 1, max: 120 }),
+                description: (entry, entryPath) =>
+                  validator.string(entry, entryPath, { min: 1, max: 800 }),
+              });
+            }),
+        });
+      });
+    },
     decisions: (entries, entriesPath) => {
+      if (entries === undefined || entries === null) return;
+      validator.array(entries, entriesPath, 12, (entry, entryPath) =>
+        validator.string(entry, entryPath, { min: 1, max: 600 }),
+      );
+    },
+    challenges: (entries, entriesPath) => {
       if (entries === undefined || entries === null) return;
       validator.array(entries, entriesPath, 12, (entry, entryPath) =>
         validator.string(entry, entryPath, { min: 1, max: 600 }),

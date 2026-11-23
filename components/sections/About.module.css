@@ -24,29 +24,38 @@
   text-wrap: pretty;
 }
 
-.focus {
+.capabilities {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 24px;
+  gap: 10px;
   margin-top: clamp(24px, 3vw, 32px);
   padding-top: 22px;
   border-top: 1px solid var(--border);
 }
 
-.focus li {
+.capabilities li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  gap: 12px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.focusMark {
-  width: 10px;
-  height: 1px;
+.capabilityIcon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
   flex-shrink: 0;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.capabilityIcon svg {
+  width: 16px;
+  height: 16px;
 }
 
 .bodyColumn {
@@ -119,6 +128,77 @@
   font-weight: 400;
 }
 
+.timeline {
+  margin-top: clamp(36px, 5vw, 56px);
+  padding-top: 26px;
+  border-top: 1px solid var(--border);
+}
+
+.timeline ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.timeline li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.timelineIcon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--surface-hover);
+  color: var(--accent-hover);
+}
+
+.timelineIcon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.timeline li > div {
+  min-width: 0;
+}
+
+.timelinePeriod,
+.timeline strong,
+.timelineDetail {
+  display: block;
+}
+
+.timelinePeriod {
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.timeline strong {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  font-weight: 550;
+  line-height: 1.4;
+}
+
+.timelineDetail {
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
@@ -133,6 +213,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .timeline ol {
+    grid-template-columns: 1fr;
+  }
+
   .fact:nth-child(3) {
     border-left: none;
     border-top: 1px solid var(--border);
@@ -144,8 +228,8 @@
 }
 
 @media (max-width: 520px) {
-  .focus {
-    grid-template-columns: 1fr;
+  .capabilities {
+    gap: 8px;
   }
 
   .facts {

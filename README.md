@@ -1,6 +1,6 @@
 # Henok Neknikie — Portfolio
 
-A single-page portfolio built with Next.js 16 App Router, React 19, strict TypeScript, CSS Modules, and Lucide icons. The design is a dark-first “liquid glass” system with a polished light theme; no Tailwind, database, analytics, or UI framework.
+A Next.js 16 App Router portfolio built with React 19, strict TypeScript, CSS Modules, and Lucide icons. The design is a dark-first, restrained editorial system with a polished light theme; no Tailwind, database, analytics, or UI framework.
 
 ---
 
@@ -40,6 +40,18 @@ All editable copy lives in **`data/content.json`**. The TypeScript files in `dat
 The live portrait is `public/images/henok-portrait.jpg`. The editor can replace it with another approved photograph; `profile.portrait.isPlaceholder` should stay `false`. Replace remaining placeholders with verified details only.
 
 The live CV is `public/cv/henok-neknikie-cv.pdf`, with `profile.cv.path` and `profile.cv.fileName` in `data/content.json` controlling the download link. If you replace the PDF under the same path, no content change is needed; if you rename it, update both fields and keep or replace the permanent redirect for the old `/cv/your-name-cv.pdf` path.
+
+Unresolved facts are documented in **`DATA_GAPS.md`** instead of being shown as placeholder copy on the public site. Add verified details there first, then update `data/content.json`.
+
+---
+
+## Routes and features
+
+- `/` — the main portfolio sections, including an interactive skills-to-evidence map and a background timeline.
+- `/projects/[slug]` — a dedicated case study for each project with a `caseStudy` block. Cards on the homepage link here; architecture layers are selectable with mouse or keyboard.
+- `/cv` — an embedded PDF viewer with direct **Download** and **Open in new tab** actions. The navbar and mobile menu link here.
+- Project previews open in an accessible lightbox with Escape, arrow-key navigation, a focus trap, and focus restored to the trigger on close.
+- Sitemap and metadata include the homepage, CV page, and every case-study route.
 
 ### Project screenshot slots
 
@@ -104,7 +116,7 @@ No password is stored in `localStorage` or `sessionStorage`, and no password is 
 
 ### What you can edit
 
-Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery, plus an optional case study with your role, problem, approach, stack decisions, outcome, and learnings.
+Every name, role, heading, description, paragraph, tag, project, skill, experience entry, education item, certification (including an optional verification link), link, profile photo, organization logo, and per-project preview image. Projects can also hold up to three additional screenshots, which render as a switchable gallery and lightbox, plus an optional case study with your role, overview, problem, solution, approach, features, stack decisions, challenges, outcome, and learnings. Architecture layers are maintained in `data/content.json`.
 
 - **Drafts** — changes update the page instantly and are saved in `localStorage`. They are private to your browser until published.
 - **Download JSON** — saves the current draft as `content.json` so edits can be copied into the project manually when GitHub publishing is not configured.
@@ -123,10 +135,10 @@ Raw GitHub errors are not returned to the client; failures are reported as sanit
 ## Design and accessibility
 
 - **Dark first** — first-time visitors get dark; the saved choice is applied before paint to avoid flashing. A polished light theme is available.
-- **Glass levels** — reusable surfaces with specular edges; legacy `--glass-bg` aliases are preserved.
+- **Surfaces** — restrained solid/low-blur panels with thin borders; legacy `--glass-bg` aliases are preserved.
 - **Typography** — Geist and Geist Mono with fluid editorial headings.
-- **Background motion** — aurora ribbons, orbs, halo, beam, sweep, particles, shooting stars, a drifting grid, and the hero blueprint. Animations pause when the tab is hidden, and blur cost is reduced on small screens.
-- **Pointer lighting** — one passive listener updates only the hovered glass surface; disabled on touch and reduced-motion devices.
+- **Background motion** — low-opacity ambient gradients and a subtle hero blueprint. All decorative motion respects `prefers-reduced-motion`.
+- **Pointer lighting** — one passive listener updates only the hovered surface; disabled on touch and reduced-motion devices.
 - **Scroll reveal** — progressive enhancement through one `IntersectionObserver`. Content stays visible without JavaScript.
 - **Preferences** — `prefers-reduced-motion` disables decorative motion; `prefers-reduced-transparency` swaps glass for opaque surfaces.
 - **Keyboard support** — skip link, visible focus rings, labelled icon buttons, and the editor dialog traps focus for the password prompt.
@@ -153,17 +165,19 @@ app/
 │   ├── auth/session/route.ts   # server-verified session restore
 │   ├── contact/route.ts        # validated, rate-limited email delivery
 │   └── publish/route.ts        # authenticated, validated GitHub publishing
+├── cv/page.tsx                 # embedded CV viewer
 ├── globals.css                 # design tokens and utilities
 ├── layout.tsx                  # fonts, metadata, theme bootstrap, JSON-LD
-├── page.tsx                    # single-page composition
+├── page.tsx                    # homepage composition
+├── projects/[slug]/page.tsx    # generated case-study routes
 ├── robots.ts / sitemap.ts
 └── opengraph-image.tsx
 
 components/
 ├── editor/                     # hidden editor, auth dialog, content provider
-├── interaction/                # pointer glow, magnetic actions
+├── interaction/                # architecture tabs, lightbox, skill map, pointer glow
 ├── layout/                     # navbar, footer, backdrop, scroll reveal
-├── sections/                   # hero, about, experience, projects, skills, credentials, contact
+├── sections/                   # hero, about, experience, projects, case studies, skills, credentials, contact
 └── ui/                         # shared headings and social links
 
 data/                           # content.json + re-export modules

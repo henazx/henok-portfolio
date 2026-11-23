@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { FileText, Menu, X } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { BrandMark } from "@/components/ui/BrandMark";
@@ -155,6 +156,10 @@ export function Navbar() {
           </nav>
 
           <div className={styles.actions}>
+            <Link href="/cv" className={styles.cvButton}>
+              <FileText aria-hidden="true" />
+              CV
+            </Link>
             <ThemeToggle />
             <button
               ref={toggleRef}
@@ -204,6 +209,15 @@ export function Navbar() {
           </nav>
 
           <div className={styles.mobileFooter}>
+            <Link
+              href="/cv"
+              className={`btn btn-secondary ${styles.mobileCv}`}
+              onClick={closeMenu}
+            >
+              <FileText aria-hidden="true" />
+              View CV / Résumé
+            </Link>
+
             <div>
               <p className="mono" style={{ marginBottom: 12 }}>
                 Elsewhere

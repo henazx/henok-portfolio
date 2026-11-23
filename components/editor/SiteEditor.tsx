@@ -566,9 +566,13 @@ function CaseStudyField({
   const addCaseStudy = () => {
     const template: ProjectCaseStudy = {
       role: "",
+      overview: "",
       problem: "",
+      solution: "",
       approach: "",
+      features: [],
       decisions: [],
+      challenges: [],
       outcome: "",
       learnings: "",
     };
@@ -581,12 +585,24 @@ function CaseStudyField({
       {project.caseStudy ? (
         <>
           <Field label="Your role" path={`${basePath}.role`} />
+          <Field label="Overview" path={`${basePath}.overview`} multiline />
           <Field label="Problem" path={`${basePath}.problem`} multiline />
+          <Field label="Solution" path={`${basePath}.solution`} multiline />
           <Field label="Approach" path={`${basePath}.approach`} multiline />
+          <StringList
+            label="Key features"
+            path={`${basePath}.features`}
+            template="Feature and why it matters"
+          />
           <StringList
             label="Stack decisions"
             path={`${basePath}.decisions`}
             template="Decision and why"
+          />
+          <StringList
+            label="Challenges"
+            path={`${basePath}.challenges`}
+            template="Challenge and how it was handled"
           />
           <Field label="Outcome" path={`${basePath}.outcome`} multiline />
           <Field label="What you learned" path={`${basePath}.learnings`} multiline />

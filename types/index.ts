@@ -62,11 +62,27 @@ export interface ProjectImage {
   height: number;
 }
 
+export interface ArchitectureNode {
+  title: string;
+  description: string;
+}
+
+export interface ArchitectureLayer {
+  title: string;
+  subtitle?: string;
+  nodes: ArchitectureNode[];
+}
+
 export interface ProjectCaseStudy {
   role: string;
+  overview?: string;
   problem: string;
+  solution?: string;
   approach: string;
+  features?: string[];
+  architecture?: ArchitectureLayer[];
   decisions: string[];
+  challenges?: string[];
   outcome: string;
   learnings?: string;
 }

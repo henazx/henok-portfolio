@@ -48,7 +48,7 @@ function TypedName({ name }: { name: string }) {
   // Each character fades in on a staggered delay. The full name is present in
   // the HTML, so it remains readable without JavaScript and for assistive tech.
   const characters = Array.from(name);
-  const stepMs = 120;
+  const stepMs = 55;
 
   return (
     <h1 id="hero-title" className={styles.name} aria-label={name}>
@@ -147,6 +147,10 @@ export function Hero() {
           <div className={styles.actions}>
             <a className="btn btn-primary" href="#projects">
               Explore Projects
+              <ArrowRight aria-hidden="true" />
+            </a>
+            <a className="btn btn-secondary" href="#contact">
+              Contact me
               <ArrowRight aria-hidden="true" />
             </a>
             <a

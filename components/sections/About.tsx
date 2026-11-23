@@ -1,8 +1,19 @@
 "use client";
 
+import {
+  BriefcaseBusiness,
+  Code2,
+  GraduationCap,
+  PenTool,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
+
 import { useEditor } from "@/components/editor/ContentProvider";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./About.module.css";
+
+const capabilityIcons: LucideIcon[] = [Wrench, Code2, PenTool];
 
 export function About() {
   const { content } = useEditor();
@@ -26,13 +37,18 @@ export function About() {
           <div className={styles.leadColumn} data-glow>
             <p className={styles.lead}>{profile.about.lead}</p>
 
-            <ul className={styles.focus} aria-label="Focus areas">
-              {profile.about.focus.map((item, index) => (
-                <li key={`${item}-${index}`}>
-                  <span className={styles.focusMark} aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
+            <ul className={styles.capabilities} aria-label="Focus areas">
+              {profile.about.focus.map((item, index) => {
+                const Icon = capabilityIcons[index % capabilityIcons.length];
+                return (
+                  <li key={`${item}-${index}`}>
+                    <span className={styles.capabilityIcon} aria-hidden="true">
+                      <Icon />
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -86,6 +102,45 @@ export function About() {
             </dd>
           </div>
         </dl>
+
+        <section className={styles.timeline} aria-labelledby="background-title">
+          <h3 id="background-title" className="mono">
+            Background
+          </h3>
+          <ol>
+            {currentRole ? (
+              <li key={`${currentRole.role}-current`}>
+                <span className={styles.timelineIcon} aria-hidden="true">
+                  <BriefcaseBusiness />
+                </span>
+                <div>
+                  <span className={styles.timelinePeriod}>
+                    {currentRole.period}
+                  </span>
+                  <strong>{currentRole.role}</strong>
+                  <span className={styles.timelineDetail}>
+                    {currentRole.organization}
+                  </span>
+                </div>
+              </li>
+            ) : null}
+
+            {education.map((entry, index) => (
+              <li key={`${entry.institution}-${index}`}>
+                <span className={styles.timelineIcon} aria-hidden="true">
+                  <GraduationCap />
+                </span>
+                <div>
+                  <span className={styles.timelinePeriod}>{entry.period}</span>
+                  <strong>{entry.qualification}</strong>
+                  <span className={styles.timelineDetail}>
+                    {entry.institution}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
       </div>
     </section>
   );

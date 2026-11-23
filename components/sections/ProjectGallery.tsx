@@ -2,8 +2,10 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, ExternalLink } from "lucide-react";
 
+import { ProjectLightbox } from "@/components/interaction/ProjectLightbox";
 import { GitHubIcon } from "@/components/ui/BrandIcons";
 import { bypassImageOptimization } from "@/lib/image";
 import type { Project, ProjectCategory } from "@/types";
@@ -125,8 +127,13 @@ function ProjectCard({
   const hasCaseStudy = Boolean(
     study &&
       (study.role ||
+        study.overview ||
         study.problem ||
+        study.solution ||
         study.approach ||
+        study.features?.length ||
+        study.architecture?.length ||
+        study.challenges?.length ||
         study.outcome ||
         study.learnings ||
         study.decisions.length > 0),
@@ -202,6 +209,14 @@ function ProjectCard({
             <ArrowUpRight />
           </span>
         ) : null}
+
+        <div className={styles.mediaActions}>
+          <ProjectLightbox
+            images={gallery}
+            projectName={project.name}
+            className={styles.expandButton}
+          />
+        </div>
       </div>
 
       <div className={styles.body}>
@@ -232,6 +247,17 @@ function ProjectCard({
         </div>
 
         <p className={styles.description}>{project.description}</p>
+
+        {hasCaseStudy ? (
+          <Link
+            href={`/projects/${project.slug}`}
+            className={styles.caseLink}
+            aria-label={`Read the ${project.name} case study`}
+          >
+            Read case study
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        ) : null}
 
         {study && hasCaseStudy ? (
           <details className={styles.caseStudy}>

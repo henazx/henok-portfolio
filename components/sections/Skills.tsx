@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
+import { SkillMap } from "@/components/interaction/SkillMap";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { TechEcosystem } from "@/components/interaction/TechEcosystem";
 import type { SkillIcon } from "@/types";
 import styles from "./Skills.module.css";
 
@@ -42,7 +42,7 @@ export function Skills() {
         />
 
         <div data-reveal>
-          <TechEcosystem />
+          <SkillMap categories={content.skills} />
         </div>
 
         <div className={styles.grid}>

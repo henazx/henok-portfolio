@@ -1,0 +1,131 @@
+"use client";
+
+import {
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from "react";
+import {
+  Boxes,
+  Database,
+  GitBranch,
+  Layers3,
+  Server,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
+
+import type { ArchitectureLayer } from "@/types";
+import styles from "./ArchitecturePanel.module.css";
+
+const layerIcons: LucideIcon[] = [
+  Layers3,
+  Server,
+  Database,
+  GitBranch,
+  ShieldCheck,
+  Boxes,
+];
+
+export function ArchitecturePanel({ layers }: { layers: ArchitectureLayer[] }) {
+  const [active, setActive] = useState(0);
+  const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
+  const idBase = useId().replace(/:/g, "");
+
+  if (layers.length === 0) return null;
+
+  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next = index;
+
+    if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+      next = (index + 1) % layers.length;
+    } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+      next = (index - 1 + layers.length) % layers.length;
+    } else if (event.key === "Home") {
+      next = 0;
+    } else if (event.key === "End") {
+      next = layers.length - 1;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    setActive(next);
+    tabsRef.current[next]?.focus();
+  };
+
+  const selected = layers[active] ?? layers[0];
+  const Icon = layerIcons[active % layerIcons.length];
+
+  return (
+    <div className={styles.panel}>
+      <div
+        className={styles.tabs}
+        role="tablist"
+        aria-label="System architecture layers"
+        aria-orientation="vertical"
+      >
+        {layers.map((layer, index) => (
+          <button
+            key={layer.title}
+            ref={(element) => {
+              tabsRef.current[index] = element;
+            }}
+            id={`${idBase}-tab-${index}`}
+            type="button"
+            role="tab"
+            aria-selected={active === index}
+            aria-controls={`${idBase}-panel-${index}`}
+            tabIndex={active === index ? 0 : -1}
+            className={`${styles.tab} ${active === index ? styles.tabActive : ""}`}
+            onClick={() => setActive(index)}
+            onKeyDown={(event) => onKeyDown(event, index)}
+          >
+            <span className={styles.tabIndex} aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span>
+              <strong>{layer.title}</strong>
+              {layer.subtitle ? <small>{layer.subtitle}</small> : null}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <div
+        className={styles.content}
+        id={`${idBase}-panel-${active}`}
+        role="tabpanel"
+        aria-labelledby={`${idBase}-tab-${active}`}
+        tabIndex={0}
+      >
+        <div className={styles.contentHead}>
+          <span className={styles.contentIcon} aria-hidden="true">
+            <Icon />
+          </span>
+          <div>
+            <p className="mono">Selected layer</p>
+            <h3>{selected.title}</h3>
+          </div>
+        </div>
+
+        {selected.subtitle ? (
+          <p className={styles.subtitle}>{selected.subtitle}</p>
+        ) : null}
+
+        <ol className={styles.nodes}>
+          {selected.nodes.map((node, index) => (
+            <li key={`${node.title}-${index}`}>
+              <span className={styles.nodeMarker} aria-hidden="true" />
+              <div>
+                <h4>{node.title}</h4>
+                <p>{node.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
+}
