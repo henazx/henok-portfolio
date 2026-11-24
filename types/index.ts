@@ -33,8 +33,6 @@ export interface ExperienceEntry {
   summary?: string;
   /** Day-to-day responsibilities, shown under "Key responsibilities". */
   highlights: string[];
-  /** Measurable or concrete results, shown under "Impact". */
-  impact?: string[];
   current?: boolean;
   logo?: OrganizationLogo;
 }

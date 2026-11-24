@@ -75,16 +75,6 @@ export function ExperienceSection() {
                   </ul>
                 </div>
 
-                {entry.impact?.length ? (
-                  <div className={styles.detailGroup}>
-                    <h4 className={styles.detailTitle}>{t("Impact")}</h4>
-                    <ul className={`${styles.highlights} ${styles.impact}`}>
-                      {entry.impact.map((item, itemIndex) => (
-                        <li key={`${itemIndex}-${item}`}>{t(item)}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
               </div>
             </li>
           ))}

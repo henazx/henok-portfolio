@@ -119,10 +119,6 @@
   margin-top: 18px;
 }
 
-.impact li {
-  color: var(--text);
-}
-
 .highlights li {
   position: relative;
   padding-left: 22px;
