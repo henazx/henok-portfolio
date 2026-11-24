@@ -1,47 +1,33 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 60;
-  padding-block: 16px;
-  background: transparent;
+  z-index: var(--z-sticky);
+  padding-block: 12px;
+  border-bottom: 1px solid transparent;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  transition:
+    background var(--duration-base) var(--ease-smooth),
+    border-color var(--duration-base) var(--ease-smooth);
 }
 
 .inner {
   display: flex;
   align-items: center;
-  gap: 14px;
-  height: 58px;
-  padding-inline: clamp(14px, 1.8vw, 20px);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 999px;
-  box-shadow:
-    var(--glass-shadow-soft),
-    var(--glass-inner);
-  -webkit-backdrop-filter: blur(18px) saturate(165%);
-  backdrop-filter: blur(18px) saturate(165%);
-  transition:
-    background 0.35s var(--ease-smooth),
-    border-color 0.35s var(--ease-smooth),
-    box-shadow 0.35s var(--ease-smooth),
-    -webkit-backdrop-filter 0.35s var(--ease-smooth),
-    backdrop-filter 0.35s var(--ease-smooth);
+  gap: var(--space-4);
+  height: 64px;
+  padding-inline: clamp(16px, 2vw, 28px);
 }
 
-.scrolled .inner {
-  background: var(--glass-bg-strong);
-  border-color: var(--border-strong);
-  box-shadow:
-    0 22px 56px -28px rgba(0, 0, 0, 0.95),
-    var(--glass-inner);
-  -webkit-backdrop-filter: blur(30px) saturate(185%);
-  backdrop-filter: blur(30px) saturate(185%);
+.scrolled {
+  border-bottom-color: var(--border);
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-height: 44px;
   flex-shrink: 0;
   border-radius: var(--radius-sm);
 }
@@ -88,11 +74,13 @@
 
 .desktopNav a {
   position: relative;
-  display: inline-block;
-  padding: 7px 11px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
   border-radius: 999px;
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   letter-spacing: -0.008em;
   transition:
     color 0.2s var(--ease-smooth),
@@ -107,23 +95,18 @@
 
 .desktopNav .active {
   color: var(--text);
-  background: var(--surface);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 1px 0 rgba(0, 0, 0, 0.12);
+  background: transparent;
 }
 
 .desktopNav .active::after {
   content: "";
   position: absolute;
-  bottom: 3px;
-  left: 50%;
-  width: 12px;
+  right: 14px;
+  bottom: 8px;
+  left: 14px;
   height: 2px;
   border-radius: 2px;
   background: var(--accent);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 80%, transparent);
-  transform: translateX(-50%);
 }
 
 .actions {
@@ -139,8 +122,8 @@
 .menuButton {
   display: none;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--surface);
@@ -172,7 +155,7 @@
   right: 12px;
   bottom: 12px;
   left: 12px;
-  z-index: 55;
+  z-index: var(--z-overlay);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -221,7 +204,7 @@
 .mobileIndex {
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
 }
 
@@ -236,8 +219,8 @@
 }
 
 .mobileSocials a {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-color: var(--border);
 }
 
@@ -252,7 +235,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .desktopNav {
     display: none;
   }

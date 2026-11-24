@@ -22,7 +22,7 @@ export function LanguageToggle({
       <button
         type="button"
         lang="en"
-        aria-label={t("English language")}
+        aria-label={`${t("English language")} (EN)`}
         aria-pressed={language === "en"}
         onClick={() => setLanguage("en")}
       >
@@ -32,7 +32,7 @@ export function LanguageToggle({
       <button
         type="button"
         lang="am"
-        aria-label={t("Amharic language")}
+        aria-label={`${t("Amharic language")} (አማ)`}
         aria-pressed={language === "am"}
         onClick={() => setLanguage("am")}
       >

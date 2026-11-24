@@ -58,7 +58,7 @@
 .facts dt {
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -115,15 +115,15 @@
   padding: 13px 16px;
   border-top: 1px solid var(--border);
   color: var(--text-subtle);
-  font-size: 0.76rem;
+  font-size: var(--text-xs);
   line-height: 1.5;
 }
 
 .expandButton {
   width: auto;
-  height: 32px;
-  padding-inline: 11px;
-  font-size: 0.75rem;
+  height: 44px;
+  padding-inline: 14px;
+  font-size: var(--text-xs);
   white-space: nowrap;
 }
 
@@ -143,7 +143,7 @@
 
 .card h2 {
   margin-top: 8px;
-  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  font-size: var(--text-h3);
 }
 
 .cardBody {
@@ -211,7 +211,7 @@
 
 .blockHeading h2 {
   margin-top: 6px;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
 }
 
 .blockHeading p:last-child {
@@ -247,7 +247,7 @@
 
 .related h2 {
   margin-top: 8px;
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
 }
 
 .related ul {
@@ -305,7 +305,7 @@
 .related small {
   margin-top: 3px;
   color: var(--text-muted);
-  font-size: 0.74rem;
+  font-size: var(--text-xs);
   line-height: 1.5;
 }
 
@@ -352,7 +352,7 @@
 
 .navLink .mono {
   color: var(--text-subtle);
-  font-size: 0.64rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -420,10 +420,6 @@
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
-  }
-
-  .figure {
-    order: -1;
   }
 
   .related ul {

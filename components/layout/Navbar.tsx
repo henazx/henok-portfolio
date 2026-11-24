@@ -114,7 +114,7 @@ export function Navbar() {
       }
     };
 
-    const desktopQuery = window.matchMedia("(min-width: 901px)");
+    const desktopQuery = window.matchMedia("(min-width: 1001px)");
     const onDesktop = (event: MediaQueryListEvent) => {
       if (event.matches) setOpen(false);
     };

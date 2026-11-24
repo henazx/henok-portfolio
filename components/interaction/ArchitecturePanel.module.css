@@ -63,7 +63,7 @@
   border-radius: 8px;
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: var(--text-xs);
 }
 
 .flowNodeActive .flowIndex {
@@ -92,7 +92,7 @@
 .flowLabel small {
   margin-top: 2px;
   color: var(--text-subtle);
-  font-size: 0.66rem;
+  font-size: var(--text-xs);
 }
 
 .tabs {
@@ -131,7 +131,7 @@
 .tabIndex {
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
 }
 

@@ -1,6 +1,12 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 
 import {
   ACCEPTED_IMAGE_ACCEPT,
@@ -830,6 +836,95 @@ export function SiteEditor() {
     publish,
   } = useEditor();
   const [tab, setTab] = useState<Tab>("Profile");
+  const panelRef = useRef<HTMLElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const closeEditorRef = useRef(closeEditor);
+
+  useEffect(() => {
+    closeEditorRef.current = closeEditor;
+  }, [closeEditor]);
+
+  useEffect(() => {
+    if (!editorOpen) return;
+
+    restoreFocusRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    const panel = panelRef.current;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    panel
+      ?.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]')
+      ?.focus();
+
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeEditorRef.current();
+        return;
+      }
+
+      if (event.key !== "Tab" || !panel) return;
+
+      const focusable = Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => element.offsetParent !== null);
+
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const current = document.activeElement;
+
+      if (event.shiftKey && (current === first || !panel.contains(current))) {
+        event.preventDefault();
+        last.focus();
+      } else if (
+        !event.shiftKey &&
+        (current === last || !panel.contains(current))
+      ) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = originalOverflow;
+      if (restoreFocusRef.current?.isConnected) {
+        restoreFocusRef.current.focus();
+      }
+    };
+  }, [editorOpen]);
+
+  function handleTabKeyDown(
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) {
+    let next = index;
+
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      next = (index + 1) % tabs.length;
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      next = (index - 1 + tabs.length) % tabs.length;
+    } else if (event.key === "Home") {
+      next = 0;
+    } else if (event.key === "End") {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    setTab(tabs[next]);
+    tabRefs.current[next]?.focus();
+  }
 
   const downloadContent = () => {
     const blob = new Blob([JSON.stringify(content, null, 2)], {
@@ -869,14 +964,16 @@ export function SiteEditor() {
 
       {unlocked && editorOpen ? (
         <aside
+          ref={panelRef}
           className={styles.panel}
           role="dialog"
-          aria-label="Site content editor"
+          aria-modal="true"
+          aria-labelledby="site-editor-title"
         >
           <div className={styles.panelHeader}>
             <div>
               <p className={styles.eyebrow}>Henok · private editor</p>
-              <h2>Edit your site</h2>
+              <h2 id="site-editor-title">Edit your site</h2>
             </div>
             <button
               type="button"
@@ -889,21 +986,34 @@ export function SiteEditor() {
           </div>
 
           <div className={styles.tabs} role="tablist" aria-label="Content groups">
-            {tabs.map((item) => (
+            {tabs.map((item, index) => (
               <button
                 key={item}
+                ref={(element) => {
+                  tabRefs.current[index] = element;
+                }}
                 type="button"
                 role="tab"
+                id={`site-editor-tab-${index}`}
+                aria-controls="site-editor-panel"
                 aria-selected={tab === item}
+                tabIndex={tab === item ? 0 : -1}
                 className={tab === item ? styles.tabActive : undefined}
                 onClick={() => setTab(item)}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
               >
                 {item}
               </button>
             ))}
           </div>
 
-          <div className={styles.panelBody}>
+          <div
+            className={styles.panelBody}
+            role="tabpanel"
+            id="site-editor-panel"
+            aria-labelledby={`site-editor-tab-${tabs.indexOf(tab)}`}
+            tabIndex={0}
+          >
             {tab === "Profile" ? <ProfileTab /> : null}
             {tab === "Sections" ? <SectionsTab /> : null}
             {tab === "Experience" ? <ExperienceTab /> : null}

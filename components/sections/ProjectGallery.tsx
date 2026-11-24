@@ -330,7 +330,7 @@ function ProjectCard({
                 rel="noopener noreferrer"
                 aria-label={`${t("Source code")} — ${t(project.name)} ${t("(opens in a new tab)")}`}
               >
-                <GitHubIcon />
+                <GitHubIcon aria-hidden="true" />
                 {t("Source code")}
                 <span className="sr-only">
                   {" "}

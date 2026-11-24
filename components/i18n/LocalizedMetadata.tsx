@@ -49,13 +49,20 @@ export function LocalizedMetadata() {
     const fallbackTitle =
       pathname === "/cv"
         ? en["metadata.cv.title"]
-        : en["metadata.home.title"];
+        : pathname === "/"
+          ? en["metadata.home.title"]
+          : en["metadata.notFound.title"];
+    const siteSuffix = ` | ${content.profile.name}`;
+    const localizedTitle = title || fallbackTitle;
+    // The root metadata template adds the site name to every route except the
+    // home default. Mirror it here so the browser title does not jump after
+    // hydration or when the visitor switches language.
     const resolvedTitle =
-      title ||
-      (pathname === "/cv"
-        ? `${fallbackTitle} | ${content.profile.name}`
-        : fallbackTitle);
+      pathname === "/" || localizedTitle.endsWith(siteSuffix)
+        ? localizedTitle
+        : `${localizedTitle}${siteSuffix}`;
     const resolvedDescription = description || enDescription;
+    const resolvedLocale = language === "am" ? "am_ET" : "en_US";
 
     function apply() {
       // Every write is guarded so the MutationObserver cannot loop.
@@ -66,6 +73,7 @@ export function LocalizedMetadata() {
         ['meta[property="og:description"]', resolvedDescription],
         ['meta[name="twitter:title"]', resolvedTitle],
         ['meta[name="twitter:description"]', resolvedDescription],
+        ['meta[property="og:locale"]', resolvedLocale],
       ];
 
       for (const [selector, value] of tags) {

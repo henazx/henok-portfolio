@@ -33,14 +33,18 @@
 .removeButton,
 .resetButton,
 .publishButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   border: 1px solid var(--glass-border);
   border-radius: 999px;
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
   font: inherit;
-  font-size: 0.75rem;
-  padding: 6px 11px;
+  font-size: var(--text-xs);
+  padding: 0 14px;
   transition:
     border-color 0.2s var(--ease-smooth),
     background-color 0.2s var(--ease-smooth),
@@ -104,7 +108,7 @@
 .eyebrow {
   color: var(--accent-hover);
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -120,7 +124,8 @@
 
 .tabs button {
   flex-shrink: 0;
-  padding: 7px 12px;
+  min-height: 44px;
+  padding: 0 12px;
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
@@ -172,6 +177,7 @@
 .field select,
 .list input {
   width: 100%;
+  min-height: 44px;
   padding: 9px 11px;
   border: 1px solid var(--border);
   border-radius: 9px;
@@ -196,6 +202,14 @@
   outline: none;
   border-color: color-mix(in srgb, var(--accent) 70%, transparent);
   box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible,
+.list input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .list {
@@ -223,10 +237,10 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--text-muted);
   cursor: pointer;

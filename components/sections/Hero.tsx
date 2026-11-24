@@ -1,18 +1,11 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import Image from "next/image";
-import { ArrowRight, Download, MapPin } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 
 import { useEditor } from "@/components/editor/ContentProvider";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import {
-  FigmaIcon,
-  NextIcon,
-  ReactIcon,
-  TypeScriptIcon,
-} from "@/components/ui/BrandIcons";
 import type { SiteContent, SocialLink } from "@/types";
 import styles from "./Hero.module.css";
 
@@ -54,37 +47,8 @@ function statusRowsFor(
           "Software development",
       ),
     },
-    { label: t("Location"), value: t(profile.location.split(",")[0]) },
+    { label: t("Location"), value: t(profile.location) },
   ];
-}
-
-function TypedName({ name }: { name: string }) {
-  // Each character fades in on a staggered delay. The full name is present in
-  // the HTML, so it remains readable without JavaScript and for assistive tech.
-  const characters = Array.from(name);
-  const stepMs = 55;
-
-  return (
-    <h1 id="hero-title" className={styles.name} aria-label={name}>
-      <span className={styles.typedName} aria-hidden="true">
-        {characters.map((character, index) => (
-          <span
-            key={`${character}-${index}`}
-            className={styles.typedChar}
-            style={{ "--char-delay": `${index * stepMs}ms` } as CSSProperties}
-          >
-            {character === " " ? "\u00A0" : character}
-          </span>
-        ))}
-        <span
-          className={styles.caret}
-          style={
-            { "--caret-delay": `${characters.length * stepMs}ms` } as CSSProperties
-          }
-        />
-      </span>
-    </h1>
-  );
 }
 
 export function Hero() {
@@ -96,70 +60,19 @@ export function Hero() {
 
   return (
     <section id="home" className={styles.hero} aria-labelledby="hero-title">
-      <div className={styles.blueprint} aria-hidden="true">
-        <span className={styles.dotField} />
-        <svg
-          className={styles.schematic}
-          viewBox="0 0 1440 900"
-          preserveAspectRatio="xMinYMin slice"
-          focusable="false"
-        >
-          <g className={styles.traces}>
-            <path d="M-30 176h150v-74h134" />
-            <path d="M120 176v78h58" strokeDasharray="3 6" />
-            <path d="M268 102h96v48" />
-            <path d="M-30 664h92v76h-58" />
-            <path d="M296 806h74v-58h108" />
-            <path d="M456 96v50h88" />
-            <path d="M356 452l52 40h84l38 46" />
-            <path d="M612 196l46-46" strokeDasharray="2 7" />
-            <path d="M-40 528a140 140 0 0 1 140-140" strokeDasharray="2 8" />
-            <path d="M-10 570a180 180 0 0 1 180-180" strokeDasharray="2 8" />
-          </g>
-          <g className={styles.nodes}>
-            <circle cx="268" cy="102" r="4" />
-            <circle cx="184" cy="254" r="3" />
-            <circle cx="364" cy="154" r="3" />
-            <circle cx="62" cy="664" r="3" />
-            <circle cx="476" cy="748" r="4" />
-            <circle cx="544" cy="96" r="3" />
-            <circle cx="492" cy="538" r="3" />
-          </g>
-          <g className={styles.crosshairs}>
-            <circle cx="88" cy="352" r="8" />
-            <path d="M88 338v-8M88 366v8M74 352h-8M102 352h8" />
-            <circle cx="638" cy="128" r="6" />
-            <path d="M638 118v-6M638 138v6M628 128h-6M648 128h6" />
-            <circle cx="412" cy="856" r="6" />
-            <path d="M412 846v-6M412 866v6M402 856h-6M422 856h6" />
-          </g>
-        </svg>
-      </div>
-
-      <div className={`container ${styles.grid}`}>
+      <div className={`container ${styles.shell}`}>
         <div className={styles.content}>
-          <p className={styles.kicker} aria-hidden="true">
-            <span>01</span>
-            {t("Introduction")}
-          </p>
+          <p className={styles.kicker}>{t("Introduction")}</p>
 
-          <p className={styles.availability}>
-            <span className={styles.dot} aria-hidden="true" />
-            {t(profile.availability)}
-          </p>
-
-          <TypedName name={profile.name} />
+          <h1 id="hero-title" className={styles.name}>
+            {profile.name}
+          </h1>
 
           <p className={styles.headline}>
             {t(profile.headline ?? profile.role)}
           </p>
 
-          <p className={styles.focus}>
-            <span className={styles.focusLabel}>
-              {t("Currently focused on")}
-            </span>
-            {t(profile.currentFocus ?? profile.positioning.join(" · "))}
-          </p>
+          <p className={styles.summary}>{t(profile.summary)}</p>
 
           <div className={styles.actions}>
             <a className="btn btn-primary" href="#projects">
@@ -180,92 +93,43 @@ export function Hero() {
             </a>
           </div>
 
-          <div className={styles.footerRow}>
-            <SocialLinks links={socialLinks} className="social-links" />
-            <p className={styles.location}>
-              <MapPin aria-hidden="true" />
-              {t(profile.location)}
-            </p>
-          </div>
+          <SocialLinks links={socialLinks} className="social-links" />
         </div>
 
-        <div className={styles.consoleWrap}>
-          <div className={styles.signal} aria-hidden="true">
-            <span />
-            <span />
-            <span />
+        <div className={`glass-1 ${styles.profileCard}`} data-glow>
+          <div className={styles.portraitFrame}>
+            <Image
+              src={profile.portrait.src}
+              alt={t(profile.portrait.alt)}
+              fill
+              priority
+              sizes="(max-width: 900px) 88vw, 420px"
+              className={styles.portrait}
+            />
+            {profile.portrait.isPlaceholder ? (
+              <span className={styles.placeholderTag}>
+                {t("Portrait placeholder")}
+              </span>
+            ) : null}
           </div>
 
-          <div className={styles.floaters} aria-hidden="true">
-            <span className={`${styles.floater} ${styles.floaterReact}`}>
-              <ReactIcon />
-            </span>
-            <span className={`${styles.floater} ${styles.floaterNext}`}>
-              <NextIcon />
-            </span>
-            <span className={`${styles.floater} ${styles.floaterType}`}>
-              <TypeScriptIcon />
-            </span>
-            <span className={`${styles.floater} ${styles.floaterFigma}`}>
-              <FigmaIcon />
-            </span>
-          </div>
-
-          <div className={`glass-1 ${styles.console}`} data-glow>
-            <div className={styles.consoleBar}>
-              <span className={styles.dots} aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span className={styles.consoleTitle}>
-                {t("Profile snapshot")}
-              </span>
-              <span className={styles.consoleState}>
-                <span aria-hidden="true">●</span> {t("Available")}
-              </span>
-            </div>
-
-            <div className={styles.consoleBody}>
-              <div className={styles.portraitFrame}>
-                <Image
-                  src={profile.portrait.src}
-                  alt={t(profile.portrait.alt)}
-                  fill
-                  priority
-                  sizes="(max-width: 900px) 88vw, 440px"
-                  className={styles.portrait}
-                />
-                <span className={styles.scanline} aria-hidden="true" />
-                {profile.portrait.isPlaceholder ? (
-                  <span className={styles.placeholderTag}>
-                    {t("Portrait placeholder")}
-                  </span>
-                ) : null}
+          <dl className={styles.statusPanel} aria-label={t("Profile summary")}>
+            {statusRows.map((row) => (
+              <div className={styles.statusRow} key={row.label}>
+                <dt>{row.label}</dt>
+                <dd
+                  className={
+                    row.tone === "live" ? styles.statusLive : undefined
+                  }
+                >
+                  {row.tone === "live" ? (
+                    <span className={styles.statusDot} aria-hidden="true" />
+                  ) : null}
+                  {row.value}
+                </dd>
               </div>
-
-              <dl
-                className={styles.statusPanel}
-                aria-label={t("Profile summary")}
-              >
-                {statusRows.map((row) => (
-                  <div className={styles.statusRow} key={row.label}>
-                    <dt>{row.label}</dt>
-                    <dd
-                      className={
-                        row.tone === "live" ? styles.statusLive : undefined
-                      }
-                    >
-                      {row.tone === "live" ? (
-                        <span className={styles.statusDot} aria-hidden="true" />
-                      ) : null}
-                      {row.value}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

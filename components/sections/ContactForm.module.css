@@ -119,6 +119,12 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+.input:focus-visible,
+.textarea:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .inputError {
   border-color: var(--danger);
 }
@@ -137,7 +143,7 @@
 .counter {
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.04em;
 }
 
@@ -167,7 +173,7 @@
 
 .privacy {
   color: var(--text-subtle);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   line-height: 1.55;
   text-align: center;
 }

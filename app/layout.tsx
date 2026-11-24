@@ -1,6 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono, Noto_Sans_Ethiopic } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Newsreader,
+  Noto_Sans_Ethiopic,
+} from "next/font/google";
 
 import "@/app/globals.css";
 import { LanguageProvider } from "@/components/i18n/LanguageProvider";
@@ -37,6 +42,13 @@ const geistMono = Geist_Mono({
 const notoSansEthiopic = Noto_Sans_Ethiopic({
   subsets: ["ethiopic"],
   variable: "--font-amharic",
+  display: "swap",
+  preload: false,
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-newsreader",
   display: "swap",
 });
 
@@ -155,7 +167,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${geistMono.variable} ${notoSansEthiopic.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${notoSansEthiopic.variable} ${newsreader.variable}`}
       suppressHydrationWarning
     >
       {/* Browser extensions can add attributes to body before hydration. */}

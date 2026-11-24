@@ -1,13 +1,9 @@
 .panel {
   padding: clamp(20px, 3vw, 30px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--glass-2-bg);
-  box-shadow:
-    var(--glass-shadow-soft),
-    var(--glass-inner-soft);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  backdrop-filter: blur(18px) saturate(150%);
+  background: var(--surface);
+  box-shadow: var(--elev-card);
 }
 
 .header {
@@ -38,6 +34,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 44px;
   color: var(--accent-hover);
   font-size: 0.82rem;
   transition: color 0.2s var(--ease-smooth);
@@ -133,7 +130,7 @@
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--text-subtle);
-  font-size: 0.65rem;
+  font-size: var(--text-xs);
   white-space: nowrap;
 }
 
@@ -159,7 +156,7 @@
 .meta dt {
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -167,7 +164,7 @@
 .meta dd {
   margin-top: 3px;
   color: var(--text);
-  font-size: 0.76rem;
+  font-size: var(--text-xs);
   overflow-wrap: anywhere;
 }
 
@@ -180,7 +177,7 @@
 .stars svg {
   width: 12px;
   height: 12px;
-  color: var(--skill-yellow, #f2c75c);
+  color: var(--warning);
 }
 
 @media (max-width: 900px) {

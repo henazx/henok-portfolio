@@ -7,20 +7,19 @@
 
 .leadColumn {
   padding: clamp(24px, 3vw, 32px);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
   border-radius: var(--radius-lg);
-  box-shadow:
-    var(--glass-shadow),
-    var(--glass-inner);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: var(--elev-card);
 }
 
 .lead {
-  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
-  line-height: 1.42;
-  letter-spacing: -0.025em;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
   text-wrap: pretty;
 }
 
@@ -44,8 +43,8 @@
 .capabilityIcon {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   border: 1px solid var(--border);
   border-radius: 9px;
@@ -86,14 +85,10 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: clamp(40px, 6vw, 64px);
   overflow: hidden;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow:
-    var(--glass-shadow),
-    var(--glass-inner);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: var(--elev-card);
 }
 
 .fact {
@@ -107,7 +102,7 @@
 .fact dt {
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -124,7 +119,7 @@
   display: block;
   margin-top: 3px;
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   font-weight: 400;
 }
 
@@ -180,7 +175,7 @@
 .timelinePeriod {
   color: var(--text-subtle);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -195,7 +190,7 @@
 .timelineDetail {
   margin-top: 3px;
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   line-height: 1.5;
 }
 
