@@ -554,6 +554,12 @@ export function validateContent(value: unknown): ValidationResult {
             v.array(list, listPath, 16, (entry, entryPath) =>
               v.string(entry, entryPath, { min: 1, max: 600 }),
             ),
+          impact: (list, listPath) => {
+            if (list === undefined || list === null) return;
+            v.array(list, listPath, 16, (entry, entryPath) =>
+              v.string(entry, entryPath, { min: 1, max: 600 }),
+            );
+          },
           current: (entry, entryPath) => {
             if (entry !== undefined) v.boolean(entry, entryPath);
           },

@@ -430,6 +430,7 @@ const emptyExperience: ExperienceEntry = {
   period: "Period",
   summary: "",
   highlights: ["Key responsibility"],
+  impact: [],
 };
 
 function ExperienceLogoField({
@@ -513,6 +514,11 @@ function ExperienceTab() {
             label="Key responsibilities"
             path={`experience.${index}.highlights`}
             template="New responsibility"
+          />
+          <StringList
+            label="Impact"
+            path={`experience.${index}.impact`}
+            template="Outcome with a real metric"
           />
         </ItemCard>
       ))}
