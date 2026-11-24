@@ -52,6 +52,46 @@ const EditorContext = createContext<EditorContextValue | null>(null);
 
 const baseContent = initialContent as SiteContent;
 
+/** Stable build-time fingerprint of the published content. */
+function contentVersion(content: unknown): string {
+  const source = JSON.stringify(content);
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < source.length; index += 1) {
+    hash ^= source.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return (hash >>> 0).toString(16);
+}
+
+const CONTENT_VERSION = contentVersion(baseContent);
+
+interface DraftEnvelope {
+  version: string;
+  content: SiteContent;
+}
+
+function parseDraft(raw: string): { content: SiteContent | null; stale: boolean } {
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      "version" in parsed &&
+      "content" in parsed
+    ) {
+      const envelope = parsed as DraftEnvelope;
+      return envelope.version === CONTENT_VERSION
+        ? { content: envelope.content, stale: false }
+        : { content: null, stale: true };
+    }
+    // A raw, unversioned draft belongs to an older build and must not override
+    // newer published copy.
+    return { content: null, stale: true };
+  } catch {
+    return { content: null, stale: true };
+  }
+}
+
 export function ContentProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<SiteContent>(baseContent);
   const [unlocked, setUnlocked] = useState(false);
@@ -67,14 +107,25 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     // Restore a private draft after hydration so server and client render the
     // same HTML first. Drafts are content, never credentials.
     try {
-      const draft = window.localStorage.getItem(DRAFT_KEY);
-      if (draft) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setContent(deepMerge(baseContent, JSON.parse(draft)));
-        setDirty(true);
+      const raw = window.localStorage.getItem(DRAFT_KEY);
+      if (raw) {
+        const draft = parseDraft(raw);
+        if (draft.content) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setContent(deepMerge(baseContent, draft.content));
+          setDirty(true);
+        } else {
+          window.localStorage.removeItem(DRAFT_KEY);
+          setStatus("An older saved draft was cleared. Showing the published content.");
+        }
       }
     } catch {
       // A malformed draft should never break the site.
+      try {
+        window.localStorage.removeItem(DRAFT_KEY);
+      } catch {
+        // Storage may be unavailable; the published content still renders.
+      }
     }
 
     // Restore access only from the HttpOnly session cookie, verified by the
@@ -101,7 +152,10 @@ export function ContentProvider({ children }: { children: ReactNode }) {
 
   const saveDraft = useCallback((next: SiteContent) => {
     try {
-      window.localStorage.setItem(DRAFT_KEY, JSON.stringify(next));
+      window.localStorage.setItem(
+        DRAFT_KEY,
+        JSON.stringify({ version: CONTENT_VERSION, content: next } satisfies DraftEnvelope),
+      );
     } catch {
       setStatus("Browser storage is full — changes are only in this session.");
     }
