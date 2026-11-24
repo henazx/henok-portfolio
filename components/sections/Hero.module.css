@@ -5,7 +5,110 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* Decorative technical blueprint. It sits behind the editorial copy and is
+   hidden from assistive technology. */
+.blueprint {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  color: var(--text-subtle);
+  pointer-events: none;
+}
+
+.blueprint::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -40%;
+  width: 46%;
+  height: 140%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    color-mix(in srgb, var(--accent-cyan) 17%, transparent) 48%,
+    transparent
+  );
+  filter: blur(22px);
+  transform: rotate(14deg);
+  animation: bpSweep 26s linear infinite;
+}
+
+.dotField {
+  position: absolute;
+  top: 16%;
+  left: 0;
+  width: min(54%, 740px);
+  height: 62%;
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 15px 15px;
+  opacity: 0.2;
+  -webkit-mask-image: radial-gradient(
+    ellipse 72% 64% at 34% 46%,
+    #000 0%,
+    transparent 76%
+  );
+  mask-image: radial-gradient(
+    ellipse 72% 64% at 34% 46%,
+    #000 0%,
+    transparent 76%
+  );
+  animation: dotDrift 40s ease-in-out infinite alternate;
+}
+
+.schematic {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.62;
+}
+
+.traces path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.traces path[stroke-dasharray] {
+  animation: traceFlow 8s linear infinite;
+}
+
+.nodes circle {
+  fill: none;
+  stroke: var(--accent-cyan);
+  stroke-width: 1.2;
+  opacity: 0.55;
+  animation: nodePulse 6s ease-in-out infinite alternate;
+}
+
+.nodes circle:nth-child(2) {
+  animation-delay: -1.4s;
+}
+
+.nodes circle:nth-child(3) {
+  animation-delay: -3.2s;
+}
+
+.nodes circle:nth-child(5) {
+  animation-delay: -2.1s;
+}
+
+.nodes circle:nth-child(6) {
+  animation-delay: -4.6s;
+}
+
+.crosshairs {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
 .shell {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
   gap: clamp(48px, 7vw, 96px);
@@ -14,6 +117,58 @@
 
 .content {
   min-width: 0;
+}
+
+.content > * {
+  animation: rise 0.75s var(--ease-smooth) both;
+}
+
+.content > :nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.content > :nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.content > :nth-child(4) {
+  animation-delay: 0.14s;
+}
+
+.content > :nth-child(5) {
+  animation-delay: 0.18s;
+}
+
+.typedWord {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.typedChar {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.28em) scale(0.98);
+  filter: blur(3px);
+  animation: typeCharIn 0.5s var(--ease-smooth) both;
+  animation-delay: var(--char-delay);
+  will-change: opacity, transform, filter;
+}
+
+.typedSpace {
+  white-space: pre;
+}
+
+.caret {
+  display: inline-block;
+  width: 0.055em;
+  height: 0.88em;
+  margin-left: 0.06em;
+  vertical-align: -0.06em;
+  background: var(--accent);
+  opacity: 0;
+  animation:
+    caretShow 0s linear var(--caret-delay) forwards,
+    caretBlink 1s steps(1, end) calc(var(--caret-delay) + 0.2s) infinite;
 }
 
 .kicker {
@@ -78,6 +233,116 @@
 
 .content :global(.social-links) {
   margin-top: var(--space-6);
+}
+
+.cardWrap {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 520px;
+  animation: fadeIn 0.95s var(--ease-smooth) both;
+  animation-delay: 0.14s;
+}
+
+.cardWrap::before {
+  content: "";
+  position: absolute;
+  inset: 8% -10% -10% 16%;
+  z-index: -1;
+  border-radius: 52px;
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--accent) 42%, transparent),
+    color-mix(in srgb, var(--accent-violet) 30%, transparent)
+  );
+  filter: blur(52px);
+  opacity: 0.55;
+}
+
+.signal {
+  position: absolute;
+  top: -46px;
+  right: -46px;
+  z-index: -1;
+  width: 168px;
+  height: 168px;
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 20%, transparent);
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: float 9s ease-in-out infinite alternate;
+}
+
+.signal span {
+  position: absolute;
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 16%, transparent);
+  border-radius: 50%;
+}
+
+.signal span:nth-child(1) {
+  inset: 22px;
+}
+
+.signal span:nth-child(2) {
+  inset: 44px;
+}
+
+.signal span:nth-child(3) {
+  inset: 66px;
+  border-color: color-mix(in srgb, var(--accent-cyan) 30%, transparent);
+}
+
+.floaters {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.floater {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--glass-border);
+  border-radius: 13px;
+  background: var(--glass-2-bg);
+  box-shadow:
+    var(--glass-inner),
+    0 16px 34px -22px rgba(0, 0, 0, 0.9);
+  color: var(--accent-hover);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  animation: bob 6s ease-in-out infinite alternate;
+}
+
+.floater svg {
+  width: 19px;
+  height: 19px;
+}
+
+.floaterReact {
+  top: -20px;
+  left: -26px;
+  animation-delay: -1.2s;
+}
+
+.floaterNext {
+  top: 28%;
+  right: -28px;
+  animation-delay: -3.4s;
+}
+
+.floaterType {
+  bottom: 20%;
+  left: -30px;
+  animation-delay: -0.6s;
+}
+
+.floaterFigma {
+  right: -18px;
+  bottom: -18px;
+  animation-delay: -2.4s;
 }
 
 .profileCard {
@@ -158,10 +423,129 @@
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 16%, transparent);
 }
 
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes typeCharIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.28em) scale(0.98);
+    filter: blur(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes caretShow {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes caretBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-6px, 10px, 0);
+  }
+}
+
+@keyframes bob {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes bpSweep {
+  from {
+    transform: translate3d(0, 0, 0) rotate(14deg);
+  }
+
+  to {
+    transform: translate3d(360%, 0, 0) rotate(14deg);
+  }
+}
+
+@keyframes dotDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.14;
+  }
+
+  to {
+    transform: translate3d(18px, -22px, 0);
+    opacity: 0.26;
+  }
+}
+
+@keyframes traceFlow {
+  to {
+    stroke-dashoffset: -90;
+  }
+}
+
+@keyframes nodePulse {
+  from {
+    opacity: 0.22;
+  }
+
+  to {
+    opacity: 0.95;
+  }
+}
+
 @media (max-width: 900px) {
   .shell {
     grid-template-columns: 1fr;
     gap: var(--space-7);
+  }
+
+  .cardWrap {
+    justify-self: stretch;
+    max-width: 620px;
   }
 
   .profileCard {
@@ -170,6 +554,31 @@
 
   .portraitFrame {
     aspect-ratio: 16 / 10;
+  }
+
+  .signal {
+    display: none;
+  }
+
+  .floater {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .floater svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .dotField {
+    width: 100%;
+    height: 54%;
+    opacity: 0.16;
+  }
+
+  .schematic {
+    opacity: 0.5;
   }
 }
 
@@ -198,4 +607,68 @@
   .portraitFrame {
     aspect-ratio: 4 / 3;
   }
+
+  .floaterReact,
+  .floaterNext {
+    display: none;
+  }
+
+  .floaterType {
+    left: -12px;
+  }
+
+  .floaterFigma {
+    right: -12px;
+    bottom: -12px;
+  }
+}
+
+:global(html[data-theme="light"]) .dotField {
+  opacity: 0.14;
+}
+
+:global(html[data-theme="light"]) .schematic {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content > *,
+  .cardWrap,
+  .floater,
+  .signal,
+  .blueprint::after,
+  .dotField,
+  .traces path[stroke-dasharray],
+  .nodes circle {
+    animation: none;
+  }
+
+  .typedChar {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .caret {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .floater {
+    background: var(--surface-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .blueprint::after {
+    display: none;
+  }
+}
+
+:global(html[data-document-hidden="true"]) .hero,
+:global(html[data-document-hidden="true"]) .hero * {
+  animation-play-state: paused !important;
 }

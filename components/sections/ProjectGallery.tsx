@@ -8,6 +8,7 @@ import { ArrowRight, ArrowUpRight, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { ProjectLightbox } from "@/components/interaction/ProjectLightbox";
 import { GitHubIcon } from "@/components/ui/BrandIcons";
+import { projects as publishedProjects } from "@/data/projects";
 import { bypassImageOptimization } from "@/lib/image";
 import type { Project, ProjectCategory } from "@/types";
 import styles from "./ProjectGallery.module.css";
@@ -129,6 +130,13 @@ function ProjectCard({
   const active = gallery[activeIndex] ?? project.image;
   const hasGallery = gallery.length > 1;
   const study = project.caseStudy;
+  // The dedicated case-study routes are generated from the published content,
+  // not from a browser draft. Always offer the entry point for those slugs so a
+  // stale or partial draft can never silently hide the feature.
+  const hasPublishedCaseStudy = publishedProjects.some(
+    (published) =>
+      published.slug === project.slug && Boolean(published.caseStudy),
+  );
   const hasCaseStudy = Boolean(
     study &&
       (study.role ||
@@ -253,7 +261,7 @@ function ProjectCard({
 
         <p className={styles.description}>{t(project.description)}</p>
 
-        {hasCaseStudy ? (
+        {hasPublishedCaseStudy || hasCaseStudy ? (
           <Link
             href={`/projects/${project.slug}`}
             className={styles.caseLink}
