@@ -301,10 +301,6 @@
     margin-left: auto;
   }
 
-  .languageToggle {
-    display: none;
-  }
-
   .menuButton {
     display: grid;
   }

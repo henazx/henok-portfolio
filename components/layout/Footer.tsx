@@ -47,7 +47,7 @@ export function Footer() {
                 <span>{content.profile.name}</span>
               </a>
               <p className={styles.tagline}>
-                {t(content.profile.role)} · {content.profile.location}
+                {t(content.profile.role)} · {t(content.profile.location)}
               </p>
             </div>
 

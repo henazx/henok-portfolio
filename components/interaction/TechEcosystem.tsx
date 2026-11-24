@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import {
   FigmaIcon,
   GitHubIcon,
@@ -44,6 +45,8 @@ const technologies = [
  */
 export function TechEcosystem() {
   const ref = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
+  const coreLabel = t("Core stack").split(/\s+/);
 
   useEffect(() => {
     const container = ref.current;
@@ -125,9 +128,13 @@ export function TechEcosystem() {
         <span className={styles.coreRing} />
         <span className={styles.coreDot} />
         <span className={styles.coreLabel}>
-          Core
-          <br />
-          stack
+          {coreLabel[0]}
+          {coreLabel.length > 1 ? (
+            <>
+              <br />
+              {coreLabel.slice(1).join(" ")}
+            </>
+          ) : null}
         </span>
       </div>
 
