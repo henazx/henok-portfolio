@@ -16,12 +16,12 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  gap: clamp(12px, 2vw, 28px);
+  gap: clamp(16px, 2.4vw, 36px);
   width: 100%;
   max-width: 980px;
   height: 64px;
   margin-inline: auto;
-  padding: 8px 12px 8px 18px;
+  padding: 8px 16px 8px 22px;
   border: 1px solid var(--glass-border);
   border-radius: 999px;
   background:
@@ -108,13 +108,13 @@
 .desktopNav {
   min-width: 0;
   margin-left: auto;
-  margin-right: clamp(4px, 1vw, 12px);
+  margin-right: clamp(8px, 1.4vw, 18px);
 }
 
 .desktopNav ul {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .desktopNav a {
@@ -122,7 +122,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 42px;
-  padding: 0 11px;
+  padding: 0 14px;
   border-radius: 999px;
   color: var(--text-muted);
   font-size: 0.78rem;
@@ -160,7 +160,7 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -210,8 +210,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 32px;
-  padding: 18px 20px 32px;
+  gap: 40px;
+  padding: 24px 24px 36px;
   overflow-y: auto;
   border: 1px solid var(--glass-border);
   border-radius: 26px;
@@ -238,7 +238,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 17px 2px;
+  padding: 20px 2px;
   color: var(--text-muted);
   font-size: clamp(1.25rem, 5vw, 1.5rem);
   font-weight: 500;
@@ -261,11 +261,11 @@
 .mobileFooter {
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 30px;
 }
 
 .mobileSocials {
-  gap: 4px;
+  gap: 8px;
 }
 
 .mobileSocials a {
@@ -288,9 +288,9 @@
 
 @media (max-width: 1000px) {
   .inner {
-    gap: 10px;
-    padding-right: 8px;
-    padding-left: 14px;
+    gap: 12px;
+    padding-right: 10px;
+    padding-left: 16px;
   }
 
   .desktopNav {

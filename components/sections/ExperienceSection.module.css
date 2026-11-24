@@ -8,12 +8,12 @@
 }
 
 .item + .item {
-  margin-top: clamp(24px, 3vw, 32px);
+  margin-top: clamp(32px, 4vw, 44px);
 }
 
 .content {
   position: relative;
-  padding: clamp(28px, 3.4vw, 40px);
+  padding: clamp(32px, 4vw, 52px);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
@@ -31,7 +31,7 @@
   content: "";
   position: absolute;
   top: -1px;
-  left: clamp(28px, 3.4vw, 40px);
+  left: clamp(32px, 4vw, 52px);
   width: 46px;
   height: 1px;
   background: linear-gradient(90deg, var(--accent), transparent);
@@ -46,7 +46,7 @@
 .headline {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 22px;
 }
 
 .logoFrame {
@@ -78,11 +78,11 @@
 
 .organization {
   display: grid;
-  gap: 2px;
-  margin-top: 8px;
+  gap: 6px;
+  margin-top: 12px;
   color: var(--text-muted);
   font-size: 0.9rem;
-  line-height: 1.4;
+  line-height: 1.55;
 }
 
 .separator {
@@ -91,16 +91,16 @@
 }
 
 .summary {
-  max-width: 68ch;
-  margin-top: 26px;
+  max-width: 72ch;
+  margin-top: 36px;
   color: var(--text-muted);
   font-size: 0.95rem;
-  line-height: 1.75;
+  line-height: 1.85;
 }
 
 .detailGroup {
-  margin-top: 28px;
-  padding-top: 24px;
+  margin-top: 36px;
+  padding-top: 32px;
   border-top: 1px solid var(--border);
 }
 
@@ -115,8 +115,8 @@
 .highlights {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 14px;
+  gap: 16px;
+  margin-top: 18px;
 }
 
 .impact li {
@@ -129,7 +129,7 @@
   max-width: 72ch;
   color: var(--text-muted);
   font-size: 0.925rem;
-  line-height: 1.6;
+  line-height: 1.75;
 }
 
 .highlights li::before {
