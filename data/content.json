@@ -14,7 +14,7 @@
   "sections": {
     "about": {
       "title": "IT support, software, and design grounded in real use.",
-      "description": "I keep systems running, build practical web applications, and design interfaces around how people actually work."
+      "description": "A concise view of my background, current work, and focus areas."
     },
     "experience": {
       "title": "Applying IT support in a working organization.",
@@ -48,13 +48,13 @@
       "Software Developer",
       "UX/UI Designer"
     ],
-    "summary": "I'm a Computer Science graduate with practical experience in IT support, software development, and user-centered design. I build and maintain reliable systems, and I care about the details that make technology feel simple for the people who use it.",
+    "summary": "Information Technology Specialist and Computer Science graduate working across IT support, web development, and UX/UI design in Addis Ababa.",
     "about": {
       "lead": "I keep systems running, build practical web applications, and design interfaces that stay out of the way.",
       "paragraphs": [
-        "I am a Computer Science graduate with practical experience in Information Technology support, troubleshooting, hardware and software maintenance, and software development. My day-to-day work involves helping people resolve technical problems and keeping the systems they depend on available and reliable.",
-        "Alongside IT operations, I build web applications using JavaScript, React, Next.js and Node.js. I also have a strong interest in UX/UI design, and I use Figma to turn requirements into clear, usable interfaces — from wireframes through to implementation.",
-        "I enjoy solving technical problems, learning new technologies, and developing practical solutions that improve everyday workflows. I care about maintainability, accessibility, and the small details that make a product feel considered."
+        "At Addis Mesob, I keep people and systems working by resolving IT issues and maintaining the hardware, software, and networks the team relies on. My background spans troubleshooting, software development, and user-centered design, supported by a Google UX Design Certificate and hands-on Figma and Photoshop skills. I bring strong communication, teamwork, and problem-solving abilities to both technical and collaborative work.",
+        "Alongside IT operations, I build web applications using JavaScript, React, Next.js and Node.js.",
+        "I enjoy learning new technologies and applying them to problems that improve everyday workflows. I care about maintainability, accessibility, and the small details that make a product feel considered."
       ],
       "focus": [
         "IT support and systems",
