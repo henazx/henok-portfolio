@@ -34,13 +34,6 @@ export function ExperienceSection() {
               className={styles.item}
               key={`${entry.role}-${entry.organization}-${index}`}
             >
-              <div className={styles.meta}>
-                <span className={styles.period}>{t(entry.period)}</span>
-                {entry.current ? (
-                  <span className={styles.current}>{t("Current")}</span>
-                ) : null}
-              </div>
-
               <div className={styles.content}>
                 <div className={styles.headline}>
                   {entry.logo ? (
@@ -58,11 +51,11 @@ export function ExperienceSection() {
                   <div className={styles.headingText}>
                     <h3 className={styles.role}>{t(entry.role)}</h3>
                     <p className={styles.organization}>
-                      {t(entry.organization)}
+                      <span>{t(entry.organization)}</span>
                       <span className={styles.separator} aria-hidden="true">
                         ·
                       </span>
-                      {t(entry.location)}
+                      <span>{t(entry.location)}</span>
                     </p>
                   </div>
                 </div>
