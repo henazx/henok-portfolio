@@ -2,40 +2,69 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  padding-block: 12px;
-  border-bottom: 1px solid transparent;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--bg) 78%, transparent),
-    color-mix(in srgb, var(--bg) 88%, transparent)
-  );
-  box-shadow: inset 0 -1px 0 var(--glass-border-soft);
+  padding-block: 13px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* The navigation is a floating glass island rather than a full-width bar. */
+.inner {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  width: 100%;
+  max-width: 980px;
+  height: 64px;
+  margin-inline: auto;
+  padding: 8px 12px 8px 18px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      240px circle at var(--glow-x, 50%) var(--glow-y, 0%),
+      rgba(255, 255, 255, 0.16),
+      transparent 68%
+    ),
+    var(--glass-1-bg);
+  background-size: 180% 180%;
+  box-shadow:
+    var(--glass-shadow),
+    var(--glass-inner);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  animation: liquidGlassFlow 26s ease-in-out infinite alternate;
   transition:
-    background var(--duration-base) var(--ease-smooth),
     border-color var(--duration-base) var(--ease-smooth),
     box-shadow var(--duration-base) var(--ease-smooth);
 }
 
-.inner {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  height: 64px;
-  padding-inline: clamp(16px, 2vw, 28px);
+.inner::before {
+  content: "";
+  position: absolute;
+  inset: 24% 6% -44%;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--accent-cyan) 28%, transparent),
+    color-mix(in srgb, var(--accent-violet) 24%, transparent)
+  );
+  filter: blur(30px);
+  opacity: 0.6;
+  pointer-events: none;
 }
 
-.scrolled {
-  border-bottom-color: var(--border);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--bg) 90%, transparent),
-    color-mix(in srgb, var(--bg) 97%, transparent)
-  );
+.scrolled .inner {
+  border-color: var(--border-strong);
   box-shadow:
-    var(--glass-shadow-soft),
-    inset 0 -1px 0 var(--glass-border-soft);
+    var(--glass-shadow),
+    var(--glass-inner),
+    0 18px 40px -34px rgba(0, 0, 0, 0.9);
 }
 
 .brand {
@@ -44,7 +73,7 @@
   gap: 10px;
   min-height: 44px;
   flex-shrink: 0;
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
 }
 
 .mark {
@@ -53,7 +82,7 @@
   width: 33px;
   height: 33px;
   border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
-  border-radius: 9px;
+  border-radius: 10px;
   background:
     linear-gradient(
       145deg,
@@ -70,15 +99,16 @@
 }
 
 .brandName {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   white-space: nowrap;
 }
 
 .desktopNav {
+  min-width: 0;
   margin-left: auto;
-  margin-right: clamp(6px, 1.4vw, 16px);
+  margin-right: clamp(4px, 1vw, 12px);
 }
 
 .desktopNav ul {
@@ -91,11 +121,11 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 14px;
+  min-height: 42px;
+  padding: 0 11px;
   border-radius: 999px;
   color: var(--text-muted);
-  font-size: 0.8125rem;
+  font-size: 0.78rem;
   letter-spacing: -0.008em;
   transition:
     color 0.2s var(--ease-smooth),
@@ -110,24 +140,28 @@
 
 .desktopNav .active {
   color: var(--text);
-  background: transparent;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 8px 20px -14px var(--accent);
 }
 
 .desktopNav .active::after {
   content: "";
   position: absolute;
-  right: 14px;
-  bottom: 8px;
-  left: 14px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent);
+  right: 11px;
+  bottom: 7px;
+  left: 11px;
+  height: 1px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--accent-hover) 70%, transparent);
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .languageToggle {
@@ -139,10 +173,12 @@
   place-items: center;
   width: 44px;
   height: 44px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  background: var(--glass-3-bg);
   color: var(--text-muted);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
   transition:
     color 0.2s var(--ease-smooth),
     border-color 0.2s var(--ease-smooth),
@@ -175,13 +211,12 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 32px;
-  padding: 16px 20px 32px;
+  padding: 18px 20px 32px;
   overflow-y: auto;
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
-    color-mix(in srgb, var(--bg) 88%, transparent);
   border: 1px solid var(--glass-border);
-  border-radius: 22px;
+  border-radius: 26px;
+  background: var(--glass-1-bg);
+  background-size: 180% 180%;
   box-shadow:
     var(--glass-shadow),
     var(--glass-inner);
@@ -244,6 +279,7 @@
     opacity: 0;
     transform: translateY(-8px) scale(0.99);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -251,6 +287,12 @@
 }
 
 @media (max-width: 1000px) {
+  .inner {
+    gap: 10px;
+    padding-right: 8px;
+    padding-left: 14px;
+  }
+
   .desktopNav {
     display: none;
   }
@@ -272,4 +314,22 @@
   .brandName {
     display: none;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inner {
+    animation: none;
+    background-position: 50% 50%;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .inner,
+  .mobilePanel {
+    background: var(--glass-bg-strong);
+  }
+}
+
+html[data-document-hidden="true"] .inner {
+  animation-play-state: paused !important;
 }
