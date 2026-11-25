@@ -2,13 +2,34 @@
   "site": {
     "description": "Portfolio of an Information Technology Specialist and Computer Science graduate working across IT support, software development and UX/UI design.",
     "navigation": [
-      { "label": "Home", "href": "#home" },
-      { "label": "About", "href": "#about" },
-      { "label": "Experience", "href": "#experience" },
-      { "label": "Projects", "href": "#projects" },
-      { "label": "Skills", "href": "#skills" },
-      { "label": "Certifications", "href": "#credentials" },
-      { "label": "Contact", "href": "#contact" }
+      {
+        "label": "Home",
+        "href": "#home"
+      },
+      {
+        "label": "About",
+        "href": "#about"
+      },
+      {
+        "label": "Experience",
+        "href": "#experience"
+      },
+      {
+        "label": "Projects",
+        "href": "#projects"
+      },
+      {
+        "label": "Skills",
+        "href": "#skills"
+      },
+      {
+        "label": "Certifications",
+        "href": "#credentials"
+      },
+      {
+        "label": "Contact",
+        "href": "#contact"
+      }
     ]
   },
   "sections": {
@@ -38,7 +59,7 @@
     }
   },
   "profile": {
-    "name": "Henok Neknikie",
+    "name": "Henok Neknikies",
     "monogram": "HN",
     "role": "Information Technology Specialist",
     "headline": "IT specialist, web developer, and UX/UI designer in Addis Ababa.",
@@ -92,12 +113,7 @@
         "Help employees with day-to-day technical problems and IT operations.",
         "Contribute technical support to software and systems work alongside the core IT operations team."
       ],
-      "impact": [
-        "Restored access to the devices, applications, and network resources staff rely on for their work.",
-        "Maintained availability of shared computers, printers, and core IT systems across the organization.",
-        "Reduced repeated disruption by resolving recurring hardware, software, and connectivity problems.",
-        "Supported technology projects with practical IT input, from troubleshooting to system configuration."
-      ]
+      "impact": []
     }
   ],
   "projects": [
@@ -116,12 +132,19 @@
         "UX/UI Design"
       ],
       "image": {
-        "src": "/projects/smartcv.svg",
+        "src": "/projects/smartcv.png",
         "alt": "Stylised preview of the SmartCV interface showing a CV builder and compatibility score",
         "width": 1200,
         "height": 750
       },
-      "images": [],
+      "images": [
+        {
+          "src": "/projects/smartcv-2.png",
+          "alt": "SmartCV screenshot 2",
+          "width": 1200,
+          "height": 750
+        }
+      ],
       "caseStudy": {
         "role": "Developer",
         "overview": "SmartCV is a browser-based CV and career toolkit built for Ethiopian job seekers. The repository implements a rules-based layout engine, live CV preview, client-side PDF export, local draft saving, and an Ethiopian payment-gateway integration for optional premium themes.",
@@ -173,7 +196,7 @@
         "WebAuthn"
       ],
       "image": {
-        "src": "/projects/mesob-connect.svg",
+        "src": "/projects/mesob-connect.png",
         "alt": "Stylised preview of the Mesob Connect messaging and document management interface",
         "width": 1200,
         "height": 750
@@ -270,91 +293,6 @@
       },
       "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system",
       "demo": "https://mesob-messaging-system-client.vercel.app/"
-    },
-    {
-      "slug": "telegram-job-board",
-      "name": "Telegram Job Board",
-      "category": "Development",
-      "description": "Collects job posts from Telegram channels into one searchable board with filters, deadline sorting, and saved jobs.",
-      "technologies": [
-        "React",
-        "Node.js",
-        "Telegram Bot API",
-        "Groq",
-        "Supabase"
-      ],
-      "image": {
-        "src": "/projects/telegram-job-board.svg",
-        "alt": "Stylised preview of the Telegram Job Board showing a feed of job listings",
-        "width": 1200,
-        "height": 750
-      },
-      "images": [],
-      "caseStudy": {
-        "role": "Development and implementation",
-        "overview": "A React job board that collects Telegram job posts, parses them with Groq, stores structured records in Supabase, and presents them with search, filters, deadline sorting, and saved jobs.",
-        "problem": "Job opportunities are posted across multiple Telegram channels; the code brings them into one searchable board.",
-        "solution": "One searchable board for Telegram-sourced jobs, with structured extraction and client-side saved jobs.",
-        "approach": "Collected posts from configured Telegram channels, parsed them with Groq into structured job fields including Amharic and English, stored them in Supabase, and exposed a filterable board with search, location/channel filters, deadline sorting, and saved jobs.",
-        "features": [
-          "Telegram channel ingestion using the Bot API and a Telegram client path.",
-          "LLM extraction of title, company, location, salary, deadline, skills, and apply links.",
-          "Amharic and English text handling.",
-          "Search, location/channel filters, and deadline sorting.",
-          "Saved jobs stored in localStorage."
-        ],
-        "decisions": [
-          "React with hash-based routing for Home, Saved, Channels, and Admin pages.",
-          "Telegram Bot API getUpdates and a Telegram client path using API ID, API hash, and session credentials as two ingestion options.",
-          "Groq llama-3.3-70b-versatile to extract title, company, location, salary, deadline, skills, and apply links, including Amharic and English text.",
-          "Supabase jobs table for persistence, deadline ordering, and structured fields.",
-          "localStorage for saved jobs."
-        ],
-        "challenges": [
-          "Extracting consistent structured fields from mixed Amharic and English Telegram messages.",
-          "Normalizing deadlines and other dates from informal job posts."
-        ],
-        "outcome": "A working codebase with ingestion, parsing, persistence, and a filterable UI.",
-        "learnings": "Working with LLM extraction across Amharic and English, normalizing messy dates, and persisting structured records in Supabase."
-      },
-      "repository": "https://github.com/henazx/telegram-job-board"
-    },
-    {
-      "slug": "high-school-counseling",
-      "name": "High School Counseling Website",
-      "category": "UI/UX Design",
-      "description": "An academic UX/UI project giving high school students access to academic guidance, emotional support resources, and educational information.",
-      "technologies": ["UX/UI Design", "Figma", "Wireframing"],
-      "image": {
-        "src": "/projects/counseling-website.svg",
-        "alt": "Stylised preview of the High School Counseling website with guidance and support resources",
-        "width": 1200,
-        "height": 750
-      },
-      "images": [],
-      "caseStudy": {
-        "role": "UX/UI Designer and Developer",
-        "overview": "An academic UX/UI and development project from Kotebe University of Education (2024), intended to help high school students find academic guidance, emotional support resources, and educational information.",
-        "problem": "An academic project developed to give high school students access to academic guidance, emotional support resources, and educational information.",
-        "solution": "A student-facing website concept that brings academic guidance, emotional support resources, and educational information into one clear structure.",
-        "approach": "Approached the project as both UX/UI design and development work: defined the content areas for students, explored the structure with wireframes in Figma, and translated the design into a web interface.",
-        "features": [
-          "Academic guidance information.",
-          "Emotional support resources.",
-          "Educational information for high school students."
-        ],
-        "decisions": [
-          "Organized the experience around three student needs: academic guidance, emotional support, and educational information.",
-          "Used Figma and wireframing to explore layout and navigation before implementation.",
-          "Kept the interface straightforward so students could find support information without extra steps."
-        ],
-        "challenges": [
-          "Presenting sensitive support information in a clear, calm, and easy-to-find structure for students."
-        ],
-        "outcome": "An academic UX/UI and development project completed at Kotebe University of Education in 2024.",
-        "learnings": "Translating student information needs into a usable structure, and balancing visual design with clear access to support resources."
-      },
-      "note": "Academic project"
     }
   ],
   "skills": [
@@ -362,7 +300,12 @@
       "title": "Frontend Development",
       "description": "Component-driven interfaces built to stay clear and responsive.",
       "icon": "frontend",
-      "skills": ["React", "Next.js", "JavaScript", "Responsive layouts"],
+      "skills": [
+        "React",
+        "Next.js",
+        "JavaScript",
+        "Responsive layouts"
+      ],
       "evidenceLabel": "SmartCV case study",
       "evidenceHref": "#project-smartcv"
     },
@@ -370,7 +313,11 @@
       "title": "Backend Development",
       "description": "Application logic, server routes, and API workflows.",
       "icon": "backend",
-      "skills": ["Node.js", "Express.js", "JavaScript"],
+      "skills": [
+        "Node.js",
+        "Express.js",
+        "JavaScript"
+      ],
       "evidenceLabel": "Mesob Connect case study",
       "evidenceHref": "#project-mesob-connect"
     },
@@ -378,7 +325,10 @@
       "title": "Databases",
       "description": "Structured storage and dependable data access.",
       "icon": "database",
-      "skills": ["MySQL", "SQL"],
+      "skills": [
+        "MySQL",
+        "SQL"
+      ],
       "evidenceLabel": "Mesob data model",
       "evidenceHref": "#project-mesob-connect"
     },
@@ -414,7 +364,12 @@
       "title": "Development Tools",
       "description": "The everyday environment behind the work.",
       "icon": "tools",
-      "skills": ["Git & GitHub", "Vercel", "Figma", "Adobe Photoshop"],
+      "skills": [
+        "Git & GitHub",
+        "Vercel",
+        "Figma",
+        "Adobe Photoshop"
+      ],
       "evidenceLabel": "Projects and repositories",
       "evidenceHref": "#projects"
     }
