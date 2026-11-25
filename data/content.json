@@ -113,7 +113,11 @@
         "Help employees with day-to-day technical problems and IT operations.",
         "Contribute technical support to software and systems work alongside the core IT operations team."
       ],
-      "impact": []
+      "impact": [],
+      "logo": {
+        "src": "/experience/addis-mesob.png",
+        "alt": "Addis Mesob logo"
+      }
     }
   ],
   "projects": [
