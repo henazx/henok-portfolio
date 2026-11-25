@@ -292,11 +292,10 @@
           "Coordinating message status changes, event history, document attachments, and live updates across the client and API.",
           "Protecting generated documents and messaging endpoints with authentication, CORS rules, and security headers."
         ],
-        "outcome": "A working full-stack system with a reachable demo covering correspondence, formal letters, attachments, tracking, and admin management.",
+        "outcome": "A working full-stack system covering correspondence, formal letters, attachments, tracking, and admin management.",
         "learnings": "Designing a status-driven data model, separating client and server concerns, and applying auth, CORS, and CSP controls to internal tools."
       },
-      "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system",
-      "demo": "https://mesob-messaging-system-client.vercel.app/"
+      "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system"
     }
   ],
   "skills": [
