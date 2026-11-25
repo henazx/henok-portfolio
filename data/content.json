@@ -401,8 +401,9 @@
       "issuer": "Udacity"
     },
     {
-      "name": "Introduction to Cybersecurity",
-      "issuer": "Cisco"
+      "name": "Programming Fundamentals",
+      "issuer": "Udacity",
+      "link": "https://www.udacity.com/certificate/e/22b1d134-6552-11ef-bdbb-573a91a86c7b"
     }
   ]
 }
