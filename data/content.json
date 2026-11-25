@@ -392,18 +392,26 @@
   ],
   "certifications": [
     {
-      "name": "Google UX Design Certificate",
-      "issuer": "Google",
-      "note": "User research, wireframing, prototyping, and usability testing."
+      "name": "Data Science Fundamentals",
+      "issuer": "Udacity",
+      "note": "User research, wireframing, prototyping, and usability testing.",
+      "link": "https://www.udacity.com/certificate/e/7b6cd58e-3013-11f1-a652-9b1e5e28aeaa"
     },
     {
       "name": "Artificial Intelligence Fundamentals",
-      "issuer": "Udacity"
+      "issuer": "Udacity",
+      "link": "https://www.udacity.com/certificate/e/8d8f9e26-0b57-11f1-a0af-7fbadc256142"
     },
     {
       "name": "Programming Fundamentals",
       "issuer": "Udacity",
       "link": "https://www.udacity.com/certificate/e/22b1d134-6552-11ef-bdbb-573a91a86c7b"
+    },
+    {
+      "name": "Android Developer Fundamentals",
+      "issuer": "Udacity",
+      "link": "https://www.udacity.com/certificate/e/544dab90-3018-11f1-acd2-2fb257954509",
+      "note": ""
     }
   ]
 }
