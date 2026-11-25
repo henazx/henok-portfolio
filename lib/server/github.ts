@@ -60,6 +60,13 @@ function headers(token: string): HeadersInit {
   };
 }
 
+function requestErrorMessage(action: "read" | "write", status: number): string {
+  if (status === 401 || status === 403) {
+    return `GitHub denied ${action} access (${status}). Check GITHUB_TOKEN and its Contents: read and write permission in Vercel.`;
+  }
+  return `GitHub ${action} failed (${status}).`;
+}
+
 function contentsUrl(config: GithubConfig, path: string): string {
   return `${API}/repos/${config.repo}/contents/${encodePath(path)}`;
 }
@@ -84,7 +91,7 @@ async function getFile(
 
   if (response.status === 404) return null;
   if (!response.ok) {
-    throw new GithubError("read", `GitHub read failed (${response.status}).`);
+    throw new GithubError("read", requestErrorMessage("read", response.status));
   }
 
   const data = (await response.json()) as {
@@ -132,10 +139,7 @@ async function putFile(
       continue;
     }
 
-    throw new GithubError(
-      stage,
-      `GitHub write failed (${response.status}).`,
-    );
+    throw new GithubError(stage, requestErrorMessage("write", response.status));
   }
 
   throw new GithubError(stage, "GitHub write failed after a retry.");

@@ -821,6 +821,34 @@ function CredentialsTab() {
   );
 }
 
+function PublishErrorBanner({
+  message,
+  onDismiss,
+}: {
+  message: string;
+  onDismiss: () => void;
+}) {
+  return (
+    <div className={styles.publishError} role="alert">
+      <span className={styles.publishErrorMark} aria-hidden="true">
+        !
+      </span>
+      <p className={styles.publishErrorText}>
+        <strong>Publish failed.</strong> {message} Your changes are still saved
+        in this browser and have not been published.
+      </p>
+      <button
+        type="button"
+        className={styles.publishErrorDismiss}
+        onClick={onDismiss}
+        aria-label="Dismiss publish error"
+      >
+        ×
+      </button>
+    </div>
+  );
+}
+
 export function SiteEditor() {
   const {
     content,
@@ -829,6 +857,8 @@ export function SiteEditor() {
     dirty,
     publishing,
     status,
+    publishError,
+    dismissPublishError,
     openEditor,
     closeEditor,
     exitEditor,
@@ -943,22 +973,33 @@ export function SiteEditor() {
   return (
     <>
       {unlocked && !editorOpen ? (
-        <div className={styles.launcher} role="status">
-          <span className={styles.launcherDot} aria-hidden="true" />
-          <span>Edit mode</span>
-          <button type="button" onClick={openEditor}>
-            Open editor
-          </button>
-          <button
-            type="button"
-            disabled={!dirty || publishing}
-            onClick={() => void publish()}
-          >
-            {publishing ? "Publishing…" : "Publish"}
-          </button>
-          <button type="button" onClick={exitEditor}>
-            Exit
-          </button>
+        <div
+          className={`${styles.launcher} ${publishError ? styles.launcherWithError : ""}`}
+          role="status"
+        >
+          {publishError ? (
+            <PublishErrorBanner
+              message={publishError}
+              onDismiss={dismissPublishError}
+            />
+          ) : null}
+          <div className={styles.launcherRow}>
+            <span className={styles.launcherDot} aria-hidden="true" />
+            <span>Edit mode</span>
+            <button type="button" onClick={openEditor}>
+              Open editor
+            </button>
+            <button
+              type="button"
+              disabled={!dirty || publishing}
+              onClick={() => void publish()}
+            >
+              {publishing ? "Publishing…" : "Publish"}
+            </button>
+            <button type="button" onClick={exitEditor}>
+              Exit
+            </button>
+          </div>
         </div>
       ) : null}
 
@@ -1006,6 +1047,13 @@ export function SiteEditor() {
               </button>
             ))}
           </div>
+
+          {publishError ? (
+            <PublishErrorBanner
+              message={publishError}
+              onDismiss={dismissPublishError}
+            />
+          ) : null}
 
           <div
             className={styles.panelBody}

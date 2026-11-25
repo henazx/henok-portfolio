@@ -33,6 +33,7 @@ interface EditorContextValue {
   dirty: boolean;
   publishing: boolean;
   status: string | null;
+  publishError: string | null;
   authPromptOpen: boolean;
   authenticating: boolean;
   authError: string | null;
@@ -46,6 +47,7 @@ interface EditorContextValue {
   removeItem: (path: string, index: number) => void;
   resetChanges: () => void;
   publish: () => Promise<void>;
+  dismissPublishError: () => void;
 }
 
 const EditorContext = createContext<EditorContextValue | null>(null);
@@ -99,6 +101,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const [dirty, setDirty] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  const [publishError, setPublishError] = useState<string | null>(null);
   const [authPromptOpen, setAuthPromptOpen] = useState(false);
   const [authenticating, setAuthenticating] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -170,6 +173,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       });
       setDirty(true);
       setStatus(null);
+      setPublishError(null);
     },
     [saveDraft],
   );
@@ -185,6 +189,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       });
       setDirty(true);
       setStatus(null);
+      setPublishError(null);
     },
     [saveDraft],
   );
@@ -201,6 +206,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       });
       setDirty(true);
       setStatus(null);
+      setPublishError(null);
     },
     [saveDraft],
   );
@@ -209,6 +215,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     window.localStorage.removeItem(DRAFT_KEY);
     setContent(baseContent);
     setDirty(false);
+    setPublishError(null);
     setStatus("Changes discarded. Showing the published content.");
   }, []);
 
@@ -225,6 +232,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setAuthPromptOpen(false);
     setEditorOpen(true);
     setStatus(null);
+    setPublishError(null);
     setAuthenticating(false);
     return true;
   }, []);
@@ -241,11 +249,13 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setAuthPromptOpen(false);
     setAuthError(null);
     setStatus(null);
+    setPublishError(null);
   }, []);
 
   const publish = useCallback(async () => {
     setPublishing(true);
     setStatus(null);
+    setPublishError(null);
     const result = await publishSite(content);
 
     if (result.status === 401) {
@@ -253,12 +263,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setEditorOpen(false);
       setAuthPromptOpen(true);
       setAuthError("Your session expired. Enter the password again.");
-      setStatus("Session expired — publishing was not attempted.");
+      setPublishError("Your session expired. Unlock again to publish.");
       setPublishing(false);
       return;
     }
     if (!result.ok) {
-      setStatus(result.message ?? "Publishing failed.");
+      setPublishError(result.message ?? "Publishing failed.");
       setPublishing(false);
       return;
     }
@@ -274,6 +284,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setPublishing(false);
   }, [content]);
 
+  const dismissPublishError = useCallback(() => setPublishError(null), []);
+
   const value = useMemo<EditorContextValue>(
     () => ({
       content,
@@ -282,6 +294,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       dirty,
       publishing,
       status,
+      publishError,
       authPromptOpen,
       authenticating,
       authError,
@@ -295,6 +308,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       removeItem,
       resetChanges,
       publish,
+      dismissPublishError,
     }),
     [
       content,
@@ -303,6 +317,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       dirty,
       publishing,
       status,
+      publishError,
       authPromptOpen,
       authenticating,
       authError,
@@ -314,6 +329,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       removeItem,
       resetChanges,
       publish,
+      dismissPublishError,
     ],
   );
 
