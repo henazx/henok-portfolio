@@ -46,6 +46,7 @@ interface EditorContextValue {
   setField: (path: string, value: unknown) => void;
   addItem: (path: string, template: unknown) => void;
   removeItem: (path: string, index: number) => void;
+  moveItem: (path: string, from: number, to: number) => void;
   resetChanges: () => void;
   publish: () => Promise<void>;
   dismissPublishError: () => void;
@@ -217,6 +218,35 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     [saveDraft],
   );
 
+  const moveItem = useCallback(
+    (path: string, from: number, to: number) => {
+      setContent((current) => {
+        const existing = getByPath(current, path);
+        if (
+          !Array.isArray(existing) ||
+          from === to ||
+          from < 0 ||
+          to < 0 ||
+          from >= existing.length ||
+          to >= existing.length
+        ) {
+          return current;
+        }
+
+        const nextList = [...existing];
+        const [moved] = nextList.splice(from, 1);
+        nextList.splice(to, 0, moved);
+        const next = setByPath(current, path, nextList);
+        saveDraft(next);
+        return next;
+      });
+      setDirty(true);
+      setStatus(null);
+      setPublishError(null);
+    },
+    [saveDraft],
+  );
+
   const resetChanges = useCallback(() => {
     window.localStorage.removeItem(DRAFT_KEY);
     setContent(baseContent);
@@ -312,6 +342,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setField,
       addItem,
       removeItem,
+      moveItem,
       resetChanges,
       publish,
       dismissPublishError,
@@ -333,6 +364,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setField,
       addItem,
       removeItem,
+      moveItem,
       resetChanges,
       publish,
       dismissPublishError,

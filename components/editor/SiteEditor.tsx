@@ -182,24 +182,29 @@ function StringList({
 function ItemCard({
   title,
   onRemove,
+  actions,
   children,
 }: {
   title: string;
   onRemove: () => void;
+  actions?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <div className={styles.itemCard}>
       <div className={styles.itemHeader}>
         <strong>{title}</strong>
-        <button
-          type="button"
-          className={styles.iconButton}
-          onClick={onRemove}
-          aria-label={`Remove ${title}`}
-        >
-          ×
-        </button>
+        <div className={styles.itemActions}>
+          {actions}
+          <button
+            type="button"
+            className={styles.iconButton}
+            onClick={onRemove}
+            aria-label={`Remove ${title}`}
+          >
+            ×
+          </button>
+        </div>
       </div>
       {children}
     </div>
@@ -681,56 +686,137 @@ function CaseStudyField({
 }
 
 function ProjectsTab() {
-  const { content, addItem, removeItem, setField } = useEditor();
+  const { content, addItem, removeItem, moveItem, setField } = useEditor();
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dropIndex, setDropIndex] = useState<number | null>(null);
+
+  const endDrag = () => {
+    setDraggedIndex(null);
+    setDropIndex(null);
+  };
+
   return (
     <>
+      <p className={styles.hint}>
+        Drag the ↕ handle or use the arrows to arrange projects.
+      </p>
       {content.projects.map((project, index) => (
-        <ItemCard
+        <div
           key={project.slug || `project-${index}`}
-          title={project.name || `Project ${index + 1}`}
-          onRemove={() => removeItem("projects", index)}
+          className={`${styles.projectDropZone} ${draggedIndex === index ? styles.projectDragging : ""} ${dropIndex === index ? styles.projectDropActive : ""}`}
+          onDragOver={(event) => {
+            if (draggedIndex === null) return;
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+            setDropIndex(index);
+          }}
+          onDragLeave={() =>
+            setDropIndex((current) => (current === index ? null : current))
+          }
+          onDrop={(event) => {
+            event.preventDefault();
+            if (draggedIndex !== null && draggedIndex !== index) {
+              moveItem("projects", draggedIndex, index);
+            }
+            endDrag();
+          }}
         >
-          <Field label="Name" path={`projects.${index}.name`} />
-          <Field
-            label="Slug"
-            path={`projects.${index}.slug`}
-            normalize={normalizeSlug}
-          />
-          <label className={styles.field}>
-            <span>Category</span>
-            <select
-              value={project.category}
-              onChange={(event) =>
-                setField(
-                  `projects.${index}.category`,
-                  event.target.value as ProjectCategory,
-                )
-              }
-            >
-              {categoryOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </label>
-          <Field
-            label="Description"
-            path={`projects.${index}.description`}
-            multiline
-          />
-          <StringList
-            label="Technologies"
-            path={`projects.${index}.technologies`}
-            template="Technology"
-          />
-          <Field label="Repository URL" path={`projects.${index}.repository`} />
-          <Field label="Live demo URL" path={`projects.${index}.demo`} />
-          <Field label="Note" path={`projects.${index}.note`} />
-          <ProjectImageField index={index} />
-          <ProjectGalleryField index={index} project={project} />
-          <CaseStudyField index={index} project={project} />
-        </ItemCard>
+          <ItemCard
+            title={project.name || `Project ${index + 1}`}
+            onRemove={() => removeItem("projects", index)}
+            actions={
+              <>
+                <span
+                  className={styles.dragHandle}
+                  draggable
+                  role="button"
+                  tabIndex={0}
+                  title="Drag to reorder"
+                  aria-label={`Drag ${project.name || `project ${index + 1}`} to reorder`}
+                  onDragStart={(event) => {
+                    setDraggedIndex(index);
+                    event.dataTransfer.effectAllowed = "move";
+                    event.dataTransfer.setData("text/plain", String(index));
+                  }}
+                  onDragEnd={endDrag}
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowUp" && index > 0) {
+                      event.preventDefault();
+                      moveItem("projects", index, index - 1);
+                    } else if (
+                      event.key === "ArrowDown" &&
+                      index < content.projects.length - 1
+                    ) {
+                      event.preventDefault();
+                      moveItem("projects", index, index + 1);
+                    }
+                  }}
+                >
+                  ↕
+                </span>
+                <button
+                  type="button"
+                  className={styles.iconButton}
+                  disabled={index === 0}
+                  onClick={() => moveItem("projects", index, index - 1)}
+                  aria-label={`Move ${project.name || `project ${index + 1}`} up`}
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  className={styles.iconButton}
+                  disabled={index === content.projects.length - 1}
+                  onClick={() => moveItem("projects", index, index + 1)}
+                  aria-label={`Move ${project.name || `project ${index + 1}`} down`}
+                >
+                  ↓
+                </button>
+              </>
+            }
+          >
+            <Field label="Name" path={`projects.${index}.name`} />
+            <Field
+              label="Slug"
+              path={`projects.${index}.slug`}
+              normalize={normalizeSlug}
+            />
+            <label className={styles.field}>
+              <span>Category</span>
+              <select
+                value={project.category}
+                onChange={(event) =>
+                  setField(
+                    `projects.${index}.category`,
+                    event.target.value as ProjectCategory,
+                  )
+                }
+              >
+                {categoryOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <Field
+              label="Description"
+              path={`projects.${index}.description`}
+              multiline
+            />
+            <StringList
+              label="Technologies"
+              path={`projects.${index}.technologies`}
+              template="Technology"
+            />
+            <Field label="Repository URL" path={`projects.${index}.repository`} />
+            <Field label="Live demo URL" path={`projects.${index}.demo`} />
+            <Field label="Note" path={`projects.${index}.note`} />
+            <ProjectImageField index={index} />
+            <ProjectGalleryField index={index} project={project} />
+            <CaseStudyField index={index} project={project} />
+          </ItemCard>
+        </div>
       ))}
       <button
         type="button"

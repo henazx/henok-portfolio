@@ -340,9 +340,71 @@
     color 0.2s var(--ease-smooth);
 }
 
-.iconButton:hover {
+.iconButton:hover:not(:disabled) {
   border-color: var(--danger);
   color: var(--danger);
+}
+
+.iconButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.hint {
+  margin: -6px 0 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.projectDropZone {
+  border-radius: 14px;
+  transition: outline-color 0.2s var(--ease-smooth);
+}
+
+.projectDragging {
+  opacity: 0.55;
+}
+
+.projectDropActive {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.dragHandle {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 44px;
+  border-radius: 9px;
+  color: var(--text-muted);
+  cursor: grab;
+  font-size: 1.05rem;
+  line-height: 1;
+  user-select: none;
+}
+
+.dragHandle:hover,
+.dragHandle:focus-visible {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.dragHandle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.itemActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .addButton {
