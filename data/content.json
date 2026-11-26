@@ -122,67 +122,6 @@
   ],
   "projects": [
     {
-      "slug": "smartcv",
-      "name": "SmartCV",
-      "category": "Development",
-      "description": "A free, browser-based career toolkit for Ethiopian job seekers to improve CVs, evaluate job compatibility, generate tailored cover letters, track applications, and prepare for interviews.",
-      "technologies": [
-        "Next.js 14",
-        "TypeScript",
-        "React",
-        "Zustand",
-        "Tailwind CSS",
-        "@react-pdf",
-        "UX/UI Design"
-      ],
-      "image": {
-        "src": "/projects/smartcv.png",
-        "alt": "Stylised preview of the SmartCV interface showing a CV builder and compatibility score",
-        "width": 1200,
-        "height": 750
-      },
-      "images": [
-        {
-          "src": "/projects/smartcv-2.png",
-          "alt": "SmartCV screenshot 2",
-          "width": 1200,
-          "height": 750
-        }
-      ],
-      "caseStudy": {
-        "role": "Developer",
-        "overview": "SmartCV is a browser-based CV and career toolkit built for Ethiopian job seekers. The repository implements a rules-based layout engine, live CV preview, client-side PDF export, local draft saving, and an Ethiopian payment-gateway integration for optional premium themes.",
-        "problem": "Many Ethiopian job seekers face difficulties creating professional CVs, identifying suitable job opportunities, and preparing for recruitment processes. Existing career tools can be expensive, require account registration, or are not tailored to local job seekers.",
-        "solution": "A free, browser-first toolkit that combines CV creation and career preparation in one accessible application, without requiring an account for the core workflow.",
-        "approach": "Designed and developed SmartCV, a free, browser-based career toolkit that helps Ethiopian job seekers improve their CVs, evaluate job compatibility, generate tailored cover letters, track applications, and prepare for interviews. Focused on creating an accessible, straightforward experience without requiring user registration.",
-        "features": [
-          "Smart Layout Engine that analyzes experience, content density, and skills list length before choosing section order, columns, font scale, and skills display.",
-          "Live CV preview while the multi-step form is completed.",
-          "Client-side PDF export using @react-pdf/renderer.",
-          "Five free visual themes plus three premium themes, with Chapa payment integration for premium unlock.",
-          "Automatic draft saving in localStorage.",
-          "Amharic and English-ready text fields."
-        ],
-        "decisions": [
-          "Next.js 14 with App Router and TypeScript.",
-          "React for building reusable UI components.",
-          "Zustand for client-side state management.",
-          "Tailwind CSS for responsive styling.",
-          "@react-pdf for PDF document rendering.",
-          "Browser-based functionality to minimize infrastructure requirements and avoid mandatory user accounts.",
-          "Deployed using Vercel."
-        ],
-        "challenges": [
-          "The default PDF font does not include Ge'ez glyphs, so full Amharic PDF text needs an embedded Ethiopic font.",
-          "The free tier single-page limit is enforced in the UI rather than in the PDF renderer."
-        ],
-        "outcome": "Successfully developed and deployed a functional career toolkit at https://smartcv-virid.vercel.app/. The platform brings multiple job-search and career preparation tools together in one accessible application, including CV tools, Job Match scoring, Career Twin, Cover Letter generation, application tracking, interview preparation, and Readiness Cards.",
-        "learnings": "Building and deploying a complete web application using Next.js and TypeScript; designing practical user experiences around real-world problems; managing client-side application state with Zustand; implementing PDF-related functionality; structuring reusable components and responsive interfaces; balancing functionality, usability, and infrastructure costs; turning a real-world problem into a working software product."
-      },
-      "repository": "https://github.com/henazx/smartcv",
-      "demo": "https://smartcv-virid.vercel.app/"
-    },
-    {
       "slug": "birana-1",
       "name": "Birana-ብራና",
       "category": "IT & Systems",
@@ -243,6 +182,67 @@
         "outcome": "Birana is a working, installable invoicing app with no dependencies and no backend, deployed at [your live link]. It has automated tests for money calculations (15), the calendar (13), and recurring invoices (6), and all 444 interface strings exist in both English and Amharic. [Add real results here once you have them, such as how many people tried it, any feedback, or a business that used it. Don't add numbers you don't have.]",
         "learnings": "A tool for a specific market has to start from that market's real habits (language, calendar, tax, phones, connectivity), not from a generic template.\nA polished-looking interface can still be hard to use. Counting taps and testing on a real phone showed problems the screenshots hid.\nDoing the numbers and dates first, with tests, made everything built on top of them safer.\nChoosing not to use a backend or libraries was a design decision: it gave privacy and speed, but I had to plan for backup, offline updates, and the lack of sync.\nHonest limits build trust. The app says clearly that it isn't a tax-authority-approved system, and that users should back up their data.\nI still need native Amharic review and a tax professional's check before wider use."
       }
+    },
+    {
+      "slug": "smartcv",
+      "name": "SmartCV",
+      "category": "Development",
+      "description": "A free, browser-based career toolkit for Ethiopian job seekers to improve CVs, evaluate job compatibility, generate tailored cover letters, track applications, and prepare for interviews.",
+      "technologies": [
+        "Next.js 14",
+        "TypeScript",
+        "React",
+        "Zustand",
+        "Tailwind CSS",
+        "@react-pdf",
+        "UX/UI Design"
+      ],
+      "image": {
+        "src": "/projects/smartcv.png",
+        "alt": "Stylised preview of the SmartCV interface showing a CV builder and compatibility score",
+        "width": 1200,
+        "height": 750
+      },
+      "images": [
+        {
+          "src": "/projects/smartcv-2.png",
+          "alt": "SmartCV screenshot 2",
+          "width": 1200,
+          "height": 750
+        }
+      ],
+      "caseStudy": {
+        "role": "Developer",
+        "overview": "SmartCV is a browser-based CV and career toolkit built for Ethiopian job seekers. The repository implements a rules-based layout engine, live CV preview, client-side PDF export, local draft saving, and an Ethiopian payment-gateway integration for optional premium themes.",
+        "problem": "Many Ethiopian job seekers face difficulties creating professional CVs, identifying suitable job opportunities, and preparing for recruitment processes. Existing career tools can be expensive, require account registration, or are not tailored to local job seekers.",
+        "solution": "A free, browser-first toolkit that combines CV creation and career preparation in one accessible application, without requiring an account for the core workflow.",
+        "approach": "Designed and developed SmartCV, a free, browser-based career toolkit that helps Ethiopian job seekers improve their CVs, evaluate job compatibility, generate tailored cover letters, track applications, and prepare for interviews. Focused on creating an accessible, straightforward experience without requiring user registration.",
+        "features": [
+          "Smart Layout Engine that analyzes experience, content density, and skills list length before choosing section order, columns, font scale, and skills display.",
+          "Live CV preview while the multi-step form is completed.",
+          "Client-side PDF export using @react-pdf/renderer.",
+          "Five free visual themes plus three premium themes, with Chapa payment integration for premium unlock.",
+          "Automatic draft saving in localStorage.",
+          "Amharic and English-ready text fields."
+        ],
+        "decisions": [
+          "Next.js 14 with App Router and TypeScript.",
+          "React for building reusable UI components.",
+          "Zustand for client-side state management.",
+          "Tailwind CSS for responsive styling.",
+          "@react-pdf for PDF document rendering.",
+          "Browser-based functionality to minimize infrastructure requirements and avoid mandatory user accounts.",
+          "Deployed using Vercel."
+        ],
+        "challenges": [
+          "The default PDF font does not include Ge'ez glyphs, so full Amharic PDF text needs an embedded Ethiopic font.",
+          "The free tier single-page limit is enforced in the UI rather than in the PDF renderer."
+        ],
+        "outcome": "Successfully developed and deployed a functional career toolkit at https://smartcv-virid.vercel.app/. The platform brings multiple job-search and career preparation tools together in one accessible application, including CV tools, Job Match scoring, Career Twin, Cover Letter generation, application tracking, interview preparation, and Readiness Cards.",
+        "learnings": "Building and deploying a complete web application using Next.js and TypeScript; designing practical user experiences around real-world problems; managing client-side application state with Zustand; implementing PDF-related functionality; structuring reusable components and responsive interfaces; balancing functionality, usability, and infrastructure costs; turning a real-world problem into a working software product."
+      },
+      "repository": "https://github.com/henazx/smartcv",
+      "demo": "https://smartcv-virid.vercel.app/"
     },
     {
       "slug": "mesob-connect",
