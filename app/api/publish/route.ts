@@ -36,8 +36,12 @@ export const dynamic = "force-dynamic";
 const MAX_BODY_BYTES =
   MAX_CONTENT_BYTES +
   MAX_INLINE_IMAGES * Math.ceil((MAX_INLINE_IMAGE_BYTES * 4) / 3);
-const LIMIT = 10;
+// Publishing attempts that actually reach GitHub are rate limited. Validation
+// failures are cheap and must not consume the editor's publishing quota.
+const LIMIT = 30;
 const WINDOW_MS = 10 * 60 * 1000;
+// New scope resets any bucket blocked by earlier failed attempts.
+const RATE_SCOPE = "publish-v2";
 
 export async function POST(request: NextRequest) {
   // --- gates that need no body parsing --------------------------------------
@@ -65,19 +69,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const limit = await rateLimit("publish", getClientIp(request), {
-    limit: LIMIT,
-    windowMs: WINDOW_MS,
-  });
-  if (!limit.allowed) {
-    return errorResponse(
-      429,
-      "Too many publishing attempts. Please try again later.",
-      "rate_limited",
-      { "Retry-After": String(limit.retryAfterSeconds) },
-    );
-  }
-
   // --- request body ----------------------------------------------------------
   const body = await readJsonBody(request, MAX_BODY_BYTES);
   if (!body.ok) return errorResponse(body.status, body.message);
@@ -102,6 +93,19 @@ export async function POST(request: NextRequest) {
       .map((issue) => `${issue.path}: ${issue.message}`)
       .join(" ");
     return errorResponse(400, `Invalid image. ${detail}`);
+  }
+
+  const limit = await rateLimit(RATE_SCOPE, getClientIp(request), {
+    limit: LIMIT,
+    windowMs: WINDOW_MS,
+  });
+  if (!limit.allowed) {
+    return errorResponse(
+      429,
+      `Too many publishing attempts. Try again in ${limit.retryAfterSeconds} seconds.`,
+      "rate_limited",
+      { "Retry-After": String(limit.retryAfterSeconds) },
+    );
   }
 
   // --- rewrite inline image references and stage the uploads -----------------
