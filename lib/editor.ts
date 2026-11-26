@@ -1,3 +1,5 @@
+import type { SiteContent } from "@/types";
+
 /**
  * Shared constants for the visual editor.
  *
@@ -169,4 +171,96 @@ export function normalizePublishContent(value: unknown): unknown {
   });
 
   return { ...value, projects };
+}
+
+/**
+ * User-facing strings an editor might add. URLs, slugs, dates, brand names and
+ * image sources are intentionally excluded; those should stay as written.
+ */
+export function collectTranslatableStrings(content: SiteContent): string[] {
+  const values = new Set<string>();
+  const add = (value: unknown) => {
+    if (typeof value !== "string") return;
+    const text = value.trim();
+    if (text) values.add(text);
+  };
+  const addList = (value: unknown) => {
+    if (Array.isArray(value)) value.forEach(add);
+  };
+
+  add(content.site?.description);
+  Object.values(content.sections ?? {}).forEach((section) => {
+    add(section?.title);
+    add(section?.description);
+  });
+
+  const profile = content.profile;
+  add(profile?.role);
+  add(profile?.headline);
+  add(profile?.currentFocus);
+  addList(profile?.positioning);
+  add(profile?.summary);
+  add(profile?.about?.lead);
+  addList(profile?.about?.paragraphs);
+  addList(profile?.about?.focus);
+  add(profile?.availability);
+  add(profile?.workPreference);
+  add(profile?.location);
+
+  content.experience?.forEach((entry) => {
+    add(entry.role);
+    add(entry.summary);
+    addList(entry.highlights);
+    addList(entry.impact);
+  });
+
+  content.projects?.forEach((project) => {
+    add(project.name);
+    add(project.description);
+    add(project.note);
+    add(project.image?.alt);
+    project.images?.forEach((image) => add(image.alt));
+
+    const study = project.caseStudy;
+    if (!study) return;
+    add(study.role);
+    add(study.overview);
+    add(study.problem);
+    add(study.solution);
+    add(study.approach);
+    addList(study.features);
+    addList(study.decisions);
+    addList(study.challenges);
+    add(study.outcome);
+    add(study.learnings);
+    study.architecture?.forEach((layer) => {
+      add(layer.title);
+      add(layer.subtitle);
+      layer.nodes?.forEach((node) => {
+        add(node.title);
+        add(node.description);
+      });
+    });
+  });
+
+  content.skills?.forEach((category) => {
+    add(category.title);
+    add(category.description);
+    addList(category.skills);
+    add(category.evidenceLabel);
+  });
+
+  content.education?.forEach((entry) => {
+    add(entry.qualification);
+    add(entry.institution);
+    add(entry.detail);
+  });
+
+  content.certifications?.forEach((entry) => {
+    add(entry.name);
+    add(entry.issuer);
+    add(entry.note);
+  });
+
+  return Array.from(values).sort((a, b) => a.localeCompare(b));
 }

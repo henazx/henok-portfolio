@@ -427,6 +427,42 @@ function caseStudyField(
   });
 }
 
+function translationsField(
+  validator: Validator,
+  value: unknown,
+  path: string,
+): void {
+  if (value === undefined || value === null) return;
+
+  const seen = new Set<string>();
+  validator.object(value, path, {
+    am: (entries, entriesPath) => {
+      if (entries === undefined || entries === null) return;
+      validator.array(entries, entriesPath, 400, (item, itemPath) => {
+        validator.object(item, itemPath, {
+          source: (entry, entryPath) => {
+            const source = validator.string(entry, entryPath, {
+              min: 1,
+              max: MAX_LIST_TEXT,
+            });
+            if (!source) return;
+            if (seen.has(source)) {
+              validator.fail(itemPath, "Duplicate source text.");
+              return;
+            }
+            seen.add(source);
+          },
+          value: (entry, entryPath) =>
+            validator.string(entry, entryPath, {
+              min: 1,
+              max: MAX_LIST_TEXT,
+            }),
+        });
+      });
+    },
+  });
+}
+
 export function validateContent(value: unknown): ValidationResult {
   const v = new Validator();
 
@@ -674,6 +710,8 @@ export function validateContent(value: unknown): ValidationResult {
             v.string(entry, entryPath, { optional: true, allowEmpty: true, max: 800 }),
         }),
       ),
+
+    translations: (entry, path) => translationsField(v, entry, path),
 
     certifications: (entries, path) =>
       v.array(entries, path, 24, (item, itemPath) =>

@@ -357,6 +357,20 @@
   line-height: 1.5;
 }
 
+.translationItem {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+
+.translationItem .field {
+  flex: 1;
+}
+
 .projectDropZone {
   border-radius: 14px;
   transition: outline-color 0.2s var(--ease-smooth);

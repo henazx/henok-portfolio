@@ -120,6 +120,13 @@ export interface SkillCategory {
   evidenceHref?: string;
 }
 
+export interface TranslationEntry {
+  /** Exact English source string shown by the editor. */
+  source: string;
+  /** Amharic replacement used when the visitor switches language. */
+  value: string;
+}
+
 export interface SectionCopy {
   title: string;
   description: string;
@@ -167,4 +174,6 @@ export interface SiteContent {
   skills: SkillCategory[];
   education: EducationEntry[];
   certifications: CertificationEntry[];
+  /** Editor-authored Amharic copy for strings that have no built-in entry. */
+  translations?: { am?: TranslationEntry[] };
 }

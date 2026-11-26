@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type KeyboardEvent,
@@ -10,11 +11,13 @@ import {
 
 import {
   ACCEPTED_IMAGE_ACCEPT,
+  collectTranslatableStrings,
   getByPath,
   MAX_LIST_TEXT,
   normalizeSlug,
   readImageFile,
 } from "@/lib/editor";
+import { hasBuiltInTranslation } from "@/lib/i18n/dictionary";
 import type {
   ExperienceEntry,
   Project,
@@ -35,6 +38,7 @@ const tabs = [
   "Projects",
   "Skills",
   "Credentials",
+  "Amharic",
 ] as const;
 
 type Tab = (typeof tabs)[number];
@@ -962,6 +966,70 @@ function CredentialsTab() {
   );
 }
 
+function AmharicTab() {
+  const { content, addItem, removeItem, setField } = useEditor();
+  const entries = Array.isArray(content.translations?.am)
+    ? content.translations.am
+    : [];
+  const strings = useMemo(
+    () =>
+      collectTranslatableStrings(content).filter(
+        (text) => !hasBuiltInTranslation(text),
+      ),
+    [content],
+  );
+  const bySource = new Map(
+    entries.map((entry, index) => [entry.source, { entry, index }] as const),
+  );
+
+  return (
+    <>
+      <p className={styles.hint}>
+        Type the Amharic text for anything you added. The language switcher uses
+        these automatically after publishing.
+      </p>
+      {strings.length === 0 ? (
+        <p className={styles.hint}>
+          Everything currently on the site already has a translation.
+        </p>
+      ) : null}
+      {strings.map((source) => {
+        const match = bySource.get(source);
+        return (
+          <div className={styles.translationItem} key={source}>
+            <label className={styles.field}>
+              <span>{source}</span>
+              <input
+                type="text"
+                value={match?.entry.value ?? ""}
+                placeholder="Amharic translation"
+                onChange={(event) => {
+                  const next = event.target.value;
+                  if (match) {
+                    setField(`translations.am.${match.index}.value`, next);
+                  } else {
+                    addItem("translations.am", { source, value: next });
+                  }
+                }}
+              />
+            </label>
+            {match ? (
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={() => removeItem("translations.am", match.index)}
+                aria-label={`Remove translation for ${source}`}
+              >
+                ×
+              </button>
+            ) : null}
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 function PublishErrorBanner({
   message,
   onDismiss,
@@ -1209,6 +1277,7 @@ export function SiteEditor() {
             {tab === "Projects" ? <ProjectsTab /> : null}
             {tab === "Skills" ? <SkillsTab /> : null}
             {tab === "Credentials" ? <CredentialsTab /> : null}
+            {tab === "Amharic" ? <AmharicTab /> : null}
           </div>
 
           <div className={styles.panelFooter}>
