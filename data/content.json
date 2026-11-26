@@ -183,6 +183,68 @@
       "demo": "https://smartcv-virid.vercel.app/"
     },
     {
+      "slug": "birana-1",
+      "name": "Birana-ብራና",
+      "category": "IT & Systems",
+      "description": "Free and first invoicing app for Ethiopian businesses. Amharic and English, Ethiopian and Gregorian calendars, VAT, turnover and withholding tax. Runs entirely in the browser with no backend. Your data never leaves your device. project.",
+      "technologies": [
+        "HTML",
+        "Vanilla JavaScript",
+        "node.js",
+        "Github",
+        "Vercel"
+      ],
+      "image": {
+        "src": "/projects/birana-1.png",
+        "alt": "Preview of Birana-ብራና",
+        "width": 1200,
+        "height": 750
+      },
+      "images": [
+        {
+          "src": "/projects/birana-1-2.png",
+          "alt": "Birana-ብራና screenshot 2",
+          "width": 1200,
+          "height": 750
+        },
+        {
+          "src": "/projects/birana-1-3.png",
+          "alt": "Birana-ብራና screenshot 3",
+          "width": 1200,
+          "height": 750
+        }
+      ],
+      "repository": "",
+      "demo": "https://birana.vercel.app/",
+      "caseStudy": {
+        "role": "Solo product designer and developer",
+        "overview": "Birana (ብራና) is a free invoicing app for small businesses in Ethiopia. It works in Amharic and English, supports the Ethiopian and Gregorian calendars, handles VAT, turnover tax, and withholding, and runs entirely in the browser, so it works offline and never uploads your data. The name is the traditional Ethiopian parchment that manuscripts were written on.",
+        "problem": "Small businesses in Ethiopia often make invoices by hand or retype them in Word. That leads to maths mistakes, inconsistent numbering, and no record of who has paid. Most invoicing software assumes English only, the Gregorian calendar, a steady internet connection, and a monthly subscription. ",
+        "solution": "A bilingual invoicing tool that is free. A shop owner can make a correct invoice in about a minute, with tax calculated automatically and dates shown in the calendar their customers use. They can then share it by WhatsApp, Telegram, or email, and track payments. ",
+        "approach": "I started with the constraints: no backend, works anywhere, bilingual, and fast on low-end phones. I built it in phases, with the calculation engine and calendar first, because money and dates have to be right before anything else matters. Each phase had automated tests and was checked in the browser before the next began. After the first redesign looked polished but was hard to use, I reworked it around usability: five main navigation items, a simple editor with advanced options folded away, and a guided Quick Invoice flow for first-time users. I checked the screens at phone, tablet, and desktop sizes, in light and dark themes, and in both languages.",
+        "features": [
+          "Invoices, proforma invoices, and receipts, with automatic numbering and no duplicates",
+          "Amharic, English, or both on the same invoice, switched with one tap",
+          "Ethiopian calendar (13 months) and Gregorian dates, shown either way or both",
+          "VAT, turnover tax, or no tax per invoice, plus optional withholding, with editable rates",
+          "Payment tracking with part payments and automatic overdue status",
+          "Sharing through WhatsApp, Telegram, or email with ready-made reminder messages",
+          "Quick Invoice mode: a 3-step guided flow"
+        ],
+        "decisions": [
+          "Vanilla HTML, CSS, and JavaScript, no frameworks or dependencies. The app stays small and fast on low-end phones and slow connections. There's no build step and nothing third-party to break or review. No backend. Data lives in the browser's local storage. This protects privacy and removes server costs. The trade-off is that data doesn't sync across devices, so I added backup and restore. Money stored as integer cents. This prevents the rounding errors that floating-point numbers cause when adding tax and discounts. Ethiopian calendar written from scratch using Julian Day Numbers, instead of a library. I could handle leap years and test the conversions myself. Print-to-PDF through the browser's print engine instead of a PDF library. Many libraries render Ge'ez script badly, and the browser's engine handles it correctly. Service worker with network-first caching. The app works offline, but users still get new versions right after an update. Static hosting on Vercel. There's nothing to run on a server, so the site is fast and cheap to host."
+        ],
+        "challenges": [
+          "onverting between Ethiopian and Gregorian dates. The Ethiopian calendar has 13 months, and the short last month has 5 or 6 days depending on the year. I built and tested the conversion against known dates and across 20 years of round trips.",
+          "Amharic in printed invoices. My first thought was a PDF library, but it couldn't render the script reliably. Using the browser's print engine with a dedicated A4 stylesheet solved it",
+          "Recurring invoices without a server. With nothing running in the background, I generate due drafts when the app opens, cap how many are created, and stop generated drafts from creating more. The app says plainly that nothing is sent automatically.",
+          "Making it easy to use, not just good-looking. My first redesign was colourful but crowded: too many menu items and too many options on one screen. I rebuilt the layout around fewer choices and measured how many taps the main tasks took."
+        ],
+        "outcome": "Birana is a working, installable invoicing app with no dependencies and no backend, deployed at [your live link]. It has automated tests for money calculations (15), the calendar (13), and recurring invoices (6), and all 444 interface strings exist in both English and Amharic. [Add real results here once you have them, such as how many people tried it, any feedback, or a business that used it. Don't add numbers you don't have.]",
+        "learnings": "A tool for a specific market has to start from that market's real habits (language, calendar, tax, phones, connectivity), not from a generic template.\nA polished-looking interface can still be hard to use. Counting taps and testing on a real phone showed problems the screenshots hid.\nDoing the numbers and dates first, with tests, made everything built on top of them safer.\nChoosing not to use a backend or libraries was a design decision: it gave privacy and speed, but I had to plan for backup, offline updates, and the lack of sync.\nHonest limits build trust. The app says clearly that it isn't a tax-authority-approved system, and that users should back up their data.\nI still need native Amharic review and a tax professional's check before wider use."
+      }
+    },
+    {
       "slug": "mesob-connect",
       "name": "Mesob Connect",
       "category": "IT & Systems",
@@ -296,68 +358,6 @@
         "learnings": "Designing a status-driven data model, separating client and server concerns, and applying auth, CORS, and CSP controls to internal tools."
       },
       "repository": "https://github.com/Gololcha-Gemede/mesob-messaging-system"
-    },
-    {
-      "slug": "birana-1",
-      "name": "Birana-ብራና",
-      "category": "IT & Systems",
-      "description": "Free and first invoicing app for Ethiopian businesses. Amharic and English, Ethiopian and Gregorian calendars, VAT, turnover and withholding tax. Runs entirely in the browser with no backend. Your data never leaves your device. project.",
-      "technologies": [
-        "HTML",
-        "Vanilla JavaScript",
-        "node.js",
-        "Github",
-        "Vercel"
-      ],
-      "image": {
-        "src": "/projects/birana-1.png",
-        "alt": "Preview of Birana-ብራና",
-        "width": 1200,
-        "height": 750
-      },
-      "images": [
-        {
-          "src": "/projects/birana-1-2.png",
-          "alt": "Birana-ብራና screenshot 2",
-          "width": 1200,
-          "height": 750
-        },
-        {
-          "src": "/projects/birana-1-3.png",
-          "alt": "Birana-ብራና screenshot 3",
-          "width": 1200,
-          "height": 750
-        }
-      ],
-      "repository": "",
-      "demo": "https://birana.vercel.app/",
-      "caseStudy": {
-        "role": "Solo product designer and developer",
-        "overview": "Birana (ብራና) is a free invoicing app for small businesses in Ethiopia. It works in Amharic and English, supports the Ethiopian and Gregorian calendars, handles VAT, turnover tax, and withholding, and runs entirely in the browser, so it works offline and never uploads your data. The name is the traditional Ethiopian parchment that manuscripts were written on.",
-        "problem": "Small businesses in Ethiopia often make invoices by hand or retype them in Word. That leads to maths mistakes, inconsistent numbering, and no record of who has paid. Most invoicing software assumes English only, the Gregorian calendar, a steady internet connection, and a monthly subscription. ",
-        "solution": "A bilingual invoicing tool that is free. A shop owner can make a correct invoice in about a minute, with tax calculated automatically and dates shown in the calendar their customers use. They can then share it by WhatsApp, Telegram, or email, and track payments. ",
-        "approach": "I started with the constraints: no backend, works anywhere, bilingual, and fast on low-end phones. I built it in phases, with the calculation engine and calendar first, because money and dates have to be right before anything else matters. Each phase had automated tests and was checked in the browser before the next began. After the first redesign looked polished but was hard to use, I reworked it around usability: five main navigation items, a simple editor with advanced options folded away, and a guided Quick Invoice flow for first-time users. I checked the screens at phone, tablet, and desktop sizes, in light and dark themes, and in both languages.",
-        "features": [
-          "Invoices, proforma invoices, and receipts, with automatic numbering and no duplicates",
-          "Amharic, English, or both on the same invoice, switched with one tap",
-          "Ethiopian calendar (13 months) and Gregorian dates, shown either way or both",
-          "VAT, turnover tax, or no tax per invoice, plus optional withholding, with editable rates",
-          "Payment tracking with part payments and automatic overdue status",
-          "Sharing through WhatsApp, Telegram, or email with ready-made reminder messages",
-          "Quick Invoice mode: a 3-step guided flow"
-        ],
-        "decisions": [
-          "Vanilla HTML, CSS, and JavaScript, no frameworks or dependencies. The app stays small and fast on low-end phones and slow connections. There's no build step and nothing third-party to break or review. No backend. Data lives in the browser's local storage. This protects privacy and removes server costs. The trade-off is that data doesn't sync across devices, so I added backup and restore. Money stored as integer cents. This prevents the rounding errors that floating-point numbers cause when adding tax and discounts. Ethiopian calendar written from scratch using Julian Day Numbers, instead of a library. I could handle leap years and test the conversions myself. Print-to-PDF through the browser's print engine instead of a PDF library. Many libraries render Ge'ez script badly, and the browser's engine handles it correctly. Service worker with network-first caching. The app works offline, but users still get new versions right after an update. Static hosting on Vercel. There's nothing to run on a server, so the site is fast and cheap to host."
-        ],
-        "challenges": [
-          "onverting between Ethiopian and Gregorian dates. The Ethiopian calendar has 13 months, and the short last month has 5 or 6 days depending on the year. I built and tested the conversion against known dates and across 20 years of round trips.",
-          "Amharic in printed invoices. My first thought was a PDF library, but it couldn't render the script reliably. Using the browser's print engine with a dedicated A4 stylesheet solved it",
-          "Recurring invoices without a server. With nothing running in the background, I generate due drafts when the app opens, cap how many are created, and stop generated drafts from creating more. The app says plainly that nothing is sent automatically.",
-          "Making it easy to use, not just good-looking. My first redesign was colourful but crowded: too many menu items and too many options on one screen. I rebuilt the layout around fewer choices and measured how many taps the main tasks took."
-        ],
-        "outcome": "Birana is a working, installable invoicing app with no dependencies and no backend, deployed at [your live link]. It has automated tests for money calculations (15), the calendar (13), and recurring invoices (6), and all 444 interface strings exist in both English and Amharic. [Add real results here once you have them, such as how many people tried it, any feedback, or a business that used it. Don't add numbers you don't have.]",
-        "learnings": "A tool for a specific market has to start from that market's real habits (language, calendar, tax, phones, connectivity), not from a generic template.\nA polished-looking interface can still be hard to use. Counting taps and testing on a real phone showed problems the screenshots hid.\nDoing the numbers and dates first, with tests, made everything built on top of them safer.\nChoosing not to use a backend or libraries was a design decision: it gave privacy and speed, but I had to plan for backup, offline updates, and the lack of sync.\nHonest limits build trust. The app says clearly that it isn't a tax-authority-approved system, and that users should back up their data.\nI still need native Amharic review and a tax professional's check before wider use."
-      }
     }
   ],
   "skills": [
