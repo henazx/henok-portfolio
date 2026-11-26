@@ -1,5 +1,6 @@
 import "server-only";
 
+import { MAX_LIST_TEXT } from "@/lib/editor";
 import type { SiteContent } from "@/types";
 
 /**
@@ -363,7 +364,10 @@ function caseStudyField(
     features: (entries, entriesPath) => {
       if (entries === undefined || entries === null) return;
       validator.array(entries, entriesPath, 16, (entry, entryPath) =>
-        validator.string(entry, entryPath, { min: 1, max: 400 }),
+        validator.string(entry, entryPath, {
+          min: 1,
+          max: MAX_LIST_TEXT,
+        }),
       );
     },
     architecture: (entries, entriesPath) => {
@@ -393,13 +397,19 @@ function caseStudyField(
     decisions: (entries, entriesPath) => {
       if (entries === undefined || entries === null) return;
       validator.array(entries, entriesPath, 12, (entry, entryPath) =>
-        validator.string(entry, entryPath, { min: 1, max: 600 }),
+        validator.string(entry, entryPath, {
+          min: 1,
+          max: MAX_LIST_TEXT,
+        }),
       );
     },
     challenges: (entries, entriesPath) => {
       if (entries === undefined || entries === null) return;
       validator.array(entries, entriesPath, 12, (entry, entryPath) =>
-        validator.string(entry, entryPath, { min: 1, max: 600 }),
+        validator.string(entry, entryPath, {
+          min: 1,
+          max: MAX_LIST_TEXT,
+        }),
       );
     },
     outcome: (entry, entryPath) =>

@@ -11,6 +11,8 @@ import {
 import {
   ACCEPTED_IMAGE_ACCEPT,
   getByPath,
+  MAX_LIST_TEXT,
+  normalizeSlug,
   readImageFile,
 } from "@/lib/editor";
 import type {
@@ -56,31 +58,64 @@ function Field({
   label,
   path,
   multiline = false,
+  normalize,
 }: {
   label: string;
   path: string;
   multiline?: boolean;
+  normalize?: (value: string) => string;
 }) {
   const { content, setField } = useEditor();
   const value = String(getByPath(content, path) ?? "");
+  const update = (next: string) =>
+    setField(path, normalize ? normalize(next) : next);
 
   return (
     <label className={styles.field}>
       <span>{label}</span>
       {multiline ? (
-        <textarea
-          value={value}
-          rows={4}
-          onChange={(event) => setField(path, event.target.value)}
-        />
+        <textarea value={value} rows={4} onChange={(event) => update(event.target.value)} />
       ) : (
         <input
           type="text"
           value={value}
-          onChange={(event) => setField(path, event.target.value)}
+          onChange={(event) => update(event.target.value)}
         />
       )}
     </label>
+  );
+}
+
+function AutoTextarea({
+  value,
+  onChange,
+  label,
+}: {
+  value: string;
+  onChange: (next: string) => void;
+  label: string;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  const resize = (element: HTMLTextAreaElement) => {
+    element.style.height = "auto";
+    element.style.height = `${Math.min(element.scrollHeight, 320)}px`;
+  };
+
+  useEffect(() => {
+    if (ref.current) resize(ref.current);
+  }, [value]);
+
+  return (
+    <textarea
+      ref={ref}
+      value={value}
+      rows={2}
+      maxLength={MAX_LIST_TEXT}
+      onChange={(event) => onChange(event.target.value)}
+      onInput={(event) => resize(event.currentTarget)}
+      aria-label={label}
+    />
   );
 }
 
@@ -88,10 +123,12 @@ function StringList({
   label,
   path,
   template = "",
+  multiline = false,
 }: {
   label: string;
   path: string;
   template?: string;
+  multiline?: boolean;
 }) {
   const { content, setField, addItem, removeItem } = useEditor();
   const value = getByPath(content, path);
@@ -101,15 +138,26 @@ function StringList({
     <fieldset className={styles.list}>
       <legend>{label}</legend>
       {items.map((item, index) => (
-        <div className={styles.listRow} key={`${path}-${index}`}>
-          <input
-            type="text"
-            value={item}
-            onChange={(event) =>
-              setField(`${path}.${index}`, event.target.value)
-            }
-            aria-label={`${label} item ${index + 1}`}
-          />
+        <div
+          className={`${styles.listRow} ${multiline ? styles.listRowMultiline : ""}`}
+          key={`${path}-${index}`}
+        >
+          {multiline ? (
+            <AutoTextarea
+              value={item}
+              onChange={(next) => setField(`${path}.${index}`, next)}
+              label={`${label} item ${index + 1}`}
+            />
+          ) : (
+            <input
+              type="text"
+              value={item}
+              onChange={(event) =>
+                setField(`${path}.${index}`, event.target.value)
+              }
+              aria-label={`${label} item ${index + 1}`}
+            />
+          )}
           <button
             type="button"
             className={styles.iconButton}
@@ -599,16 +647,19 @@ function CaseStudyField({
             label="Key features"
             path={`${basePath}.features`}
             template="Feature and why it matters"
+            multiline
           />
           <StringList
             label="Stack decisions"
             path={`${basePath}.decisions`}
             template="Decision and why"
+            multiline
           />
           <StringList
             label="Challenges"
             path={`${basePath}.challenges`}
             template="Challenge and how it was handled"
+            multiline
           />
           <Field label="Outcome" path={`${basePath}.outcome`} multiline />
           <Field label="What you learned" path={`${basePath}.learnings`} multiline />
@@ -640,7 +691,11 @@ function ProjectsTab() {
           onRemove={() => removeItem("projects", index)}
         >
           <Field label="Name" path={`projects.${index}.name`} />
-          <Field label="Slug" path={`projects.${index}.slug`} />
+          <Field
+            label="Slug"
+            path={`projects.${index}.slug`}
+            normalize={normalizeSlug}
+          />
           <label className={styles.field}>
             <span>Category</span>
             <select

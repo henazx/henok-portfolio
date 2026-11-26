@@ -24,6 +24,9 @@ export const ACCEPTED_IMAGE_TYPES = [
 ] as const;
 export const ACCEPTED_IMAGE_ACCEPT = ACCEPTED_IMAGE_TYPES.join(",");
 
+/** Shared ceiling for long case-study list entries (decisions/challenges). */
+export const MAX_LIST_TEXT = 12000;
+
 export type ImageReadResult =
   | { ok: true; dataUrl: string }
   | { ok: false; message: string };
@@ -125,4 +128,45 @@ export function deepMerge<T>(base: T, override: unknown): T {
   }
 
   return result as T;
+}
+
+/** Turns any human-entered project title or slug into a valid URL slug. */
+export function normalizeSlug(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60)
+    .replace(/-+$/g, "");
+}
+
+/**
+ * Normalizes only the fields where a human typo would otherwise block a whole
+ * publish. Content is preserved; project slugs become valid and unique.
+ */
+export function normalizePublishContent(value: unknown): unknown {
+  if (!isPlainObject(value) || !Array.isArray(value.projects)) return value;
+
+  const used = new Set<string>();
+  const projects = value.projects.map((project, index) => {
+    if (!isPlainObject(project)) return project;
+
+    const source = typeof project.slug === "string" ? project.slug : "";
+    const base = normalizeSlug(source) || `project-${index + 1}`;
+    let slug = base;
+    let suffix = 2;
+
+    while (used.has(slug)) {
+      const tail = `-${suffix}`;
+      slug = `${base.slice(0, 60 - tail.length)}${tail}`;
+      suffix += 1;
+    }
+
+    used.add(slug);
+    return { ...project, slug };
+  });
+
+  return { ...value, projects };
 }

@@ -19,6 +19,7 @@ import {
   getGithubConfig,
   type PublishImage,
 } from "@/lib/server/github";
+import { normalizePublishContent } from "@/lib/editor";
 import {
   errorResponse,
   getClientIp,
@@ -76,7 +77,7 @@ export async function POST(request: NextRequest) {
     return errorResponse(400, "Unexpected properties were submitted.");
   }
 
-  const validity = validateContent(body.value.content);
+  const validity = validateContent(normalizePublishContent(body.value.content));
   if (!validity.ok) {
     const detail = validity.issues
       .slice(0, 3)

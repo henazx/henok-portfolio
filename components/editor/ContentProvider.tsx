@@ -16,6 +16,7 @@ import {
   UNLOCK_EVENT,
   deepMerge,
   getByPath,
+  normalizePublishContent,
   setByPath,
 } from "@/lib/editor";
 import {
@@ -83,7 +84,12 @@ function parseDraft(raw: string): { content: SiteContent | null; stale: boolean 
     ) {
       const envelope = parsed as DraftEnvelope;
       return envelope.version === CONTENT_VERSION
-        ? { content: envelope.content, stale: false }
+        ? {
+            content: normalizePublishContent(
+              envelope.content,
+            ) as SiteContent,
+            stale: false,
+          }
         : { content: null, stale: true };
     }
     // A raw, unversioned draft belongs to an older build and must not override

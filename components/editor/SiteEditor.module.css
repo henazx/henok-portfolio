@@ -248,7 +248,8 @@
 .field input,
 .field textarea,
 .field select,
-.list input {
+.list input,
+.list textarea {
   width: 100%;
   min-height: 44px;
   padding: 9px 11px;
@@ -271,7 +272,8 @@
 .field input:focus,
 .field textarea:focus,
 .field select:focus,
-.list input:focus {
+.list input:focus,
+.list textarea:focus {
   outline: none;
   border-color: color-mix(in srgb, var(--accent) 70%, transparent);
   box-shadow: 0 0 0 3px var(--accent-soft);
@@ -280,7 +282,8 @@
 .field input:focus-visible,
 .field textarea:focus-visible,
 .field select:focus-visible,
-.list input:focus-visible {
+.list input:focus-visible,
+.list textarea:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
@@ -302,8 +305,21 @@
   align-items: center;
 }
 
-.listRow input {
+.listRowMultiline {
+  align-items: flex-start;
+}
+
+.listRow input,
+.listRow textarea {
   flex: 1;
+  min-width: 0;
+}
+
+.listRow textarea {
+  min-height: 72px;
+  max-height: 320px;
+  resize: vertical;
+  field-sizing: content;
 }
 
 .iconButton {
