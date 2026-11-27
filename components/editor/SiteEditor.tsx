@@ -17,7 +17,7 @@ import {
   normalizeSlug,
   readImageFile,
 } from "@/lib/editor";
-import { hasBuiltInTranslation } from "@/lib/i18n/dictionary";
+import { translate } from "@/lib/i18n/dictionary";
 import type {
   ExperienceEntry,
   Project,
@@ -968,41 +968,59 @@ function CredentialsTab() {
 
 function AmharicTab() {
   const { content, addItem, removeItem, setField } = useEditor();
+  const [query, setQuery] = useState("");
   const entries = Array.isArray(content.translations?.am)
     ? content.translations.am
     : [];
-  const strings = useMemo(
-    () =>
-      collectTranslatableStrings(content).filter(
-        (text) => !hasBuiltInTranslation(text),
-      ),
-    [content],
-  );
+  const strings = useMemo(() => collectTranslatableStrings(content), [content]);
   const bySource = new Map(
     entries.map((entry, index) => [entry.source, { entry, index }] as const),
   );
+  const visible = strings.filter((source) => {
+    if (!query.trim()) return true;
+    const needle = query.trim().toLocaleLowerCase();
+    const current = bySource.get(source)?.entry.value ?? translate(source, "am");
+    return (
+      source.toLocaleLowerCase().includes(needle) ||
+      current.toLocaleLowerCase().includes(needle)
+    );
+  });
 
   return (
     <>
       <p className={styles.hint}>
-        Type the Amharic text for anything you added. The language switcher uses
-        these automatically after publishing.
+        Built-in Amharic translations are shown below. Edit any field to
+        override it — your version is stored in this browser and used after you
+        publish.
       </p>
-      {strings.length === 0 ? (
-        <p className={styles.hint}>
-          Everything currently on the site already has a translation.
-        </p>
+      <label className={styles.field}>
+        <span>Find text</span>
+        <input
+          type="search"
+          value={query}
+          placeholder="Search English or Amharic text"
+          onChange={(event) => setQuery(event.target.value)}
+        />
+      </label>
+      {visible.length === 0 ? (
+        <p className={styles.hint}>No text matches that search.</p>
       ) : null}
-      {strings.map((source) => {
+      {visible.map((source) => {
         const match = bySource.get(source);
+        const builtIn = match ? undefined : translate(source, "am");
         return (
           <div className={styles.translationItem} key={source}>
             <label className={styles.field}>
               <span>{source}</span>
               <input
                 type="text"
-                value={match?.entry.value ?? ""}
+                value={match?.entry.value ?? builtIn ?? ""}
                 placeholder="Amharic translation"
+                title={
+                  match
+                    ? "Your translation overrides the built-in one"
+                    : "Built-in translation"
+                }
                 onChange={(event) => {
                   const next = event.target.value;
                   if (match) {
