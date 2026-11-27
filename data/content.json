@@ -71,7 +71,7 @@
       "My Sql",
       "UX/UI"
     ],
-    "summary": "GitHub section. It showed \"Loading repositories…\" when I fetched it. It may just be client-side loading, but check that it has a fallback if the GitHub API fails or rate-limits.\nBirana's \"Stack decisions\". The items run together as one long paragraph, so check that each one renders as its own bullet.\nThe Mesob Connect case study says \"WebAuthn dependencies are present in the repository.\" That sounds like a note written about the repo, not by you. Say whether WebAuthn is actually implemented.\nProject categories. Birana (an invoicing app) is labeled \"IT & Systems\" and SmartCV \"Development\". The labels look inconsistent.",
+    "summary": "I am a Computer Science graduate with professional experience in IT support and a passion for building practical, user-centered software solutions. My skills span IT infrastructure, technical troubleshooting, and full-stack web development. I enjoy turning real-world problems into reliable digital solutions through technology, continuous learning, and innovation.",
     "about": {
       "lead": "I keep systems running, build practical web applications, and design interfaces that stay out of the way.",
       "paragraphs": [
