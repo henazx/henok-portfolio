@@ -3,16 +3,24 @@ import Link from "next/link";
 import { ArrowLeft, Download, ExternalLink, FileText } from "lucide-react";
 
 import { T } from "@/components/i18n/T";
+import { translate } from "@/lib/i18n/dictionary";
 import { languageAlternates } from "@/lib/i18n/seo";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
 import styles from "./cv.module.css";
 
 const canonicalPath = "/cv";
+const localizedName = translate(profile.name, "en");
+const cvTitle = translate("CV / Résumé", "en");
+const cvDescription =
+  translate("View or download ", "en") +
+  localizedName +
+  translate("'s CV.", "en");
+const cvPageTitle = translate("CV — ", "en") + localizedName;
 
 export const metadata: Metadata = {
-  title: "CV / Résumé",
-  description: `View or download ${profile.name}'s CV.`,
+  title: cvTitle,
+  description: cvDescription,
   alternates: {
     canonical: canonicalPath,
     languages: languageAlternates(canonicalPath),
@@ -20,14 +28,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "article",
     url: canonicalPath,
-    title: `CV — ${profile.name}`,
-    description: `View or download ${profile.name}'s CV.`,
-    siteName: `${profile.name} — Portfolio`,
+    title: cvPageTitle,
+    description: cvDescription,
+    siteName: `${localizedName} — ${translate("Portfolio", "en")}`,
   },
   twitter: {
     card: "summary",
-    title: `CV — ${profile.name}`,
-    description: `View or download ${profile.name}'s CV.`,
+    title: cvPageTitle,
+    description: cvDescription,
   },
 };
 
@@ -55,7 +63,7 @@ export default function CvPage() {
             </h1>
             <p className={styles.intro}>
               <T text="A current copy of " />
-              {profile.name}
+              <T text={profile.name} />
               <T text="'s CV is embedded below. Use the download button if you would like to keep a local copy." />
             </p>
           </div>
@@ -88,7 +96,7 @@ export default function CvPage() {
           <div className={styles.viewerBar}>
             <span className={styles.file}>
               <FileText aria-hidden="true" />
-              {fileName}
+              <T text={fileName} />
             </span>
             <span className={styles.hint}>
               <T text="Scroll inside the frame to read" />
@@ -101,7 +109,7 @@ export default function CvPage() {
           <iframe
             className={styles.frame}
             src={pdfUrl}
-            title={`${profile.name} — CV / Résumé`}
+            title={localizedName + translate(" — CV / Résumé", "en")}
           />
 
           <p className={styles.fallback}>
@@ -109,7 +117,7 @@ export default function CvPage() {
             <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
               <T text="open the CV in a new tab" />
             </a>
-            .
+            <T text="." />
           </p>
         </section>
 

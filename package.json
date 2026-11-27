@@ -2,13 +2,15 @@
   "name": "personal-portfolio",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Personal portfolio website of an Information Technology Specialist, Computer Science graduate, software developer and UX/UI designer.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:i18n": "node scripts/check-translations.ts"
   },
   "dependencies": {
     "lucide-react": "1.76.0",

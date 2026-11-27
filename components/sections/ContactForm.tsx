@@ -164,7 +164,7 @@ export function ContactForm() {
             className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
             value={values.email}
             onChange={handleChange("email")}
-            placeholder="you@example.com"
+            placeholder={t("you@example.com")}
             autoComplete="email"
             maxLength={CONTACT_LIMITS.email}
             aria-invalid={errors.email ? true : undefined}

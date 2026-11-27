@@ -159,7 +159,7 @@ export function Hero() {
         <div className={styles.content}>
           <p className={styles.kicker}>{t("Introduction")}</p>
 
-          <TypedName name={profile.name} />
+          <TypedName name={t(profile.name)} />
 
           <p className={styles.headline}>
             {t(profile.headline ?? profile.role)}

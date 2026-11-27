@@ -22,6 +22,7 @@ import { ContentProvider } from "@/components/editor/ContentProvider";
 import { EditUnlock } from "@/components/editor/EditUnlock";
 import { EditorMount } from "@/components/editor/EditorMount";
 import { education } from "@/data/education";
+import { translate } from "@/lib/i18n/dictionary";
 import { languageAlternates } from "@/lib/i18n/seo";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/data/site";
@@ -52,28 +53,28 @@ const newsreader = Newsreader({
   display: "swap",
 });
 
-const pageTitle = `${profile.name} — ${profile.role}`;
+const pageTitle = `${translate(profile.name, "en")} — ${translate(profile.role, "en")}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: pageTitle,
-    template: `%s | ${profile.name}`,
+    template: `%s | ${translate(profile.name, "en")}`,
   },
-  description: siteConfig.description,
-  applicationName: `${profile.name} Portfolio`,
-  authors: [{ name: profile.name, url: siteConfig.url }],
-  creator: profile.name,
+  description: translate(siteConfig.description, "en"),
+  applicationName: `${translate(profile.name, "en")} ${translate("Portfolio", "en")}`,
+  authors: [{ name: translate(profile.name, "en"), url: siteConfig.url }],
+  creator: translate(profile.name, "en"),
   keywords: [
-    "Information Technology Specialist",
-    "Computer Science Graduate",
-    "Software Developer",
-    "UX/UI Designer",
-    "IT Support",
-    "Frontend Developer",
-    "Addis Ababa",
-    "Ethiopia",
-    "Portfolio",
+    translate("Information Technology Specialist", "en"),
+    translate("Computer Science Graduate", "en"),
+    translate("Software Developer", "en"),
+    translate("UX/UI Designer", "en"),
+    translate("IT Support", "en"),
+    translate("Frontend Developer", "en"),
+    translate("Addis Ababa", "en"),
+    translate("Ethiopia", "en"),
+    translate("Portfolio", "en"),
   ],
   alternates: {
     canonical: "/",
@@ -83,14 +84,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: siteConfig.locale,
     url: "/",
-    siteName: `${profile.name} — Portfolio`,
+    siteName: `${translate(profile.name, "en")} — ${translate("Portfolio", "en")}`,
     title: pageTitle,
-    description: siteConfig.description,
+    description: translate(siteConfig.description, "en"),
   },
   twitter: {
     card: "summary_large_image",
     title: pageTitle,
-    description: siteConfig.description,
+    description: translate(siteConfig.description, "en"),
   },
   robots: {
     index: true,
@@ -133,21 +134,21 @@ const [addressLocality, addressCountry] = profile.location
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: profile.name,
-  jobTitle: profile.role,
-  description: profile.summary,
+  name: translate(profile.name, "en"),
+  jobTitle: translate(profile.role, "en"),
+  description: translate(profile.summary, "en"),
   email: `mailto:${profile.email}`,
   url: siteConfig.url,
   address: {
     "@type": "PostalAddress",
-    ...(addressLocality ? { addressLocality } : {}),
-    ...(addressCountry ? { addressCountry } : {}),
+    ...(addressLocality ? { addressLocality: translate(addressLocality, "en") } : {}),
+    ...(addressCountry ? { addressCountry: translate(addressCountry, "en") } : {}),
   },
   ...(education[0]
     ? {
         alumniOf: {
           "@type": "CollegeOrUniversity",
-          name: education[0].institution,
+          name: translate(education[0].institution, "en"),
         },
       }
     : {}),

@@ -52,7 +52,7 @@ export function LocalizedMetadata() {
         : pathname === "/"
           ? en["metadata.home.title"]
           : en["metadata.notFound.title"];
-    const siteSuffix = ` | ${content.profile.name}`;
+    const siteSuffix = ` | ${t(content.profile.name)}`;
     const localizedTitle = title || fallbackTitle;
     // The root metadata template adds the site name to every route except the
     // home default. Mirror it here so the browser title does not jump after

@@ -146,7 +146,7 @@ export function TechEcosystem() {
           data-depth={depth}
         >
           <Icon className={styles.icon} />
-          <span>{label}</span>
+          <span>{t(label)}</span>
         </div>
       ))}
     </div>

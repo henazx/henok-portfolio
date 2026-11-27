@@ -40,7 +40,7 @@ export function Credentials() {
                   className={styles.educationItem}
                   key={`${entry.qualification}-${index}`}
                 >
-                  <span className={styles.period}>{entry.period}</span>
+                  <span className={styles.period}>{t(entry.period)}</span>
                   <h4 className={styles.qualification}>
                     {t(entry.qualification)}
                   </h4>
@@ -68,7 +68,7 @@ export function Credentials() {
                   <div>
                     <h4 className={styles.certName}>{t(entry.name)}</h4>
                     <p className={styles.certIssuer}>
-                      <span>{t("Issuer")}:</span> {entry.issuer}
+                      <span>{t("Issuer")}:</span> {t(entry.issuer)}
                     </p>
                     {entry.note ? (
                       <p className={styles.certNote}>{t(entry.note)}</p>

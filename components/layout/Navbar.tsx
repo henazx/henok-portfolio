@@ -138,13 +138,13 @@ export function Navbar() {
           <a
             href="#home"
             className={styles.brand}
-            aria-label={`${profile.name}${t(" — back to top")}`}
+            aria-label={`${t(profile.name)}${t(" — back to top")}`}
             onClick={closeMenu}
           >
             <span className={styles.mark} aria-hidden="true">
               <BrandMark />
             </span>
-            <span className={styles.brandName}>{profile.name}</span>
+            <span className={styles.brandName}>{t(profile.name)}</span>
           </a>
 
           <nav className={styles.desktopNav} aria-label={t("Primary")}>

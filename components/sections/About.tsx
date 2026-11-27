@@ -133,7 +133,7 @@ export function About() {
                   <GraduationCap />
                 </span>
                 <div>
-                  <span className={styles.timelinePeriod}>{entry.period}</span>
+                  <span className={styles.timelinePeriod}>{t(entry.period)}</span>
                   <strong>{t(entry.qualification)}</strong>
                   <span className={styles.timelineDetail}>
                     {t(entry.institution)}

@@ -3,9 +3,10 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { T } from "@/components/i18n/T";
+import { translate } from "@/lib/i18n/dictionary";
 
 export const metadata: Metadata = {
-  title: "Page not found",
+  title: translate("Page not found", "en"),
   robots: { index: false, follow: false },
 };
 

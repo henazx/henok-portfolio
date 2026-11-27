@@ -81,7 +81,7 @@ export function GitHubActivity() {
           <div className={styles.header}>
             <p className={styles.account}>
               <GitHubIcon />
-              <span>henazx</span>
+              <span>{t("henazx")}</span>
             </p>
             <a
               className={styles.profileLink}

@@ -23,6 +23,15 @@ export function hasBuiltInTranslation(text: string): boolean {
   );
 }
 
+const missingAmharicWarnings = new Set<string>();
+
+function warnMissingAmharic(text: string) {
+  if (process.env.NODE_ENV !== "development") return;
+  if (missingAmharicWarnings.has(text)) return;
+  missingAmharicWarnings.add(text);
+  console.warn("Missing Amharic translation:", text);
+}
+
 /**
  * Amharic copy for the public portfolio. Keys are the exact English source
  * strings, so any editor-provided text that is not listed here safely falls
@@ -37,12 +46,14 @@ export function translate(text: string, language: Language): string {
   if (language === "en") {
     return (english as Record<string, string>)[text] ?? text;
   }
-  return (
-    editorAmharic.get(text) ??
-    (amharic as Record<string, string>)[text] ??
-    (english as Record<string, string>)[text] ??
-    text
-  );
+  const editorTranslation = editorAmharic.get(text);
+  if (editorTranslation) return editorTranslation;
+
+  const amharicTranslation = (amharic as Record<string, string>)[text];
+  if (amharicTranslation) return amharicTranslation;
+
+  warnMissingAmharic(text);
+  return (english as Record<string, string>)[text] ?? text;
 }
 
 export function isLanguage(value: string | null | undefined): value is Language {

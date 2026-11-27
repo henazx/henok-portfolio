@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { CaseStudyView } from "@/components/sections/CaseStudyView";
+import { translate } from "@/lib/i18n/dictionary";
 import { languageAlternates } from "@/lib/i18n/seo";
 import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site";
@@ -23,14 +24,17 @@ export async function generateMetadata({
   const project = projects.find((entry) => entry.slug === slug);
 
   if (!project) {
-    return { title: "Case study not found" };
+    return { title: translate("Case study not found", "en") };
   }
 
-  const title = `${project.name} — Case study`;
-  const description =
+  const title =
+    translate(project.name, "en") + translate(" — Case study", "en");
+  const description = translate(
     project.caseStudy?.overview ??
-    project.description ??
-    siteConfig.description;
+      project.description ??
+      siteConfig.description,
+    "en",
+  );
   const canonicalPath = `/projects/${project.slug}`;
 
   return {
@@ -45,11 +49,11 @@ export async function generateMetadata({
       url: canonicalPath,
       title,
       description,
-      siteName: "Henok Neknikie — Portfolio",
+      siteName: translate("Henok Neknikie — Portfolio", "en"),
       images: [
         {
           url: project.image.src,
-          alt: project.image.alt,
+          alt: translate(project.image.alt, "en"),
           width: project.image.width,
           height: project.image.height,
         },

@@ -130,7 +130,7 @@ export function ProjectLightbox({
           >
             <div className={styles.bar}>
               <span>
-                {projectName} · {activeIndex + 1} / {images.length}
+                {t(projectName)} · {activeIndex + 1} / {images.length}
               </span>
               <button
                 ref={closeRef}

@@ -226,7 +226,7 @@ function ProjectCard({
         <div className={styles.mediaActions}>
           <ProjectLightbox
             images={gallery}
-            projectName={project.name}
+            projectName={t(project.name)}
             className={styles.expandButton}
           />
         </div>

@@ -51,7 +51,7 @@ export function Contact() {
             <div>
               <p className="mono">{t("Email")}</p>
               <a className={styles.email} href={`mailto:${profile.email}`}>
-                {profile.email}
+                {t(profile.email)}
                 <ArrowUpRight aria-hidden="true" />
               </a>
             </div>

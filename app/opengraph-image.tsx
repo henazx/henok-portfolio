@@ -2,8 +2,9 @@ import { ImageResponse } from "next/og";
 
 import { BrandMark } from "@/components/ui/BrandMark";
 import { profile } from "@/data/profile";
+import { translate } from "@/lib/i18n/dictionary";
 
-export const alt = `${profile.name} — ${profile.role}`;
+export const alt = `${translate(profile.name, "en")} — ${translate(profile.role, "en")}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -58,7 +59,9 @@ export default function OpenGraphImage() {
             >
               <BrandMark />
             </div>
-            <span style={{ color: "#94a3b8" }}>Portfolio</span>
+            <span style={{ color: "#94a3b8" }}>
+              {translate("Portfolio", "en")}
+            </span>
           </div>
 
           <div
@@ -85,7 +88,7 @@ export default function OpenGraphImage() {
                 backgroundColor: "#34d399",
               }}
             />
-            Available for work
+            {translate("Available for work", "en")}
           </div>
         </div>
 
@@ -99,7 +102,7 @@ export default function OpenGraphImage() {
               color: "#60a5fa",
             }}
           >
-            Information Technology Specialist
+            {translate("Information Technology Specialist", "en")}
           </div>
           <div
             style={{
@@ -110,7 +113,7 @@ export default function OpenGraphImage() {
               lineHeight: 1,
             }}
           >
-            {profile.name}
+            {translate(profile.name, "en")}
           </div>
           <div
             style={{
@@ -120,7 +123,10 @@ export default function OpenGraphImage() {
               letterSpacing: "-0.01em",
             }}
           >
-            Computer Science Graduate · Software Developer · UX/UI Designer
+            {translate(
+              "Computer Science Graduate · Software Developer · UX/UI Designer",
+              "en",
+            )}
           </div>
         </div>
 
@@ -147,7 +153,7 @@ export default function OpenGraphImage() {
                   color: "#94a3b8",
                 }}
               >
-                {item}
+                {translate(item, "en")}
               </span>
             ))}
           </div>

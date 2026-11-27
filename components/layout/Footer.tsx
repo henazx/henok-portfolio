@@ -44,7 +44,7 @@ export function Footer() {
                 <span className={styles.mark} aria-hidden="true">
                   <BrandMark />
                 </span>
-                <span>{content.profile.name}</span>
+                <span>{t(content.profile.name)}</span>
               </a>
               <p className={styles.tagline}>
                 {t(content.profile.role)} · {t(content.profile.location)}
@@ -73,7 +73,7 @@ export function Footer() {
 
           <div className={styles.bottom}>
             <p>
-              © {year} {content.profile.name}
+              © {year} {t(content.profile.name)}
               {t(". All rights reserved.")}
             </p>
             <p className={styles.status}>
