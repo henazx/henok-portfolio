@@ -1076,6 +1076,33 @@ function PublishErrorBanner({
   );
 }
 
+function DraftConflictPrompt({
+  onKeep,
+  onDiscard,
+}: {
+  onKeep: () => void;
+  onDiscard: () => void;
+}) {
+  return (
+    <div className={styles.draftConflict} role="alert">
+      <span className={styles.draftConflictMark} aria-hidden="true">
+        !
+      </span>
+      <div className={styles.draftConflictText}>
+        <p>Published content changed since your draft. Keep your draft or discard it?</p>
+        <div className={styles.draftConflictActions}>
+          <button type="button" onClick={onKeep}>
+            Keep draft
+          </button>
+          <button type="button" onClick={onDiscard}>
+            Discard draft
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function SiteEditor() {
   const {
     content,
@@ -1085,11 +1112,14 @@ export function SiteEditor() {
     publishing,
     status,
     publishError,
+    draftConflict,
     dismissPublishError,
     openEditor,
     closeEditor,
     exitEditor,
     resetChanges,
+    keepDraft,
+    discardDraft,
     publish,
   } = useEditor();
   const [tab, setTab] = useState<Tab>("Profile");
@@ -1197,11 +1227,19 @@ export function SiteEditor() {
     URL.revokeObjectURL(url);
   };
 
+  const launcherNotice = Boolean(publishError || draftConflict || status);
+
   return (
     <>
       {unlocked && !editorOpen ? (
         <div
-          className={`${styles.launcher} ${publishError ? styles.launcherWithError : ""}`}
+          className={`${styles.launcher} ${
+            publishError || draftConflict
+              ? styles.launcherWithError
+              : launcherNotice
+                ? styles.launcherWithNotice
+                : ""
+          }`}
           role="status"
         >
           {publishError ? (
@@ -1209,6 +1247,12 @@ export function SiteEditor() {
               message={publishError}
               onDismiss={dismissPublishError}
             />
+          ) : null}
+          {draftConflict ? (
+            <DraftConflictPrompt onKeep={keepDraft} onDiscard={discardDraft} />
+          ) : null}
+          {status && !draftConflict ? (
+            <p className={styles.launcherStatus}>{status}</p>
           ) : null}
           <div className={styles.launcherRow}>
             <span className={styles.launcherDot} aria-hidden="true" />
@@ -1218,7 +1262,7 @@ export function SiteEditor() {
             </button>
             <button
               type="button"
-              disabled={!dirty || publishing}
+              disabled={Boolean(draftConflict) || !dirty || publishing}
               onClick={() => void publish()}
             >
               {publishing ? "Publishing…" : "Publish"}
@@ -1253,27 +1297,31 @@ export function SiteEditor() {
             </button>
           </div>
 
-          <div className={styles.tabs} role="tablist" aria-label="Content groups">
-            {tabs.map((item, index) => (
-              <button
-                key={item}
-                ref={(element) => {
-                  tabRefs.current[index] = element;
-                }}
-                type="button"
-                role="tab"
-                id={`site-editor-tab-${index}`}
-                aria-controls="site-editor-panel"
-                aria-selected={tab === item}
-                tabIndex={tab === item ? 0 : -1}
-                className={tab === item ? styles.tabActive : undefined}
-                onClick={() => setTab(item)}
-                onKeyDown={(event) => handleTabKeyDown(event, index)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+          {draftConflict ? (
+            <DraftConflictPrompt onKeep={keepDraft} onDiscard={discardDraft} />
+          ) : (
+            <div className={styles.tabs} role="tablist" aria-label="Content groups">
+              {tabs.map((item, index) => (
+                <button
+                  key={item}
+                  ref={(element) => {
+                    tabRefs.current[index] = element;
+                  }}
+                  type="button"
+                  role="tab"
+                  id={`site-editor-tab-${index}`}
+                  aria-controls="site-editor-panel"
+                  aria-selected={tab === item}
+                  tabIndex={tab === item ? 0 : -1}
+                  className={tab === item ? styles.tabActive : undefined}
+                  onClick={() => setTab(item)}
+                  onKeyDown={(event) => handleTabKeyDown(event, index)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          )}
 
           {publishError ? (
             <PublishErrorBanner
@@ -1289,13 +1337,17 @@ export function SiteEditor() {
             aria-labelledby={`site-editor-tab-${tabs.indexOf(tab)}`}
             tabIndex={0}
           >
-            {tab === "Profile" ? <ProfileTab /> : null}
-            {tab === "Sections" ? <SectionsTab /> : null}
-            {tab === "Experience" ? <ExperienceTab /> : null}
-            {tab === "Projects" ? <ProjectsTab /> : null}
-            {tab === "Skills" ? <SkillsTab /> : null}
-            {tab === "Credentials" ? <CredentialsTab /> : null}
-            {tab === "Amharic" ? <AmharicTab /> : null}
+            {draftConflict ? null : (
+              <>
+                {tab === "Profile" ? <ProfileTab /> : null}
+                {tab === "Sections" ? <SectionsTab /> : null}
+                {tab === "Experience" ? <ExperienceTab /> : null}
+                {tab === "Projects" ? <ProjectsTab /> : null}
+                {tab === "Skills" ? <SkillsTab /> : null}
+                {tab === "Credentials" ? <CredentialsTab /> : null}
+                {tab === "Amharic" ? <AmharicTab /> : null}
+              </>
+            )}
           </div>
 
           <div className={styles.panelFooter}>
@@ -1310,6 +1362,7 @@ export function SiteEditor() {
                 type="button"
                 className={styles.resetButton}
                 onClick={downloadContent}
+                disabled={Boolean(draftConflict)}
               >
                 Download JSON
               </button>
@@ -1317,7 +1370,7 @@ export function SiteEditor() {
                 type="button"
                 className={styles.resetButton}
                 onClick={resetChanges}
-                disabled={!dirty}
+                disabled={Boolean(draftConflict) || !dirty}
               >
                 Reset
               </button>
@@ -1325,7 +1378,7 @@ export function SiteEditor() {
                 type="button"
                 className={styles.publishButton}
                 onClick={() => void publish()}
-                disabled={!dirty || publishing}
+                disabled={Boolean(draftConflict) || !dirty || publishing}
               >
                 {publishing ? "Publishing…" : "Publish"}
               </button>

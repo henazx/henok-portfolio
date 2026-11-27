@@ -13,9 +13,11 @@ import {
 import initialContent from "@/data/content.json";
 import {
   DRAFT_KEY,
+  PENDING_KEY,
   UNLOCK_EVENT,
   deepMerge,
   getByPath,
+  isPlainObject,
   normalizePublishContent,
   setByPath,
 } from "@/lib/editor";
@@ -27,6 +29,11 @@ import {
 } from "@/lib/publish-client";
 import type { SiteContent } from "@/types";
 
+interface DraftConflict {
+  content: SiteContent;
+  version: string | null;
+}
+
 interface EditorContextValue {
   content: SiteContent;
   unlocked: boolean;
@@ -35,6 +42,7 @@ interface EditorContextValue {
   publishing: boolean;
   status: string | null;
   publishError: string | null;
+  draftConflict: DraftConflict | null;
   authPromptOpen: boolean;
   authenticating: boolean;
   authError: string | null;
@@ -48,6 +56,8 @@ interface EditorContextValue {
   removeItem: (path: string, index: number) => void;
   moveItem: (path: string, from: number, to: number) => void;
   resetChanges: () => void;
+  keepDraft: () => void;
+  discardDraft: () => void;
   publish: () => Promise<void>;
   dismissPublishError: () => void;
 }
@@ -55,6 +65,8 @@ interface EditorContextValue {
 const EditorContext = createContext<EditorContextValue | null>(null);
 
 const baseContent = initialContent as SiteContent;
+
+const PENDING_MAX_AGE_MS = 15 * 60 * 1000;
 
 /** Stable build-time fingerprint of the published content. */
 function contentVersion(content: unknown): string {
@@ -74,69 +86,129 @@ interface DraftEnvelope {
   content: SiteContent;
 }
 
-function parseDraft(raw: string): { content: SiteContent | null; stale: boolean } {
+interface PendingPublish {
+  contentHash: string;
+  content: SiteContent;
+  publishedAt: number;
+}
+
+function normalizeStoredContent(value: unknown): SiteContent | null {
+  if (!isPlainObject(value)) return null;
+  return normalizePublishContent(value) as SiteContent;
+}
+
+function parseDraft(raw: string): DraftConflict | null {
   try {
     const parsed: unknown = JSON.parse(raw);
-    if (
-      parsed &&
-      typeof parsed === "object" &&
-      "version" in parsed &&
-      "content" in parsed
-    ) {
-      const envelope = parsed as DraftEnvelope;
-      return envelope.version === CONTENT_VERSION
-        ? {
-            content: normalizePublishContent(
-              envelope.content,
-            ) as SiteContent,
-            stale: false,
-          }
-        : { content: null, stale: true };
-    }
-    // A raw, unversioned draft belongs to an older build and must not override
-    // newer published copy.
-    return { content: null, stale: true };
+    if (!isPlainObject(parsed)) return null;
+
+    const content = normalizeStoredContent(parsed.content);
+    if (!content) return null;
+
+    return {
+      content,
+      version: typeof parsed.version === "string" ? parsed.version : null,
+    };
   } catch {
-    return { content: null, stale: true };
+    return null;
+  }
+}
+
+function parsePending(raw: string): PendingPublish | null {
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!isPlainObject(parsed)) return null;
+
+    const content = normalizeStoredContent(parsed.content);
+    if (
+      typeof parsed.contentHash !== "string" ||
+      !parsed.contentHash ||
+      typeof parsed.publishedAt !== "number" ||
+      !Number.isFinite(parsed.publishedAt) ||
+      !content
+    ) {
+      return null;
+    }
+
+    return {
+      contentHash: parsed.contentHash,
+      content,
+      publishedAt: parsed.publishedAt,
+    };
+  } catch {
+    return null;
   }
 }
 
 export function ContentProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<SiteContent>(baseContent);
+  const [publishedContent, setPublishedContent] =
+    useState<SiteContent>(baseContent);
   const [unlocked, setUnlocked] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [draftConflict, setDraftConflict] = useState<DraftConflict | null>(null);
   const [authPromptOpen, setAuthPromptOpen] = useState(false);
   const [authenticating, setAuthenticating] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Restore a private draft after hydration so server and client render the
-    // same HTML first. Drafts are content, never credentials.
+    // Restore content after hydration so server and client render the same
+    // HTML first. A pending publish bridges the gap until Vercel rebuilds.
+    let nextPublished = baseContent;
+    let nextContent = baseContent;
+    let nextDirty = false;
+    let nextStatus: string | null = null;
+    let nextConflict: DraftConflict | null = null;
+    let effectiveVersion = CONTENT_VERSION;
+
     try {
-      const raw = window.localStorage.getItem(DRAFT_KEY);
-      if (raw) {
-        const draft = parseDraft(raw);
-        if (draft.content) {
-          // eslint-disable-next-line react-hooks/set-state-in-effect
-          setContent(deepMerge(baseContent, draft.content));
-          setDirty(true);
+      const pendingRaw = window.localStorage.getItem(PENDING_KEY);
+      if (pendingRaw) {
+        const pending = parsePending(pendingRaw);
+        if (!pending) {
+          window.localStorage.removeItem(PENDING_KEY);
+        } else if (pending.contentHash === CONTENT_VERSION) {
+          window.localStorage.removeItem(PENDING_KEY);
+        } else if (Date.now() - pending.publishedAt < PENDING_MAX_AGE_MS) {
+          nextPublished = pending.content;
+          nextContent = pending.content;
+          nextStatus =
+            "Your changes are published and the site is still rebuilding.";
+          effectiveVersion = pending.contentHash;
         } else {
+          window.localStorage.removeItem(PENDING_KEY);
+          nextStatus = "The last publish may not have deployed. Check Vercel.";
+        }
+      }
+
+      const draftRaw = window.localStorage.getItem(DRAFT_KEY);
+      if (draftRaw) {
+        const draft = parseDraft(draftRaw);
+        if (!draft) {
           window.localStorage.removeItem(DRAFT_KEY);
-          setStatus("An older saved draft was cleared. Showing the published content.");
+        } else if (draft.version === effectiveVersion) {
+          nextContent = deepMerge(nextPublished, draft.content);
+          nextDirty = true;
+        } else {
+          // Never delete an unpublished draft just because the published
+          // version changed. Ask the editor which version to keep.
+          nextConflict = draft;
         }
       }
     } catch {
-      // A malformed draft should never break the site.
-      try {
-        window.localStorage.removeItem(DRAFT_KEY);
-      } catch {
-        // Storage may be unavailable; the published content still renders.
-      }
+      // Storage may be unavailable; the published content still renders.
     }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPublishedContent(nextPublished);
+    setContent(nextContent);
+    setDirty(nextDirty);
+    setStatus(nextStatus);
+    setDraftConflict(nextConflict);
 
     // Restore access only from the HttpOnly session cookie, verified by the
     // server. There is deliberately no sessionStorage unlock flag anymore.
@@ -160,19 +232,26 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener(UNLOCK_EVENT, onUnlock);
   }, [unlocked]);
 
-  const saveDraft = useCallback((next: SiteContent) => {
-    try {
-      window.localStorage.setItem(
-        DRAFT_KEY,
-        JSON.stringify({ version: CONTENT_VERSION, content: next } satisfies DraftEnvelope),
-      );
-    } catch {
-      setStatus("Browser storage is full — changes are only in this session.");
-    }
-  }, []);
+  const saveDraft = useCallback(
+    (next: SiteContent) => {
+      try {
+        window.localStorage.setItem(
+          DRAFT_KEY,
+          JSON.stringify({
+            version: contentVersion(publishedContent),
+            content: next,
+          } satisfies DraftEnvelope),
+        );
+      } catch {
+        setStatus("Browser storage is full — changes are only in this session.");
+      }
+    },
+    [publishedContent],
+  );
 
   const setField = useCallback(
     (path: string, value: unknown) => {
+      if (draftConflict) return;
       setContent((current) => {
         const next = setByPath(current, path, value);
         saveDraft(next);
@@ -182,11 +261,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setStatus(null);
       setPublishError(null);
     },
-    [saveDraft],
+    [draftConflict, saveDraft],
   );
 
   const addItem = useCallback(
     (path: string, template: unknown) => {
+      if (draftConflict) return;
       setContent((current) => {
         const existing = getByPath(current, path);
         const list = Array.isArray(existing) ? existing : [];
@@ -198,11 +278,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setStatus(null);
       setPublishError(null);
     },
-    [saveDraft],
+    [draftConflict, saveDraft],
   );
 
   const removeItem = useCallback(
     (path: string, index: number) => {
+      if (draftConflict) return;
       setContent((current) => {
         const existing = getByPath(current, path);
         const list = Array.isArray(existing) ? existing : [];
@@ -215,11 +296,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setStatus(null);
       setPublishError(null);
     },
-    [saveDraft],
+    [draftConflict, saveDraft],
   );
 
   const moveItem = useCallback(
     (path: string, from: number, to: number) => {
+      if (draftConflict) return;
       setContent((current) => {
         const existing = getByPath(current, path);
         if (
@@ -244,16 +326,57 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setStatus(null);
       setPublishError(null);
     },
-    [saveDraft],
+    [draftConflict, saveDraft],
   );
 
   const resetChanges = useCallback(() => {
-    window.localStorage.removeItem(DRAFT_KEY);
-    setContent(baseContent);
+    if (draftConflict) return;
+    try {
+      window.localStorage.removeItem(DRAFT_KEY);
+    } catch {
+      // The in-memory reset still works when storage is unavailable.
+    }
+    setContent(publishedContent);
     setDirty(false);
     setPublishError(null);
     setStatus("Changes discarded. Showing the published content.");
-  }, []);
+  }, [draftConflict, publishedContent]);
+
+  const keepDraft = useCallback(() => {
+    if (!draftConflict) return;
+
+    const next = deepMerge(publishedContent, draftConflict.content);
+    setContent(next);
+    setDirty(true);
+    setDraftConflict(null);
+    setStatus(null);
+
+    try {
+      window.localStorage.setItem(
+        DRAFT_KEY,
+        JSON.stringify({
+          version: contentVersion(publishedContent),
+          content: next,
+        } satisfies DraftEnvelope),
+      );
+    } catch {
+      setStatus("Browser storage is full — changes are only in this session.");
+    }
+  }, [draftConflict, publishedContent]);
+
+  const discardDraft = useCallback(() => {
+    if (!draftConflict) return;
+
+    try {
+      window.localStorage.removeItem(DRAFT_KEY);
+    } catch {
+      // The in-memory discard still works when storage is unavailable.
+    }
+    setDraftConflict(null);
+    setContent(publishedContent);
+    setDirty(false);
+    setStatus("Draft discarded. Showing the published content.");
+  }, [draftConflict, publishedContent]);
 
   const authenticate = useCallback(async (password: string) => {
     setAuthenticating(true);
@@ -267,7 +390,6 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setUnlocked(true);
     setAuthPromptOpen(false);
     setEditorOpen(true);
-    setStatus(null);
     setPublishError(null);
     setAuthenticating(false);
     return true;
@@ -289,6 +411,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const publish = useCallback(async () => {
+    if (draftConflict) return;
+
     setPublishing(true);
     setStatus(null);
     setPublishError(null);
@@ -309,16 +433,46 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const published = result.content ?? content;
+    const record: PendingPublish = {
+      contentHash: contentVersion(published),
+      content: published,
+      publishedAt: Date.now(),
+    };
+
+    let storageMessage: string | null = null;
+    try {
+      // Write the pending record first. If it cannot be saved, leave the draft
+      // untouched so the user's work is never discarded.
+      window.localStorage.setItem(PENDING_KEY, JSON.stringify(record));
+      try {
+        window.localStorage.removeItem(DRAFT_KEY);
+      } catch {
+        // Keep a stale copy consistent with the pending content so it is not
+        // mistaken for an older draft when the page reloads.
+        window.localStorage.setItem(
+          DRAFT_KEY,
+          JSON.stringify({
+            version: record.contentHash,
+            content: published,
+          } satisfies DraftEnvelope),
+        );
+      }
+    } catch {
+      storageMessage = "Published, but this browser could not save the rebuild status.";
+    }
+
     if (result.content) setContent(result.content);
-    window.localStorage.removeItem(DRAFT_KEY);
+    setPublishedContent(published);
     setDirty(false);
     setStatus(
-      result.changed === false
-        ? "Everything is already up to date. No new commit was needed."
-        : "Published. Vercel will rebuild with your changes shortly.",
+      storageMessage ??
+        (result.changed === false
+          ? "Everything is already up to date. No new commit was needed."
+          : "Published. Vercel will rebuild with your changes shortly."),
     );
     setPublishing(false);
-  }, [content]);
+  }, [content, draftConflict]);
 
   const dismissPublishError = useCallback(() => setPublishError(null), []);
 
@@ -331,6 +485,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       publishing,
       status,
       publishError,
+      draftConflict,
       authPromptOpen,
       authenticating,
       authError,
@@ -344,6 +499,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       removeItem,
       moveItem,
       resetChanges,
+      keepDraft,
+      discardDraft,
       publish,
       dismissPublishError,
     }),
@@ -355,6 +512,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       publishing,
       status,
       publishError,
+      draftConflict,
       authPromptOpen,
       authenticating,
       authError,
@@ -366,6 +524,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       removeItem,
       moveItem,
       resetChanges,
+      keepDraft,
+      discardDraft,
       publish,
       dismissPublishError,
     ],

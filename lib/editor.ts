@@ -10,6 +10,7 @@ import type { SiteContent } from "@/types";
  */
 export const EDIT_KEYWORD = "Henok";
 export const DRAFT_KEY = "henok-portfolio-draft";
+export const PENDING_KEY = "henok-portfolio-pending-publish";
 export const UNLOCK_EVENT = "henok:unlock";
 
 /**

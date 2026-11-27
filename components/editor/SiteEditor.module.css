@@ -78,13 +78,24 @@
   gap: 8px;
 }
 
-.launcherWithError {
+.launcherWithError,
+.launcherWithNotice {
   flex-direction: column;
   align-items: stretch;
   gap: 10px;
   padding: 10px;
-  border-color: color-mix(in srgb, var(--danger) 45%, var(--glass-border));
   border-radius: var(--radius);
+}
+
+.launcherWithError {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--glass-border));
+}
+
+.launcherStatus {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  line-height: 1.45;
 }
 
 .publishError {
@@ -142,6 +153,77 @@
 .publishError .publishErrorDismiss:hover {
   background: var(--surface-hover);
   color: var(--text);
+}
+
+.draftConflict {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 12px 24px 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface-solid));
+  color: var(--text);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.launcherWithError .draftConflict,
+.launcherWithNotice .draftConflict {
+  margin: 0;
+}
+
+.draftConflictMark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.draftConflictText {
+  flex: 1;
+  min-width: 0;
+}
+
+.draftConflictText p {
+  margin: 0;
+}
+
+.draftConflictActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.draftConflictActions button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--text-xs);
+}
+
+.draftConflictActions button:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  background: var(--accent-soft);
+}
+
+.draftConflictActions button:last-child:hover {
+  border-color: color-mix(in srgb, var(--danger) 50%, transparent);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface-solid));
+  color: var(--danger);
 }
 
 .panel {
