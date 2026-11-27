@@ -135,6 +135,7 @@
   "Fork": "ፎርክ",
   "Formal study, continued learning.": "መደበኛ ትምህርት፣ ቀጣይነት ያለው መማር።",
   "Foundations in programming, software engineering, databases, computer networks, and information systems.": "በፕሮግራሚንግ፣ በሶፍትዌር ኢንጂነሪንግ፣ በውሂብ ጎታዎች፣ በኮምፒውተር አውታረ መረቦችና በኢንፎርሜሽን ስርዓቶች መሰረት።",
+  "Free and first invoicing app for Ethiopian businesses. Amharic and English, Ethiopian and Gregorian calendars, VAT, turnover and withholding tax. Runs entirely in the browser with no backend. Your data never leaves your device. project.": "ነጻ እና ለኢትዮጵያ ንግዶች የመጀመሪያው የክፍያ መጠየቂያ መተግበሪያ። በአማርኛም በእንግሊዝኛም፣ የኢትዮጵያ እና የግሪጎሪያን ቀን አቆጣጠሮች፣ ቫት (VAT)፣ Turnover ግብር እና Withholding ግብርን ይደግፋል። ሙሉ በሙሉ በአሳሽ ውስጥ የሚሄድ ሲሆን ምንም backend የለውም። መረጃዎ ከመሳሪያዎ በፍጹም አይወጣም። ፕሮጀክት።",
   "Frontend Development": "የፊት-ገጽ ልማት",
   "Full-stack development": "የሙሉ-ቁምጣ ልማት",
   "Generated PDFs are served only through an authenticated /api/messages/:id/pdf route.": "የተፈጠሩ ፒዲኤፎች በማረጋገጫ በተጠበቀው /api/messages/:id/pdf መስመር ብቻ ይቀርባሉ።",
