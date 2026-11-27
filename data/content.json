@@ -61,15 +61,17 @@
   "profile": {
     "name": "Henok Neknikie",
     "monogram": "HN",
-    "role": "Information Technology Specialist",
+    "role": "Information Technology Specialist & Full-Stack Developer",
     "headline": "IT specialist, web developer, and UX/UI designer in Addis Ababa.",
-    "currentFocus": "IT support, web applications, and UX/UI design.",
+    "currentFocus": "IT support, web applications",
     "positioning": [
-      "Computer Science Graduate",
-      "Software Developer",
-      "UX/UI Designer"
+      "Next.js",
+      "React",
+      "IT Support",
+      "My Sql",
+      "UX/UI"
     ],
-    "summary": "Information Technology Specialist and Computer Science graduate working across IT support, web development, and UX/UI design in Addis Ababa.",
+    "summary": "I am a Computer Science graduate with professional experience in IT support and a passion for building practical, user-centered software solutions. My skills span IT infrastructure, technical troubleshooting, and full-stack web development. I enjoy turning real-world problems into reliable digital solutions through technology, continuous learning, and innovation.",
     "about": {
       "lead": "I keep systems running, build practical web applications, and design interfaces that stay out of the way.",
       "paragraphs": [
@@ -456,7 +458,7 @@
     {
       "name": "Data Science Fundamentals",
       "issuer": "Udacity",
-      "note": "",
+      "note": "User research, wireframing, prototyping, and usability testing.",
       "link": "https://www.udacity.com/certificate/e/7b6cd58e-3013-11f1-a652-9b1e5e28aeaa"
     },
     {
